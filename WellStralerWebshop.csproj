@@ -4,6 +4,13 @@
     <TargetFramework>netcoreapp3.1</TargetFramework>
   </PropertyGroup>
 
+  <ItemGroup>
+    <Folder Include="Data\Mappers\" />
+    <Folder Include="Data\Repositories\" />
+    <Folder Include="Models\Domain\" />
+    <Folder Include="Models\ViewModels\" />
+  </ItemGroup>
+
 
 
 </Project>
