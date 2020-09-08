@@ -5,10 +5,12 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Data\Mappers\" />
     <Folder Include="Data\Repositories\" />
-    <Folder Include="Models\Domain\" />
     <Folder Include="Models\ViewModels\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="3.1.7" />
   </ItemGroup>
 
 
