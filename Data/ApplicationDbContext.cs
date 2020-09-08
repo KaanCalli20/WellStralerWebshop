@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using WellStralerWebshop.Data.Mappers;
 using WellStralerWebshop.Models.Domain;
 
 namespace WellStralerWebshop.Data
@@ -23,8 +24,8 @@ namespace WellStralerWebshop.Data
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);
-            builder.ApplyConfiguration(new SessieConfiguration());
-            
+            builder.ApplyConfiguration(new ProductConfiguration());
+            builder.ApplyConfiguration(new ProductKoppelingConfiguration());
         }
 
     }

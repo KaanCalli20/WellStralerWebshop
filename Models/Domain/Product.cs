@@ -7,23 +7,28 @@ namespace WellStralerWebshop.Models.Domain
 {
     public class Product
     {
-        public int tPROID { get; set; }
-        public string tPROAfk { get; set; }
-        public string tPRONedNaam { get; set; }
-        public string tProNedOmschrijving { get; set; }
-        public string tPROEngNaam { get; set; }
-        public string tPROEngOmschrijving { get; set; }
-        public string tPROFraNaam { get; set; }
-        public string tPROFraOmschrijving { get; set; }
-        public double tPROPrijs { get; set; }
-        public double tPROPrijs1 { get; set; }
-        public double tPROPrijs2 { get; set; }
-        public double tPROPrijsGekoppeld { get; set; }
-        public double tPROBtwPerc { get; set; }
-        public double tPROStock { get; set; }
-        public double tPROStockBestelId { get; set; }
-        public string tPROTypekorting { get; set; }
-        public ProductType TProductType { get; set; }
+        public int Id { get; set; }
+        public string Afk { get; set; }
+        public string NaamNL { get; set; }
+        public string OmschrijvingNL { get; set; }
+        public string NaamEN { get; set; }
+        public string OmschrijvingEN { get; set; }
+        public string NaamFR { get; set; }
+        public string OmschrijvingFR { get; set; }
+        public Decimal Prijs { get; set; }
+        public Decimal Prijs1 { get; set; }
+        public Decimal Prijs2 { get; set; }
+        public Decimal PrijsGekoppeld { get; set; }
+        public Decimal BtwPerc { get; set; }
+        public int Stock { get; set; }
+        public int StockBestelId { get; set; }
+        public int Typekorting { get; set; }
+        public ProductType ProductType { get; set; }
+        public int SoortProduct { get; set; }
+        public int Verwijderd { get; set; }
+
+        public IEnumerable<ProductKoppeling> productKoppelingen { get; set; }
+
          
         
     }
