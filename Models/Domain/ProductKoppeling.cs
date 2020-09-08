@@ -7,11 +7,14 @@ namespace WellStralerWebshop.Models.Domain
 {
     public class ProductKoppeling
     {
-        public int Id { get; set; }
+        public long Id { get; set; }
+
+        public long HoofdId { get; set; }
+        public long GekoppeldProdId { get; set; }
         public Product HoofdProduct { get; set; }
         public Product GekoppeldProduct { get; set; }
-        //public KopTypes KoppelType { get; set; }
-        public int KoppelVolgorde { get; set; }
+        public KopTypes KoppelType { get; set; }
+        public short KoppelVolgorde { get; set; }
 
     }
 }

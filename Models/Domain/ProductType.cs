@@ -7,11 +7,11 @@ namespace WellStralerWebshop.Models.Domain
 {
     public class ProductType
     {
-        public int ProductTypeID { get; set; }
-        public string tPROTYPENaam { get; set; }
-        public string tPROTYPENaamFR { get; set; }
-        public string tPROTYPENaamDU { get; set; }
-        public string tPROTYPENaamEN { get; set; }
+        public long Id { get; set; }
+        public string NaamNL { get; set; }
+        public string NaamFR { get; set; }
+        public string NaamDU { get; set; }
+        public string NaamEN { get; set; }
 
     }
 }

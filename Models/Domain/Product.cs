@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -7,7 +8,7 @@ namespace WellStralerWebshop.Models.Domain
 {
     public class Product
     {
-        public int Id { get; set; }
+        public long Id { get; set; }
         public string Afk { get; set; }
         public string NaamNL { get; set; }
         public string OmschrijvingNL { get; set; }
@@ -22,12 +23,12 @@ namespace WellStralerWebshop.Models.Domain
         public Decimal BtwPerc { get; set; }
         public int Stock { get; set; }
         public int StockBestelId { get; set; }
-        public int Typekorting { get; set; }
+        public byte Typekorting { get; set; }
         public ProductType ProductType { get; set; }
-        public int SoortProduct { get; set; }
-        public int Verwijderd { get; set; }
+        public long SoortProduct { get; set; }
+        public byte Verwijderd { get; set; }
 
-        public IEnumerable<ProductKoppeling> productKoppelingen { get; set; }
+        public ICollection<ProductKoppeling> productKoppelingen { get; set; }
 
          
         

@@ -33,11 +33,15 @@ namespace WellStralerWebshop.Data.Mappers
 			builder.Property(x => x.SoortProduct).HasColumnName("tPROSrtPROId");
 			builder.Property(x => x.Verwijderd).HasColumnName("tPROVerwijderd");
 
+			builder.HasKey(p => p.Id);
+
 			builder.HasOne(x => x.ProductType)
 				.WithMany()
 				.HasForeignKey("tPRO_TypeId");
 			
-			}
+						}
+
+		
 
         
     }

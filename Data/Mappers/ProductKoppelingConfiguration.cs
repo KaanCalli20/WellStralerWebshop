@@ -13,16 +13,26 @@ namespace WellStralerWebshop.Data.Mappers
         public void Configure(EntityTypeBuilder<ProductKoppeling> builder)
         {
             builder.ToTable("tblPRK_ProductKoppeling");
-            builder.HasKey(p => p.Id);
+
+            builder.Property(x => x.Id).HasColumnName("TPRKId");
+
+            builder.HasKey(t => new { t.HoofdId, t.GekoppeldProdId });
+            builder.Property(x => x.HoofdId).HasColumnName("TPRKHoofdProId");
+            builder.Property(x => x.GekoppeldProdId).HasColumnName("TPRKGekoppeldProId");
+            builder.Property(x => x.KoppelVolgorde).HasColumnName("tPRKKoppelVolgorde");
+            //builder.Property(x => x.KoppelType).HasColumnName("TPRKKoppelType");
             builder.HasOne(p => p.HoofdProduct)
-                .WithMany()
-                .HasForeignKey("TPRKHoofdProId");
+                .WithMany(p=>p.productKoppelingen)
+                .HasForeignKey(p=>p.HoofdId);
             builder.HasOne(p => p.GekoppeldProduct)
-                .WithMany(t => t.productKoppelingen)
-                .HasForeignKey("TPRKGekoppeldProId");
-            /*builder.HasOne(p => p.KoppelType)
-                .WithOne()
-                .HasForeignKey("TPRKKoppelType");*/
+                .WithMany()
+                .HasForeignKey(p => p.GekoppeldProdId);
+
+            builder.HasOne(p => p.KoppelType)
+                .WithMany()
+                .HasForeignKey("TPRKKoppelType");
+
+           
             
         }
     }

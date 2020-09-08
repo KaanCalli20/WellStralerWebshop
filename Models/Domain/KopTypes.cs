@@ -7,7 +7,7 @@ namespace WellStralerWebshop.Models.Domain
 {
     public class KopTypes
     {
-        public int TKOPId { get; set; }
-        public string TKOPNaam { get; set; }
+        public int Id { get; set; }
+        public string Naam { get; set; }
     }
 }

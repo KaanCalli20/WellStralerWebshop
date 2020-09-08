@@ -26,6 +26,8 @@ namespace WellStralerWebshop.Data
             base.OnModelCreating(builder);
             builder.ApplyConfiguration(new ProductConfiguration());
             builder.ApplyConfiguration(new ProductKoppelingConfiguration());
+            builder.ApplyConfiguration(new KopTypesConfiguration());
+            builder.ApplyConfiguration(new ProductTypeConfiguration());
         }
 
     }

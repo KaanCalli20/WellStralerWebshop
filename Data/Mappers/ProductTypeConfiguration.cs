@@ -12,7 +12,14 @@ namespace WellStralerWebshop.Data.Mappers
     {
         public void Configure(EntityTypeBuilder<ProductType> builder)
         {
-            
+            builder.ToTable("tblPROTyp_ProductType");
+            builder.HasKey(p => p.Id);
+            builder.Property(x => x.Id).HasColumnName("tPROTYPID");
+            builder.Property(x => x.NaamNL).HasColumnName("tPROTYPNaam");
+            builder.Property(x => x.NaamFR).HasColumnName("tPROTYPNaamFR");
+            builder.Property(x => x.NaamEN).HasColumnName("tPROTYPNaamEN");
+            builder.Property(x => x.NaamDU).HasColumnName("tPROTYPNaamDU");
+
         }
     }
 }

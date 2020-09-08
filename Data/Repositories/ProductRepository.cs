@@ -20,7 +20,7 @@ namespace WellStralerWebshop.Data.Repositories
 
         public IEnumerable<Product> getProducten()
         {
-            return _producten.ToList();
+            return _producten.Include(p=>p.ProductType).Include(p=>p.productKoppelingen).ThenInclude(p=>p.KoppelType).ToList();
         }
 
     }
