@@ -13,9 +13,9 @@ namespace WellStralerWebshop.Data
 
         public DbSet<Product> Producten { get; set; }
         public DbSet<Klant> Klanten { get; set; }
+        public DbSet<KlantLogin> KlantLogins { get; set; }
         public DbSet<OnlineBestelling> OnlineBestellingen {get;set;}
         public DbSet<OnlineBestelLijn> OnlineBestelLijnen { get; set; }
-
 
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
            : base(options)
@@ -28,6 +28,10 @@ namespace WellStralerWebshop.Data
             builder.ApplyConfiguration(new ProductKoppelingConfiguration());
             builder.ApplyConfiguration(new KopTypesConfiguration());
             builder.ApplyConfiguration(new ProductTypeConfiguration());
+            builder.ApplyConfiguration(new KlantConfiguration());
+            builder.ApplyConfiguration(new KlantKoppelingConfiguration());
+            builder.ApplyConfiguration(new KlantLoginConfiguration());
+
         }
 
     }

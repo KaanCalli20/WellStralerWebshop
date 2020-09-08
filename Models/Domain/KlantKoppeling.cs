@@ -6,8 +6,12 @@ using System.Threading.Tasks;
 
 namespace WellStralerWebshop.Models.Domain
 {
-    [NotMapped]
     public class KlantKoppeling
     {
+        public long HoofdKlantId { get; set; }
+        public long GekoppeldKlantId { get; set; }
+        public Klant HoofdKlant { get; set; }
+        public Klant GekoppeldKlant { get; set; }
+
     }
 }

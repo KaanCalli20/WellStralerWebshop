@@ -9,13 +9,16 @@ namespace WellStralerWebshop.Models.Domain
     [NotMapped]
     public class KlantLogin
     {
-        public int tKLLId { get; set; }
-        
-        public string tKLLNaam { get; set; }
-        public string tKLLVoornaam { get; set; }
-        public string tKLLLogin { get; set; }
-        public string tKLLPaswoord { get; set; }
-        
+		public long Id { get; set; }
+		public long KlantId { get; set; }
+		public Klant klant { get; set; }
+		public string Naam { get; set; }
+		public string Voornaam { get; set; }
+		public string Gebruikersnaam { get; set; }
+		public string Paswoord { get; set; }
+		public byte Actief { get; set; }
+		public byte Wijzigbaar { get; set; }
 
-    }
+
+	}
 }

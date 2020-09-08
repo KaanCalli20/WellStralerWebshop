@@ -10,14 +10,19 @@ namespace WellStralerWebshop.Controllers
     public class ProductController : Controller
     {
         private readonly IProductRepository _productRepo;
-        public ProductController(IProductRepository productRepo)
+        private readonly IKlantRepository _klantRepo;
+        private readonly IKlantLoginRepository _klantLoginsRepo;
+        public ProductController(IProductRepository productRepo,IKlantRepository klantRepo, IKlantLoginRepository klantLoginsRepo)
         {
+            
             this._productRepo = productRepo;
+            this._klantRepo = klantRepo;
+            this._klantLoginsRepo = klantLoginsRepo;
         }
 
         public IActionResult Index()
         {
-            IEnumerable<Product> p = this._productRepo.getProducten(); 
+            IEnumerable<KlantLogin> p = this._klantLoginsRepo.getLogins(); 
             return View();
         }
     }
