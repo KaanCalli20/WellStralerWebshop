@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.VisualBasic;
 
 namespace WellStralerWebshop.Models.Domain
 {
@@ -30,7 +31,14 @@ namespace WellStralerWebshop.Models.Domain
 
         public ICollection<ProductKoppeling> productKoppelingen { get; set; }
 
+        public Product()
+        {
+            productKoppelingen = new List<ProductKoppeling>();
+        }
          
-        
+        public int convertID(long longId)
+        {
+            return Convert.ToInt32(longId);
+        }
     }
 }

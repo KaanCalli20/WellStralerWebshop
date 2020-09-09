@@ -30,10 +30,17 @@ namespace WellStralerWebshop.Controllers
             return View(lijstProducten);
         }
 
-        public IActionResult Details()
+        
+        public IActionResult Details(long Id)
         {
+            Product prod = this._productRepo.getProductById(Id);
+            return View(prod);
+        }
 
-            return View();
+        public IEnumerable<ProductKoppeling> getGekoppeldeProd(long Id)
+        {
+            IEnumerable<ProductKoppeling> gekopeldeProd = new List<>();
+            return null;
         }
     }
 }

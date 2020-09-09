@@ -23,5 +23,10 @@ namespace WellStralerWebshop.Data.Repositories
             return _producten.Include(p=>p.ProductType).Include(p=>p.productKoppelingen).ThenInclude(p=>p.KoppelType).ToList();
         }
 
+        public Product getProductById(long Id)
+        {
+            return getProducten().SingleOrDefault(p => p.Id == Id);
+        }
+
     }
 }

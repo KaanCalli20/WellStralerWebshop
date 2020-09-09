@@ -1,0 +1,33 @@
+﻿@model WellStralerWebshop.Models.Domain.Product
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h1>@Model.Afk</h1>
+
+<ul>
+    <table class="Wagentje">
+        <tr>
+            <th>Prod</th>
+            <th>Omschrijving</th>
+            <th>prijs</th>
+        </tr>
+        <tr>
+            <td>@Model.Afk</td>
+            <td>@Model.OmschrijvingNL</td>
+            <td>@Model.Prijs</td>
+        </tr>
+        
+    </table>
+</ul>
+
+@if(Model.productKoppelingen.Count == 0)
+{
+
+}else
+<ul>
+    <table class="ProdKop">
+
+    </table>
+</ul>

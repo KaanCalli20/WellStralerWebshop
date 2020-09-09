@@ -8,5 +8,7 @@ namespace WellStralerWebshop.Models.Domain
     public interface IProductRepository
     {
         IEnumerable<Product> getProducten();
+
+        Product getProductById(long Id);
     }
 }
