@@ -18,11 +18,14 @@ namespace WellStralerWebshop.Controllers
 
         public IActionResult Index()
         {
-            return View();
+            Klant kl = _loginRepo.getLogins().First().klant;
+            return RedirectToAction(nameof(LogIn));
         }
 
         public IActionResult LogIn(string gebruikersnaam, string wachtwoord)
         {
+            //Verificatie komt hier
+
             return View();
             
         }
