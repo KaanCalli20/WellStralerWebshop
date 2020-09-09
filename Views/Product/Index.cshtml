@@ -6,7 +6,11 @@
 
 <div >
 
-    
+    <form asp-controller="Product" asp-action="Index">
+        Filter: 
+        <input type="text" name="SearchString"/>
+        <input type="submit" value="Search"/>
+    </form>
 
     <table>
         <tr>

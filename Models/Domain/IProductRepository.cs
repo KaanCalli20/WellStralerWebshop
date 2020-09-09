@@ -10,5 +10,7 @@ namespace WellStralerWebshop.Models.Domain
         IEnumerable<Product> getProducten();
 
         Product getProductById(long Id);
+
+        IEnumerable<Product> getProductenByOmschrijving(String omschrijving);
     }
 }

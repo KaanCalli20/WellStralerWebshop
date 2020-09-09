@@ -28,5 +28,11 @@ namespace WellStralerWebshop.Data.Repositories
             return getProducten().SingleOrDefault(p => p.Id == Id);
         }
 
+        public IEnumerable<Product> getProductenByOmschrijving(string omschrijving)
+        {
+
+            return getProducten().Where(p => p.OmschrijvingNL.Contains(omschrijving)).ToList();
+        }
+
     }
 }

@@ -36,9 +36,11 @@ namespace WellStralerWebshop.Models.Domain
             productKoppelingen = new List<ProductKoppeling>();
         }
          
-        public int convertID(long longId)
+        public static int convertID(long longId)
         {
             return Convert.ToInt32(longId);
         }
+
+
     }
 }

@@ -23,26 +23,45 @@ namespace WellStralerWebshop.Controllers
             this._klantLoginsRepo = klantLoginsRepo;
         }
 
-        public IActionResult Index()
+        
+        public ViewResult Index()
         {
-            //IEnumerable<OnlineBestelLijn> p = this._onlineBestelLijn.getOnlineBestelLijnen(); 
-            IEnumerable<Product> lijstProducten = this._productRepo.getProducten();
+            IEnumerable<Product> lijstProducten = new List<Product>();
+            lijstProducten = _productRepo.getProducten();
             return View(lijstProducten);
         }
 
-        public 
+        [HttpPost]
+        public ViewResult Index(string SearchString)
+        {
+            IEnumerable<Product> lijstProducten = new List<Product>();
+
+            if (SearchString != null)
+            {
+                try
+                {
+                    lijstProducten = _productRepo.getProductenByOmschrijving(SearchString.ToUpper());
+                }
+                catch (ArgumentNullException ex)
+                {
+                    Console.WriteLine(ex.Message);
+                }
+            }
+            else
+            {
+                lijstProducten = _productRepo.getProducten();
+            }
+
+            return View(lijstProducten);
+        }
 
         
-        public IActionResult Details(long Id?)
+        public IActionResult Details(long Id)
         {
             Product prod = this._productRepo.getProductById(Id);
             return View(prod);
         }
 
-        /*public IEnumerable<ProductKoppeling> getGekoppeldeProd(long Id)
-        {
-
-            return _productRepo.getProductById(Id).productKoppelingen;
-        }*/
+        
     }
 }
