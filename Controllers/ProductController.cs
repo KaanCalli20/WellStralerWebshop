@@ -30,12 +30,16 @@ namespace WellStralerWebshop.Controllers
             return View(lijstProducten);
         }
 
-        public 
+        
 
         
-        public IActionResult Details(long Id?)
+        public IActionResult Details(long? Id )
         {
-            Product prod = this._productRepo.getProductById(Id);
+            
+            Product prod = this._productRepo.getProductById(Id ?? -1);
+
+            
+
             return View(prod);
         }
 
@@ -44,5 +48,7 @@ namespace WellStralerWebshop.Controllers
 
             return _productRepo.getProductById(Id).productKoppelingen;
         }*/
+
+
     }
 }

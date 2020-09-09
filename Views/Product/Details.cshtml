@@ -1,5 +1,5 @@
 ﻿@model WellStralerWebshop.Models.Domain.Product
-
+@using WellStralerWebshop.Models.Domain;
 @{
     ViewData["Title"] = "Details";
 }
@@ -28,13 +28,27 @@
 }
 else
 {
-    <ul>
-        <table class="ProdKop">
+<div class="carousel-inner">
+    <div class="carousel-item active">
+        @foreach (List<ProductKoppeling> lijst in Model.lijstBijProducten())
+        {
+            <table> 
+                @foreach (ProductKoppeling item in lijst)
+                {
+                    <tr>
+                        <input type="radio" id="age1" name="id" value="@item.GekoppeldProdId">
+                        <td> @item.GekoppeldProduct.OmschrijvingNL</td>
+                    </tr>
+                }
+            </table>
+        }
 
-            @foreach(var gekopPro in Model.productKoppelingen){
-                <td>@gekopPro.GekoppeldProduct.NaamNL</td>
-            }
-
-        </table>
-    </ul>
+    </div>
+    <div class="carousel-item">
+        <img src="chicago.jpg" alt="Chicago" width="1100" height="500">
+    </div>
+    <div class="carousel-item">
+        <img src="ny.jpg" alt="New York" width="1100" height="500">
+    </div>
+</div>
 }
