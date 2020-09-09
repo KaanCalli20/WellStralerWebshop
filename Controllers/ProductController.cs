@@ -12,11 +12,14 @@ namespace WellStralerWebshop.Controllers
         private readonly IProductRepository _productRepo;
         private readonly IKlantRepository _klantRepo;
         private readonly IKlantLoginRepository _klantLoginsRepo;
-        private readonly IOnlineBestelLijnRepository _onlineBestelLijn;
+        private readonly IOnlineBestelLijnRepository _onlineBestelLijnRepo;
+        private readonly IOnlineBestellingRepository _onlineBestellingRepo;
         public ProductController(IProductRepository productRepo,IKlantRepository klantRepo, IKlantLoginRepository klantLoginsRepo
-            , IOnlineBestelLijnRepository onlineBestelLijn)
+            , IOnlineBestelLijnRepository onlineBestelLijnRepo,IOnlineBestellingRepository onlineBestellingRepo)
         {
-            this._onlineBestelLijn = onlineBestelLijn;
+            this._onlineBestelLijnRepo = onlineBestelLijnRepo;
+            this._onlineBestellingRepo = onlineBestellingRepo;
+            
             
             
             this._productRepo = productRepo;
@@ -26,7 +29,7 @@ namespace WellStralerWebshop.Controllers
 
         public IActionResult Index()
         {
-            IEnumerable<OnlineBestelLijn> p = this._onlineBestelLijn.getOnlineBestelLijnen(); 
+            IEnumerable<OnlineBestelling> p = this._onlineBestellingRepo.getOnlineBestellingen(); 
             return View();
         }
     }

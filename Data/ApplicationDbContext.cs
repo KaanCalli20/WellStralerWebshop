@@ -34,6 +34,9 @@ namespace WellStralerWebshop.Data
             builder.ApplyConfiguration(new KlantLoginConfiguration());
 
             builder.ApplyConfiguration(new OnlineBestelLijnConfiguration());
+            builder.ApplyConfiguration(new OnlineBestellingConfiguration());
+
+            builder.ApplyConfiguration(new TransportConfiguration());
 
 
         }
