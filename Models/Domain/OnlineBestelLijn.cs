@@ -12,11 +12,11 @@ namespace WellStralerWebshop.Models.Domain
         public long Id { get; set; }
         public long BestellingId { get; set; }
         public long KlantLoginId { get; set; }
-        //public KlantLogin KlantLogin {get;set;}
-        public string KlantId { get; set; }
-        //public Klant Klant { get; set; }
+        public KlantLogin KlantLogin {get;set;}
+        public long KlantId { get; set; }
+        public Klant Klant { get; set; }
         public long ProductId { get; set; }
-        //public Product Product { get; set; }
+        public Product Product { get; set; }
 
         public int Aantal { get; set; }
         public decimal Prijs { get; set; }
@@ -25,6 +25,5 @@ namespace WellStralerWebshop.Models.Domain
         public DateTime DatumInbreng { get; set; }
         public long HoofdProdBestelLijnId { get; set; }
        
-        //public OnlineBestelLijn HoofdProdBestelLijn{ get; set; }
     }
 }

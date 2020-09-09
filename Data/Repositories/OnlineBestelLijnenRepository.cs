@@ -20,7 +20,7 @@ namespace WellStralerWebshop.Data.Repositories
 
         public IEnumerable<OnlineBestelLijn> getOnlineBestelLijnen()
         {
-            return _onlineBestelLijnen.ToList();
+            return _onlineBestelLijnen.Include(p => p.KlantLogin).Include(p => p.Klant).Include(p => p.Product).ToList();
         }
     }
 }

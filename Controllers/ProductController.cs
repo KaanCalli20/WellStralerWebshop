@@ -18,6 +18,7 @@ namespace WellStralerWebshop.Controllers
         {
             this._onlineBestelLijn = onlineBestelLijn;
             
+            
             this._productRepo = productRepo;
             this._klantRepo = klantRepo;
             this._klantLoginsRepo = klantLoginsRepo;
