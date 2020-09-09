@@ -28,9 +28,13 @@ namespace WellStralerWebshop.Data
             builder.ApplyConfiguration(new ProductKoppelingConfiguration());
             builder.ApplyConfiguration(new KopTypesConfiguration());
             builder.ApplyConfiguration(new ProductTypeConfiguration());
+
             builder.ApplyConfiguration(new KlantConfiguration());
             builder.ApplyConfiguration(new KlantKoppelingConfiguration());
             builder.ApplyConfiguration(new KlantLoginConfiguration());
+
+            builder.ApplyConfiguration(new OnlineBestelLijnConfiguration());
+
 
         }
 
