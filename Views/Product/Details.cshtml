@@ -13,21 +13,28 @@
             <th>Omschrijving</th>
             <th>prijs</th>
         </tr>
-        <tr>
+        <tr id="0">
             <td>@Model.Afk</td>
             <td>@Model.OmschrijvingNL</td>
             <td>@Model.Prijs</td>
         </tr>
-        
+
     </table>
 </ul>
 
-@if(Model.productKoppelingen.Count == 0)
+@if (Model.productKoppelingen.Count == 0)
 {
 
-}else
-<ul>
-    <table class="ProdKop">
+}
+else
+{
+    <ul>
+        <table class="ProdKop">
 
-    </table>
-</ul>
+            @foreach(var gekopPro in Model.productKoppelingen){
+                <td>@gekopPro.GekoppeldProduct.NaamNL</td>
+            }
+
+        </table>
+    </ul>
+}
