@@ -6,12 +6,11 @@ using System.Threading.Tasks;
 
 namespace WellStralerWebshop.Models.Domain
 {
-    [NotMapped]
     public class Transport
     {
-        public int tTRAId { get; set; }
-        public string tTRANaam { get; set; }
-        public string tTRAEigen { get; set; }
+        public short Id { get; set; }
+        public string Naam { get; set; }
+        public byte Eigen { get; set; }
 
     }
 }

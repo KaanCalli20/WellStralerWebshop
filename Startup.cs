@@ -36,6 +36,8 @@ namespace WellStralerWebshop
             services.AddScoped<IKlantRepository, KlantRepository>();
             services.AddScoped<IKlantLoginRepository, KlantLoginRepository>();
             services.AddScoped<IOnlineBestelLijnRepository, OnlineBestelLijnenRepository>();
+            services.AddScoped<IOnlineBestellingRepository, OnlineBestellingRepository>();
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
