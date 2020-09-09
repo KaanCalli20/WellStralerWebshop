@@ -1,0 +1,24 @@
+﻿@model IEnumerable<WellStralerWebshop.Models.Domain.Product>
+
+@{ 
+    ViewData["Title"] = "Home Page";
+}
+
+<div >
+
+    <table>
+        <tr>
+            <th>Beschrijving</th>
+            <th>Prijs</th>
+        </tr>
+
+        @foreach(var product in Model){
+            <tr>
+                <td> @product.OmschrijvingNL</td>
+                <td> @product.Prijs</td>
+            </tr>
+        }
+
+    </table>
+         
+</div>

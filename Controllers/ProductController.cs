@@ -25,7 +25,14 @@ namespace WellStralerWebshop.Controllers
 
         public IActionResult Index()
         {
-            IEnumerable<OnlineBestelLijn> p = this._onlineBestelLijn.getOnlineBestelLijnen(); 
+            //IEnumerable<OnlineBestelLijn> p = this._onlineBestelLijn.getOnlineBestelLijnen(); 
+            IEnumerable<Product> lijstProducten = this._productRepo.getProducten();
+            return View(lijstProducten);
+        }
+
+        public IActionResult Details()
+        {
+
             return View();
         }
     }
