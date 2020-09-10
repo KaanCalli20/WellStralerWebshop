@@ -6,6 +6,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.VisualBasic;
+using Newtonsoft.Json;
 using WellStralerWebshop.Data.Mappers;
 
 namespace WellStralerWebshop.Models.Domain
@@ -44,7 +45,7 @@ namespace WellStralerWebshop.Models.Domain
             return Convert.ToInt32(longId);
         }
 
-        public IEnumerable<IEnumerable<ProductKoppeling>> lijstBijProducten()
+        public List<List<ProductKoppeling>> lijstBijProducten()
         {
             List<List<ProductKoppeling>> productLijst = new List<List<ProductKoppeling>>();
 
@@ -86,5 +87,10 @@ namespace WellStralerWebshop.Models.Domain
             }
             return productLijst;
         }
+        public string haalStringObject()
+        {
+            return JsonConvert.SerializeObject(lijstBijProducten());
+        }
     }
+    
 }

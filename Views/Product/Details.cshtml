@@ -1,54 +1,100 @@
-﻿@model WellStralerWebshop.Models.Domain.Product
+﻿@model WellStralerWebshop.Models.ViewModels.ProductDetailViewModel;
 @using WellStralerWebshop.Models.Domain;
+@using System.Text.Json;
 @{
     ViewData["Title"] = "Details";
 }
 
-<h1>@Model.Afk</h1>
+<h1>@Model.geselecteerdeProducten.ElementAt(0).OmschrijvingNL</h1>
+<form asp-controller="Product">
+    <ul>
+        <table class="Wagentje">
+            <tr>
+                <th>Prod</th>
+                <th>Omschrijving</th>
+                <th>prijs</th>
+            </tr>
 
-<ul>
-    <table class="Wagentje">
-        <tr>
-            <th>Prod</th>
-            <th>Omschrijving</th>
-            <th>prijs</th>
-        </tr>
-        <tr id="0">
-            <td>@Model.Afk</td>
-            <td>@Model.OmschrijvingNL</td>
-            <td>@Model.Prijs</td>
-        </tr>
+            @foreach (var item in Model.geselecteerdeProducten)
+            {
+                <tr id="0">
+                    <td><input  type="checkbox" checked disabled name="selectedProds" id="@item.Id" value="@item.Id" /> </td>
+                    <td>@item.OmschrijvingNL</td>
+                    <td>@item.Prijs</td>
+                </tr>
+            }
 
-    </table>
-</ul>
 
-@if (Model.productKoppelingen.Count == 0)
-{
+        </table>
+    </ul>
 
-}
-else
-{
-<div class="carousel-inner">
-    <div class="carousel-item active">
-        @foreach (List<ProductKoppeling> lijst in Model.lijstBijProducten())
-        {
-            <table> 
-                @foreach (ProductKoppeling item in lijst)
+    @if (Model.productKoppelingen == null)
+    {
+
+    }
+    else
+    {
+        <table>
+            <thead>
+                <tr>
+                    <th>Box</th>
+                    <th>ID</th>
+                    <th>Naam</th>
+                    <th>Prijs</th>
+                </tr>
+            </thead>
+            <tbody>
+                @if (Model.productKoppelingen.ElementAt(Model.index).ElementAt(0).KoppelType.Id == 3)
                 {
-                    <tr>
-                        <input type="radio" id="age1" name="id" value="@item.GekoppeldProdId">
-                        <td> @item.GekoppeldProduct.OmschrijvingNL</td>
-                    </tr>
-                }
-            </table>
-        }
 
-    </div>
-    <div class="carousel-item">
-        <img src="chicago.jpg" alt="Chicago" width="1100" height="500">
-    </div>
-    <div class="carousel-item">
-        <img src="ny.jpg" alt="New York" width="1100" height="500">
-    </div>
-</div>
-}
+
+
+
+                    @foreach (var item in Model.productKoppelingen.ElementAt(Model.index))
+                    {
+                        <tr>
+                            <td><input type="radio" id="@item.Id" name="productId" value="@item.GekoppeldProdId" /></td>
+                            <td> @item.GekoppeldProdId</td>
+                            <td> @item.GekoppeldProduct.OmschrijvingNL</td>
+                        </tr>
+                    }
+
+
+                    <tr>
+                        <td><input type="submit" value="Vorige" asp-action="Vorige" asp-route-selectedProds="@Model.geselecteerdeProducten.Select(m => m.Id).ToList().ToString()" /></td>
+                        <td><input type="submit" value="Volgende" asp-action="Volgende" asp-route-selectedProds="@string.Join(",",@Model.geselecteerdeProducten.Select(m => m.Id).ToList())" /></td>
+                    </tr>
+
+                    <tr>@string.Join(",",@Model.geselecteerdeProducten.Select(m => m.Id).ToList())</tr>
+
+
+                }
+                else if (Model.productKoppelingen.ElementAt(0).KoppelType.Id == 2)
+                {
+                    <form asp-controller="Product">
+
+                        @foreach (var item in Model.productKoppelingen)
+                        {
+                            <tr>
+                                <td><input type="checkbox" id="@item.Id" name="checkBoxValues" value="@item.Id" /></td>
+                                <td> @item.Id</td>
+                                <td> @item.GekoppeldProduct.OmschrijvingNL</td>
+                            </tr>
+                        }
+
+
+                        <tr>
+                            <td><input type="submit" asp-action="Vorige" value="Vorige" asp-route-selectedProds="@Model.geselecteerdeProducten.Select(m=>m.Id)" /></td>
+                            <td><input type="submit" asp-action="Volgende" value="Volgende" asp-route-selectedProds="@Model.geselecteerdeProducten.Select(m=>m.Id)" /></td>
+                        </tr>
+
+                    </form>
+                }
+
+            </tbody>
+        </table>
+    }
+
+
+</form>
+
