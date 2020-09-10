@@ -28,6 +28,7 @@ namespace WellStralerWebshop.Controllers
         {
             IEnumerable<Product> lijstProducten = new List<Product>();
             lijstProducten = _productRepo.getProducten();
+            
             return View(lijstProducten);
         }
 

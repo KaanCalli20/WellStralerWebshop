@@ -21,5 +21,10 @@ namespace WellStralerWebshop.Data.Repositories
         {
             return _klantLogins.Include(p => p.klant).ToList();
         }
+
+        public KlantLogin getLoginByGebruikersNaam(string klantLogin)
+        {
+            return _klantLogins.Where(kl => kl.Gebruikersnaam.Equals(klantLogin)).First();
+        }
     }
 }

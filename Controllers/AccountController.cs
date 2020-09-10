@@ -18,15 +18,30 @@ namespace WellStralerWebshop.Controllers
 
         public IActionResult Index()
         {
-            Klant kl = _loginRepo.getLogins().First().klant;
-            return RedirectToAction(nameof(LogIn));
+            //Klant kl = _loginRepo.getLogins().First().klant;
+            return View("LogIn");
         }
 
         public IActionResult LogIn(string gebruikersnaam, string wachtwoord)
         {
             //Verificatie komt hier
+            
+            string lg_psw_encrypted = Encryption.Encrypt(wachtwoord, "dst.be rules");
+            KlantLogin kl = _loginRepo.getLoginByGebruikersNaam(gebruikersnaam);
 
-            return View();
+            if (lg_psw_encrypted.Equals(kl.Paswoord))
+            {
+                TempData["LoginMessage"] = "U ben ingelogd";
+                return View("Index");
+            }
+            else
+            {
+                TempData["LoginError"] = "Gebruikersnaam en Wachtwoord komen niet overeen";
+                return View();
+            }
+
+
+            
             
         }
     }

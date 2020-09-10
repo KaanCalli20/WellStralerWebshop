@@ -1,0 +1,39 @@
+﻿@model IEnumerable<WellStralerWebshop.Models.Domain.OnlineBestelLijn>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>WinkelMandje</h1>
+
+<table>
+
+    <tr>
+        <th>Prod</th>
+        <th>Omschrijving</th>
+        <th>Prijs</th>
+        <th>Aantal</th>
+        <th>Del</th>
+    </tr>
+    
+
+
+    @foreach (var bestellijn in Model)
+    {
+        <tr>
+            <td>@bestellijn.Product.Afk</td>
+            <td>@bestellijn.Product.OmschrijvingNL</td>
+            <td>@bestellijn.Product.Prijs</td>
+            <td>@bestellijn.Product.Stock</td> <!--Moet nog veranderd worden is nu stock moet later aantal worden-->
+            <form method="post" asp-action="Remove" asp-route-id="@bestellijn.Id">
+                <td>
+                    <input type="submit" value="Verwijder" />
+                </td>
+            </form>
+
+
+        </tr>
+    }
+
+
+</table>

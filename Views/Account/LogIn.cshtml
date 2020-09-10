@@ -1,18 +1,35 @@
 ﻿
+
+
 @{
     ViewData["Title"] = "LogIn";
 }
 
 <h1>Login</h1>
 
+@if (TempData["LoginMessage"] != null)
+{
+    <h3 class="alert alert-success">@TempData["LoginMessage"]</h3>
+}
+else if(TempData["LoginError"] != null)
+{
+    <h3 class="alert alert-warning">@TempData["LoginError"]</h3>
+}
+else
+{
+
+}
+
+
+
 <form asp-controller="Account" asp-action="LogIn">
     <label>Gebruikersnaam</label>
-    <input type="text" name="gebruikersnaam"/>
+    <input type="text" name="gebruikersnaam" />
     <br />
     <label>Wachtwoord</label>
-    <input type="text" name="wachtwoord"/>
+    <input type="password" name="wachtwoord" />
     <br />
-    <input type="submit" value="Login"/>
-    <input type="button" value="Cancel"/>
+    <input type="submit" value="Login" />
+    <input type="button" value="Cancel" />
 </form>
 
