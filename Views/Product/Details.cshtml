@@ -18,7 +18,7 @@
             @foreach (var item in Model.geselecteerdeProducten)
             {
                 <tr id="0">
-                    <td><input  type="checkbox" checked disabled name="selectedProds" id="@item.Id" value="@item.Id" /> </td>
+                    <td><input type="checkbox" checked disabled name="selectedProds" id="@item.Id" value="@item.Id" /> </td>
                     <td>@item.OmschrijvingNL</td>
                     <td>@item.Prijs</td>
                 </tr>
@@ -34,6 +34,8 @@
     }
     else
     {
+        <p>@string.Format(Model.showIndex + "/" + Model.showMax)</p>
+        <p>Prijs= @TempData["NormalePrijs"]</p>
         <table>
             <thead>
                 <tr>
@@ -47,49 +49,76 @@
                 @if (Model.productKoppelingen.ElementAt(Model.index).ElementAt(0).KoppelType.Id == 3)
                 {
 
+                    @foreach (var item in Model.productKoppelingen.ElementAt(Model.index))
+                    {
+                        <tr>
+                            @if (Model.geselecteerdeProducten.Select(m => m.Id).Contains(item.GekoppeldProdId))
+                            {
+                                <td><input type="radio" id="@item.GekoppeldProdId" name="productId" value="@item.GekoppeldProdId" checked /></td>
+                            }
+                            else
+                            {
+                                <td><input type="radio" id="@item.GekoppeldProdId" name="productId" value="@item.GekoppeldProdId" /></td>
+                            }
 
+                            <td> @item.GekoppeldProdId</td>
+                            <td> @item.GekoppeldProduct.OmschrijvingNL</td>
+                            <td> @item.GekoppeldProduct.Prijs</td>
+                        </tr>
+                    }
+
+
+                }
+                else if (Model.productKoppelingen.ElementAt(Model.index).ElementAt(0).KoppelType.Id == 2 ||
+                    Model.productKoppelingen.ElementAt(Model.index).ElementAt(0).KoppelType.Id == 1)
+                {
 
 
                     @foreach (var item in Model.productKoppelingen.ElementAt(Model.index))
                     {
                         <tr>
-                            <td><input type="radio" id="@item.Id" name="productId" value="@item.GekoppeldProdId" /></td>
-                            <td> @item.GekoppeldProdId</td>
+                            @if (item.KoppelType.Id == 1)
+                            {
+                                <td><input type="checkbox" id="@item.GekoppeldProdId" name="productId" value="@item.GekoppeldProdId" checked disabled /></td>
+
+                            }
+                            else
+                            {
+                                @if (Model.geselecteerdeProducten.Select(m => m.Id).Contains(item.GekoppeldProdId))
+                                {
+                                    <td><input type="checkbox" id="@item.GekoppeldProdId" name="productId" value="@item.GekoppeldProdId" checked /></td>
+                                }
+                                else
+                                {
+                                    <td><input type="checkbox" id="@item.GekoppeldProdId" name="productId" value="@item.GekoppeldProdId" /></td>
+                                }
+                            }
+
+
+
+                            <td> @item.Id</td>
                             <td> @item.GekoppeldProduct.OmschrijvingNL</td>
                         </tr>
                     }
 
-
-                    <tr>
-                        <td><input type="submit" value="Vorige" asp-action="Vorige" asp-route-selectedProds="@Model.geselecteerdeProducten.Select(m => m.Id).ToList().ToString()" /></td>
-                        <td><input type="submit" value="Volgende" asp-action="Volgende" asp-route-selectedProds="@string.Join(",",@Model.geselecteerdeProducten.Select(m => m.Id).ToList())" /></td>
-                    </tr>
-
-                    <tr>@string.Join(",",@Model.geselecteerdeProducten.Select(m => m.Id).ToList())</tr>
-
-
                 }
-                else if (Model.productKoppelingen.ElementAt(0).KoppelType.Id == 2)
-                {
-                    <form asp-controller="Product">
+                <tr>
+                    @if (Model.index > 0)
+                    {
+                        <td><input type="submit" asp-action="Vorige" value="Vorige" asp-route-selectedProds="@String.Format(Model.index + "," + string.Join(",", @Model.geselecteerdeProducten.Select(m => m.Id).ToList())) " /></td>
 
-                        @foreach (var item in Model.productKoppelingen)
-                        {
-                            <tr>
-                                <td><input type="checkbox" id="@item.Id" name="checkBoxValues" value="@item.Id" /></td>
-                                <td> @item.Id</td>
-                                <td> @item.GekoppeldProduct.OmschrijvingNL</td>
-                            </tr>
-                        }
+                    }
+                    @if (Model.index == Model.max || Model.index == 0)
+                    {
+                        <td><input type="submit" asp-action="Wijzig" value="Wijzig" asp-route-selectedProds="@String.Format(Model.index + "," + string.Join(",", @Model.geselecteerdeProducten.Select(m => m.Id).ToList())) " /></td>
 
+                    }
+                    @if (Model.index < Model.max)
+                    {
+                        <td><input type="submit" asp-action="Volgende" value="Volgende" asp-route-selectedProds="@String.Format(Model.index + "," + string.Join(",", @Model.geselecteerdeProducten.Select(m => m.Id).ToList())) " /></td>
 
-                        <tr>
-                            <td><input type="submit" asp-action="Vorige" value="Vorige" asp-route-selectedProds="@Model.geselecteerdeProducten.Select(m=>m.Id)" /></td>
-                            <td><input type="submit" asp-action="Volgende" value="Volgende" asp-route-selectedProds="@Model.geselecteerdeProducten.Select(m=>m.Id)" /></td>
-                        </tr>
-
-                    </form>
-                }
+                    }
+                </tr>
 
             </tbody>
         </table>

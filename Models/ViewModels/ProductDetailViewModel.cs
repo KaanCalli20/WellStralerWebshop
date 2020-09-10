@@ -18,9 +18,12 @@ namespace WellStralerWebshop.Models.ViewModels
         public int max { get; set; }
         public int index { get; set; }
 
-        
+        public int showIndex { get; set; }
+        public int showMax { get; set; }
 
-        public ProductDetailViewModel(List<Product> geselecteerdeProducten, List<List<ProductKoppeling>> productKoppelingen, int index)
+        public Decimal prijs { get; set; }
+
+        public ProductDetailViewModel(List<Product> geselecteerdeProducten, List<List<ProductKoppeling>> productKoppelingen,int index)
         {
             
             this.geselecteerdeProducten = geselecteerdeProducten;
@@ -29,6 +32,9 @@ namespace WellStralerWebshop.Models.ViewModels
                 this.productKoppelingen = productKoppelingen;
             }
             this.index = index;
+            this.max = productKoppelingen.Count - 1;
+            this.showIndex = this.index+1;
+            this.showMax = this.max +1;
             
         }
         public ProductDetailViewModel()
@@ -40,5 +46,6 @@ namespace WellStralerWebshop.Models.ViewModels
         {
             return productKoppelingen.Count == 0 ? true : false;
         }
+
     }
 }

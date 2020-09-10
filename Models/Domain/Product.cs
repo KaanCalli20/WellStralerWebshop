@@ -45,7 +45,7 @@ namespace WellStralerWebshop.Models.Domain
             return Convert.ToInt32(longId);
         }
 
-        public List<List<ProductKoppeling>> lijstBijProducten()
+        public List<List<ProductKoppeling>> gekoppeldProductenLijst()
         {
             List<List<ProductKoppeling>> productLijst = new List<List<ProductKoppeling>>();
 
@@ -89,7 +89,7 @@ namespace WellStralerWebshop.Models.Domain
         }
         public string haalStringObject()
         {
-            return JsonConvert.SerializeObject(lijstBijProducten());
+            return JsonConvert.SerializeObject(gekoppeldProductenLijst());
         }
     }
     
