@@ -30,5 +30,9 @@ namespace WellStralerWebshop.Data.Repositories
         {
             return _klantLogins.Include(m => m.Klant).SingleOrDefault(p => p.Gebruikersnaam == klantLogin).Klant;
         }
+        public KlantLogin getLoginByLoginID(long id)
+        {
+            return _klantLogins.Include(p => p.Klant).SingleOrDefault(kl => kl.Id.Equals(id));
+        }
     }
 }

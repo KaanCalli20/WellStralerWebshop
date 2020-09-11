@@ -29,13 +29,27 @@ namespace WellStralerWebshop.Controllers
 
         public async Task<IActionResult> LogInAsync(string gebruikersnaam, string wachtwoord)
         {
+
+             string lg_psw_encrypted = Encryption.Encrypt(wachtwoord, "dst.be rules");
+             KlantLogin kl = _loginRepo.getLoginByGebruikersNaam(gebruikersnaam);
+
+             if (lg_psw_encrypted.Equals(kl.Paswoord))
+             {
+                 TempData["Message"] = "U bent succesvol ingelogd";
+             }
+             else
+             {
+                 TempData["LoginError"] = "Gebruikersnaam en Wachtwoord komen niet overeen";
+                 return View();
+             }
+             
             //Verificatie komt hier
             KlantLogin klant = _loginRepo.getLoginByGebruikersNaam(gebruikersnaam);
 
             var claims = new List<Claim>
             {
                  new Claim(ClaimTypes.Name,klant.Voornaam+" "+ klant.Naam  ),
-                    new Claim("FullName",klant.Id.ToString()),
+                    new Claim(ClaimTypes.NameIdentifier,klant.Id.ToString()),
                     new Claim(ClaimTypes.Role, "Administrator"),
             };
 
@@ -45,27 +59,17 @@ namespace WellStralerWebshop.Controllers
 
             await HttpContext.SignInAsync(userPrincipal);
 
+            
+
             return RedirectToAction("Index", "Product");
 
 
-            /* string lg_psw_encrypted = Encryption.Encrypt("dst.be rules", wachtwoord);
-             KlantLogin kl = _loginRepo.getLoginByGebruikersNaam(gebruikersnaam);
-
-             if (lg_psw_encrypted.Equals(kl.Paswoord))
-             {
-                 TempData["LoginMessage"] = "U ben ingelogd";
-                 return View("Index");
-             }
-             else
-             {
-                 TempData["LoginError"] = "Gebruikersnaam en Wachtwoord komen niet overeen";
-                 return View();
-             }
-             */
+            
         }
 
         public async Task<IActionResult> LogOut()
         {
+
             await HttpContext.SignOutAsync("CookieAuth");
             return RedirectToAction("Index", "Product");
         }

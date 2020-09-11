@@ -1,8 +1,11 @@
 ﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using WellStralerWebshop.Models.Domain;
 using WellStralerWebshop.Models.ViewModels;
 
@@ -14,16 +17,17 @@ namespace WellStralerWebshop.Controllers
         private readonly IProductRepository _productRepo;
         private readonly IKlantRepository _klantRepo;
         private readonly IKlantLoginRepository _klantLoginsRepo;
-        private readonly IOnlineBestelLijnRepository _onlineBestelLijn;
+        private readonly IOnlineBestelLijnRepository _onlineBestelLijnRepo;
 
         public ProductController(IProductRepository productRepo, IKlantRepository klantRepo, IKlantLoginRepository klantLoginsRepo
             , IOnlineBestelLijnRepository onlineBestelLijn)
         {
-            this._onlineBestelLijn = onlineBestelLijn;
+            this._onlineBestelLijnRepo = onlineBestelLijn;
 
             this._productRepo = productRepo;
             this._klantRepo = klantRepo;
             this._klantLoginsRepo = klantLoginsRepo;
+
         }
 
         public ViewResult Index()
@@ -75,17 +79,25 @@ namespace WellStralerWebshop.Controllers
             //TempData["PrijsNaKorting"];
 
             TempData["Stock"] = geselecteerdeProducten.ElementAt(0).Stock;
+            List<int> lijst = new List<int>();
+                for (int i = 1; i < 100; i++)
+            {
+                lijst.Add(i);
+            }
+            ViewData["aantal"] = new SelectList(lijst);
+
             return View(vm);
         }
 
         [HttpPost]
-        public IActionResult Volgende(string selectedProds, List<long>? productId, ProductDetailViewModel vms)
+        public IActionResult Volgende(string selectedProds, List<long>? productId,  string? quantity)
         {
             List<string> stringSelectedValues = selectedProds.Split(",").ToList();
             List<Product> geselecteerdeProducten;
             Product hoofdProduct;
             ProductDetailViewModel vm;
             int index = Convert.ToInt32(stringSelectedValues.ElementAt(0));
+            int aantal = Convert.ToInt32(quantity);
             stringSelectedValues.RemoveAt(0);
             try
             {
@@ -103,23 +115,29 @@ namespace WellStralerWebshop.Controllers
             }
             
             hoofdProduct = this._productRepo.getProductById(geselecteerdeProducten.ElementAt(0).Id);
-            vm = new ProductDetailViewModel(geselecteerdeProducten, hoofdProduct.gekoppeldProductenLijst(), index );
+            vm = new ProductDetailViewModel(geselecteerdeProducten, hoofdProduct.gekoppeldProductenLijst(), index ,aantal);
 
-            TempData["NormalePrijs"] = geefPrijs(geselecteerdeProducten);
+            TempData["NormalePrijs"] = geefPrijs(geselecteerdeProducten)*aantal;
             //TempData["PrijsNaKorting"];
 
             TempData["Stock"] = geselecteerdeProducten.ElementAt(0).Stock;
-
+            List<int> lijst = new List<int>();
+            for (int i = 1; i < 100; i++)
+            {
+                lijst.Add(i);
+            }
+            ViewData["aantal"] = new SelectList(lijst);
             return View("Details", vm);
         }
         [HttpPost]
-        public IActionResult Vorige(string selectedProds, List<long>? productId)
+        public IActionResult Vorige(string selectedProds, List<long>? productId, string? quantity)
         {
             List<string> stringSelectedValues = selectedProds.Split(",").ToList();
             List<Product> geselecteerdeProducten;
             Product hoofdProduct;
             ProductDetailViewModel vm;
             int index = Convert.ToInt32(stringSelectedValues.ElementAt(0));
+            int aantal = Convert.ToInt32(quantity);
             stringSelectedValues.RemoveAt(0);
             try
             {
@@ -137,23 +155,29 @@ namespace WellStralerWebshop.Controllers
             }
            
             hoofdProduct = this._productRepo.getProductById(geselecteerdeProducten.ElementAt(0).Id);
-            vm = new ProductDetailViewModel(geselecteerdeProducten, hoofdProduct.gekoppeldProductenLijst(), index );
+            vm = new ProductDetailViewModel(geselecteerdeProducten, hoofdProduct.gekoppeldProductenLijst(), index ,aantal);
 
             TempData["NormalePrijs"] = geefPrijs(geselecteerdeProducten);
             //TempData["PrijsNaKorting"];
 
             TempData["Stock"] = geselecteerdeProducten.ElementAt(0).Stock;
-
+            List<int> lijst = new List<int>();
+            for (int i = 1; i < 100; i++)
+            {
+                lijst.Add(i);
+            }
+            ViewData["aantal"] = new SelectList(lijst);
             return View("Details", vm);
         }
 
-        public IActionResult Wijzig(string selectedProds, List<long>? productId)
+        public IActionResult Wijzig(string selectedProds, List<long>? productId, string? quantity)
         {
             List<string> stringSelectedValues = selectedProds.Split(",").ToList();
             List<Product> geselecteerdeProducten;
             Product hoofdProduct;
             ProductDetailViewModel vm;
             int index = Convert.ToInt32(stringSelectedValues.ElementAt(0));
+            int aantal = Convert.ToInt32(quantity);
             
             stringSelectedValues.RemoveAt(0);
             try
@@ -171,32 +195,38 @@ namespace WellStralerWebshop.Controllers
             }
 
             hoofdProduct = this._productRepo.getProductById(geselecteerdeProducten.ElementAt(0).Id);
-            vm = new ProductDetailViewModel(geselecteerdeProducten, hoofdProduct.gekoppeldProductenLijst(), index);
+            vm = new ProductDetailViewModel(geselecteerdeProducten, hoofdProduct.gekoppeldProductenLijst(), index, aantal) ;
 
 
-            TempData["NormalePrijs"] = geefPrijs(geselecteerdeProducten);
+            TempData["NormalePrijs"] = geefPrijs(geselecteerdeProducten) * aantal;
             //TempData["PrijsNaKorting"];
 
             TempData["Stock"] = geselecteerdeProducten.ElementAt(0).Stock;
-
+            List<int> lijst = new List<int>();
+            for (int i = 1; i < 100; i++)
+            {
+                lijst.Add(i);
+            }
+            ViewData["aantal"] = new SelectList(lijst);
             return View("Details", vm);
 
         }
 
-        public IActionResult PlaatsInWinkelmand(string selectedProds, List<long>? productId)
+        public IActionResult PlaatsInWinkelmand(string selectedProds, List<long>? productId, string? quantity)
         {
             List<string> stringSelectedValues = selectedProds.Split(",").ToList();
             List<Product> geselecteerdeProducten;
             Product hoofdProduct;
             ProductDetailViewModel vm;
             int index = Convert.ToInt32(stringSelectedValues.ElementAt(0));
-
+            int aantal = Convert.ToInt32(quantity);
             List<OnlineBestelLijn> lijstOnlineBestelLijn = new List<OnlineBestelLijn>();
 
             stringSelectedValues.RemoveAt(0);
             try
             {
                 geselecteerdeProducten = wijzigSelectie(selectedProds, productId);
+               
             }
             catch (ArgumentException ex)
             {
@@ -208,10 +238,10 @@ namespace WellStralerWebshop.Controllers
                 TempData["error"] = ex.Message;
 
                 hoofdProduct = this._productRepo.getProductById(geselecteerdeProducten.ElementAt(0).Id);
-                vm = new ProductDetailViewModel(geselecteerdeProducten, hoofdProduct.gekoppeldProductenLijst(), index);
+                vm = new ProductDetailViewModel(geselecteerdeProducten, hoofdProduct.gekoppeldProductenLijst(), index,aantal);
 
 
-                TempData["NormalePrijs"] = geefPrijs(geselecteerdeProducten);
+                TempData["NormalePrijs"] = geefPrijs(geselecteerdeProducten) * aantal;
                 //TempData["PrijsNaKorting"];
 
                 TempData["Stock"] = geselecteerdeProducten.ElementAt(0).Stock;
@@ -219,25 +249,55 @@ namespace WellStralerWebshop.Controllers
                 return View("Details", vm);
 
             }
+            try
+            {
+                if (aantal < 1)
+                {
+                    throw new ArgumentException("Gelieve een getal hoger dan 0 te geven");
+                }
+            }
+            catch(ArgumentException ex)
+            {
+               
+                TempData["error"] = ex.Message;
+
+                hoofdProduct = this._productRepo.getProductById(geselecteerdeProducten.ElementAt(0).Id);
+                vm = new ProductDetailViewModel(geselecteerdeProducten, hoofdProduct.gekoppeldProductenLijst(), index, aantal);
+
+
+                TempData["NormalePrijs"] = geefPrijs(geselecteerdeProducten)*aantal;
+                //TempData["PrijsNaKorting"];
+
+                TempData["Stock"] = geselecteerdeProducten.ElementAt(0).Stock;
+
+                return View("Details", vm);
+            }
+            
             hoofdProduct = this._productRepo.getProductById(geselecteerdeProducten.ElementAt(0).Id);
-            long BestellingId;
-            KlantLogin klantLogin;
-            Klant klant;
-            Product product;
-            int aantal;
-            decimal prijs;
-            decimal btwPerc;
-            DateTime datumInbreng;
-            long hoofdProdBestelLijnId;
 
-            OnlineBestelLijn productt = new OnlineBestelLijn();
+            geselecteerdeProducten.RemoveAt(0);
 
+            //get klant en klantLogin
+            string idKlantLogin = HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value;
+            KlantLogin klantLogin = _klantLoginsRepo.getLoginByLoginID(Convert.ToInt64(idKlantLogin));
+            Klant klant = klantLogin.Klant;
 
+            OnlineBestelLijn onlineBestelLijn = new OnlineBestelLijn(0,klantLogin,klant,hoofdProduct,aantal,hoofdProduct.Prijs,hoofdProduct.BtwPerc,DateTime.Now,0);
+            _onlineBestelLijnRepo.voegOnlineBestelLijnToe(onlineBestelLijn);
+            _onlineBestelLijnRepo.SaveChanges();
+            foreach (Product koppelProduct in geselecteerdeProducten)
+            {
+                lijstOnlineBestelLijn.Add(new OnlineBestelLijn(0, klantLogin, klant, koppelProduct, aantal, koppelProduct.Prijs, koppelProduct.BtwPerc, DateTime.Now,onlineBestelLijn.Id));
+            }
+            _onlineBestelLijnRepo.voegOnlineBestelLijnenToe(lijstOnlineBestelLijn);
 
-            return null;
+            _onlineBestelLijnRepo.SaveChanges();
+
+            TempData["message"] = "Product succesvol geplaatst in het winkelmand";
+            return RedirectToAction("Index", "Order");
 
         }
-
+        //-------------------------------------------------------Methoden----------------------------------------
         private List<Product> wijzigSelectie(string selectedProds, List<long>? productId)
         {
 
@@ -332,7 +392,7 @@ namespace WellStralerWebshop.Controllers
                     }
                 }
             }
-            vm = new ProductDetailViewModel(geselecteerdeProducten, productKoppelingen, index);
+            vm = new ProductDetailViewModel(geselecteerdeProducten, productKoppelingen, index,1);
             return vm;
 
         }

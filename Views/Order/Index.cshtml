@@ -4,7 +4,8 @@
     ViewData["Title"] = "Index";
 }
 
-<h1>WinkelMandje</h1>
+<h1>WinkelMand</h1>
+
 
 <table>
 
@@ -15,25 +16,48 @@
         <th>Aantal</th>
         <th>Del</th>
     </tr>
-    
+
 
 
     @foreach (var bestellijn in Model)
     {
-        <tr>
-            <td>@bestellijn.Product.Afk</td>
-            <td>@bestellijn.Product.OmschrijvingNL</td>
-            <td>@bestellijn.Product.Prijs</td>
-            <td>@bestellijn.Product.Stock</td> <!--Moet nog veranderd worden is nu stock moet later aantal worden-->
-            <form method="post" asp-action="Remove" asp-route-id="@bestellijn.Id">
-                <td>
-                    <input type="submit" value="Verwijder" />
-                </td>
-            </form>
 
+        @if (bestellijn.HoofdProdBestelLijnId == 0)
+        {
+<tr>
+    <td></td>
+    <td></td>
+    <td></td>
+    <td></td>
+    <td></td>
 
-        </tr>
+</tr>
+            <tr>
+                <td>@bestellijn.Product.Afk</td>
+                <td>@bestellijn.Product.OmschrijvingNL</td>
+                <td>@bestellijn.Product.Prijs</td>
+                <td>@bestellijn.Aantal</td>
+                <form  asp-controller="Order" asp-action="Remove" asp-route-id="@bestellijn.Id">
+                    <td>
+                        <input type="submit" value="Verwijder" />
+                    </td>
+                </form>
+            </tr>
+        }
+        else
+        {
+            <tr>
+                <td>+ @bestellijn.Product.Afk</td>
+                <td>@bestellijn.Product.OmschrijvingNL</td>
+                <td>@bestellijn.Product.Prijs</td>
+                <td>@bestellijn.Aantal</td>
+
+            </tr>
+        }
+
     }
 
 
 </table>
+
+<h2>Totaal prijs zonder korting = @TempData["TotaalPrijsZonderKorting"]</h2>

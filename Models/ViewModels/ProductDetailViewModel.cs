@@ -23,7 +23,9 @@ namespace WellStralerWebshop.Models.ViewModels
 
         public Decimal prijs { get; set; }
 
-        public ProductDetailViewModel(List<Product> geselecteerdeProducten, List<List<ProductKoppeling>> productKoppelingen,int index)
+        public int aantal { get; set; }
+
+        public ProductDetailViewModel(List<Product> geselecteerdeProducten, List<List<ProductKoppeling>> productKoppelingen, int index, int aantal)
         {
             
             this.geselecteerdeProducten = geselecteerdeProducten;
@@ -35,7 +37,7 @@ namespace WellStralerWebshop.Models.ViewModels
             this.max = productKoppelingen.Count - 1;
             this.showIndex = this.index+1;
             this.showMax = this.max +1;
-            
+            this.aantal = aantal;
         }
         public ProductDetailViewModel()
         {
