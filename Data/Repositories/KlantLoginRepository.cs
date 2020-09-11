@@ -19,12 +19,16 @@ namespace WellStralerWebshop.Data.Repositories
         }
         public IEnumerable<KlantLogin> getLogins()
         {
-            return _klantLogins.Include(p => p.klant).ToList();
+            return _klantLogins.Include(p => p.Klant).ToList();
         }
 
         public KlantLogin getLoginByGebruikersNaam(string klantLogin)
         {
-            return _klantLogins.Where(kl => kl.Gebruikersnaam.Equals(klantLogin)).First();
+            return _klantLogins.Include(p=>p.Klant).SingleOrDefault(kl => kl.Gebruikersnaam.Equals(klantLogin));
+        }
+        public Klant getKlantByGebruikersnaam(string klantLogin)
+        {
+            return _klantLogins.Include(m => m.Klant).SingleOrDefault(p => p.Gebruikersnaam == klantLogin).Klant;
         }
     }
 }

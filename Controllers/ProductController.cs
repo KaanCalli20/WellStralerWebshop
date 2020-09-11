@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,6 +8,7 @@ using WellStralerWebshop.Models.ViewModels;
 
 namespace WellStralerWebshop.Controllers
 {
+    [Authorize]
     public class ProductController : Controller
     {
         private readonly IProductRepository _productRepo;
@@ -180,6 +182,62 @@ namespace WellStralerWebshop.Controllers
             return View("Details", vm);
 
         }
+
+        public IActionResult PlaatsInWinkelmand(string selectedProds, List<long>? productId)
+        {
+            List<string> stringSelectedValues = selectedProds.Split(",").ToList();
+            List<Product> geselecteerdeProducten;
+            Product hoofdProduct;
+            ProductDetailViewModel vm;
+            int index = Convert.ToInt32(stringSelectedValues.ElementAt(0));
+
+            List<OnlineBestelLijn> lijstOnlineBestelLijn = new List<OnlineBestelLijn>();
+
+            stringSelectedValues.RemoveAt(0);
+            try
+            {
+                geselecteerdeProducten = wijzigSelectie(selectedProds, productId);
+            }
+            catch (ArgumentException ex)
+            {
+                geselecteerdeProducten = new List<Product>();
+                foreach (string stringID in stringSelectedValues)
+                {
+                    geselecteerdeProducten.Add(_productRepo.getProductById(Convert.ToInt64(stringID)));
+                }
+                TempData["error"] = ex.Message;
+
+                hoofdProduct = this._productRepo.getProductById(geselecteerdeProducten.ElementAt(0).Id);
+                vm = new ProductDetailViewModel(geselecteerdeProducten, hoofdProduct.gekoppeldProductenLijst(), index);
+
+
+                TempData["NormalePrijs"] = geefPrijs(geselecteerdeProducten);
+                //TempData["PrijsNaKorting"];
+
+                TempData["Stock"] = geselecteerdeProducten.ElementAt(0).Stock;
+
+                return View("Details", vm);
+
+            }
+            hoofdProduct = this._productRepo.getProductById(geselecteerdeProducten.ElementAt(0).Id);
+            long BestellingId;
+            KlantLogin klantLogin;
+            Klant klant;
+            Product product;
+            int aantal;
+            decimal prijs;
+            decimal btwPerc;
+            DateTime datumInbreng;
+            long hoofdProdBestelLijnId;
+
+            OnlineBestelLijn productt = new OnlineBestelLijn();
+
+
+
+            return null;
+
+        }
+
         private List<Product> wijzigSelectie(string selectedProds, List<long>? productId)
         {
 
@@ -292,5 +350,7 @@ namespace WellStralerWebshop.Controllers
 
             return prijs;
         }
+
+
     }
 }

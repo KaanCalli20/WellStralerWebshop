@@ -24,7 +24,7 @@ namespace WellStralerWebshop.Data.Mappers
 			builder.Property(x => x.Wijzigbaar).HasColumnName("tKLLWijzigbaar");
 			builder.Property(x => x.KlantId).HasColumnName("tKLL_tKLAId");
 
-			builder.HasOne(p => p.klant)
+			builder.HasOne(p => p.Klant)
 				.WithMany()
 				.HasForeignKey(p => p.KlantId);
 

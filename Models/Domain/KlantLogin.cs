@@ -11,7 +11,7 @@ namespace WellStralerWebshop.Models.Domain
     {
 		public long Id { get; set; }
 		public long KlantId { get; set; }
-		public Klant klant { get; set; }
+		public Klant Klant { get; set; }
 		public string Naam { get; set; }
 		public string Voornaam { get; set; }
 		public string Gebruikersnaam { get; set; }

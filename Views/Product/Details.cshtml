@@ -124,6 +124,7 @@
         </table>
     }
 
+    <input type="submit" asp-action="PlaatsInWinkelmand" value="PlaatsInWinkelmand" asp-route-selectedProds="@String.Format(Model.index + "," + string.Join(",", @Model.geselecteerdeProducten.Select(m => m.Id).ToList())) " />
 
 </form>
 

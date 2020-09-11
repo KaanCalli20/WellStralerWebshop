@@ -9,7 +9,8 @@ namespace WellStralerWebshop.Models.Domain
     {
         
         public IEnumerable<KlantLogin> getLogins();
-
         public KlantLogin getLoginByGebruikersNaam(string klantLogin);
+        public Klant getKlantByGebruikersnaam(string klantLogin);
+
     }
 }
