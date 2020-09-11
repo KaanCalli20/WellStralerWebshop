@@ -37,6 +37,6 @@ namespace WellStralerWebshop.Models.Domain
 		public decimal? Omzet { get; set; }
 		public decimal? OmzetVJ { get; set; }
 
-		public ICollection<KlantKoppeling> KlantKoppelingen { get; set; }
+		public List<KlantKoppeling> KlantKoppelingen { get; set; }
 	}
 }

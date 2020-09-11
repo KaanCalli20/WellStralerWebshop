@@ -1,0 +1,76 @@
+﻿@model WellStralerWebshop.Models.ViewModels.MaakOrderViewModel
+@{
+    ViewData["Title"] = "MaakOrder";
+}
+
+<h1>MaakOrder</h1>
+<form>
+
+    <label for="referentie">Referentie</label><br />
+    <input type="text" name="referentie" placeholder="Zelf in te vullen" /><br />
+    <label for="opmerking">Opmerking</label><br />
+    <input type="text" name="opmerking" placeholder="Zelf in te vullen" /><br />
+    <label> Kies leveradres</label><br />
+    <table>
+        @if (Model.lijstLeveradressen.Count < 2)
+        {
+            <tr>
+                <td><input type="checkbox" name="leverKlant" id="@Model.leverKlant.Id" value="@Model.leverKlant.Id" checked disabled /></td>
+                <td>@Model.leverKlant.Firma</td>
+                <td>@Model.leverKlant.Straat @Model.leverKlant.Postcode </td>
+            </tr>
+        }
+        else
+        {
+            @foreach (var item in Model.lijstLeveradressen)
+            {
+                if (item.Equals(Model.leverKlant))
+                {
+                    <tr>
+                        <td><input type="radio" name="leverKlant" id="@item.Id" value="@item.Id" checked /></td>
+                        <td>@item.Firma</td>
+                        <td>@item.Straat @item.Postcode </td>
+                    </tr>
+                }
+                else
+                {
+
+                }
+                <tr>
+                    <td><input type="radio" name="leverKlant" id="@item.Id" value="@item.Id" /></td>
+                    <td>@item.Firma</td>
+                    <td>@item.Straat @item.Postcode </td>
+                </tr>
+            }
+        }
+
+
+
+
+    </table><br />
+    <label>Manier van leveren</label><br />
+    <table>
+
+        @foreach (var item in Model.transportTypes)
+        {
+            if (item.Equals(Model.gekozenTransport))
+            {
+                <tr>
+                    <td><input type="radio" name="transportType" id="@item.Id" value="@item.Id" checked /></td>
+                    <td>@item.Naam</td>
+                </tr>
+            }
+            else
+            {
+                <tr>
+                    <td><input type="radio" name="transportType" id="@item.Id" value="@item.Id" /></td>
+                    <td>@item.Naam</td>
+                </tr>
+            }
+
+        }
+
+    </table>
+    <input type="submit" asp-controller="Order" asp-action="MaakOrder" value="Maak bestelling aan" />
+
+</form>

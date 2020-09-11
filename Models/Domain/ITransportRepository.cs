@@ -5,9 +5,9 @@ using System.Threading.Tasks;
 
 namespace WellStralerWebshop.Models.Domain
 {
-    public interface IKlantRepository
+    public interface ITransportRepository
     {
-        IEnumerable<Klant> getKlanten();
-        public IEnumerable<Klant> getKlant(long id);
+        public List<Transport> getAllTransport();
+        public Transport getTransportById(short id);
     }
 }

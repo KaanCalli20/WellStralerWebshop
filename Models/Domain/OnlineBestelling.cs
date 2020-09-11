@@ -31,6 +31,22 @@ namespace WellStralerWebshop.Models.Domain
 
         public ICollection<OnlineBestelLijn> OnlineBesltelLijnen { get; set; }
 
+        public OnlineBestelling(Klant klant, Klant leverklant, string referentie, string opmerking, Transport transport,
+            KlantLogin klantLogin, List<OnlineBestelLijn> onlineBestellijnen)
+        {
+            this.Datum = DateTime.Today;
+            this.Klant = klant;
+            this.LeverKlant = leverklant;
+            this.Referentie = referentie;
+            this.Opmerking = opmerking;
+            this.Transport = transport;
+            this.DatumInBreng = DateTime.Now;
+            this.KlantLogin = klantLogin;
+            this.OnlineBesltelLijnen = onlineBestellijnen;
+        }
+        OnlineBestelling()
+        {
 
+        }
     }
 }

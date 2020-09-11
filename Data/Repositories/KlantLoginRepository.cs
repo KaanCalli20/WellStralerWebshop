@@ -32,7 +32,7 @@ namespace WellStralerWebshop.Data.Repositories
         }
         public KlantLogin getLoginByLoginID(long id)
         {
-            return _klantLogins.Include(p => p.Klant).SingleOrDefault(kl => kl.Id.Equals(id));
+            return _klantLogins.Include(p => p.Klant).ThenInclude(m=>m.KlantKoppelingen).ThenInclude(m=>m.GekoppeldKlant).SingleOrDefault(kl => kl.Id.Equals(id));
         }
     }
 }

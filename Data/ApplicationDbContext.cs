@@ -16,6 +16,7 @@ namespace WellStralerWebshop.Data
         public DbSet<KlantLogin> KlantLogins { get; set; }
         public DbSet<OnlineBestelling> OnlineBestellingen {get;set;}
         public DbSet<OnlineBestelLijn> OnlineBestelLijnen { get; set; }
+        public DbSet<Transport> TransportLijst { get; set; }
 
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
            : base(options)
