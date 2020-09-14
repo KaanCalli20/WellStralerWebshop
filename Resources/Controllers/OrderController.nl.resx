@@ -126,8 +126,14 @@
   <data name="Description" xml:space="preserve">
     <value>Omschrijving</value>
   </data>
+  <data name="Euro" xml:space="preserve">
+    <value>Euro</value>
+  </data>
   <data name="Filter" xml:space="preserve">
     <value>Filter</value>
+  </data>
+  <data name="Finalize Order" xml:space="preserve">
+    <value>Bestelling afwerken</value>
   </data>
   <data name="Id" xml:space="preserve">
     <value>Id</value>

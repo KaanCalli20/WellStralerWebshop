@@ -44,6 +44,7 @@ namespace WellStralerWebshop.Controllers
         public IActionResult Index(KlantLogin klantLogin)
         {
             winkelMandje = this._onlineBestelLijnRepository.getOnlineBestelLijnen(klantLogin);
+            ApplyLanguage();
             totaalPrijs();
             return View(winkelMandje);
         }
@@ -155,6 +156,9 @@ namespace WellStralerWebshop.Controllers
             ViewData["Order"] = _localizer["Order"];
             ViewData["Amount"] = _localizer["Amount"];
             ViewData["Delete"] = _localizer["Delete"];
+            ViewData["Total_Amount_Without_Reduction"] = _localizer["Total Amount Without Reduction"];
+            ViewData["Finalize_Order"] = _localizer["Finalize Order"];
+            ViewData["Euro"] = _localizer["Euro"];
 
             ViewData["Products"] = _localizer["Products"];
             ViewData["Orders"] = _localizer["Orders"];

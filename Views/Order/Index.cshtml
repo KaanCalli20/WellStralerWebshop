@@ -10,11 +10,11 @@
     <table>
 
         <tr>
-            <th>Prod</th>
-            <th>Omschrijving</th>
-            <th>Prijs</th>
-            <th>Aantal</th>
-            <th>Del</th>
+            <th>@ViewData["Prod"]</th>
+            <th>@ViewData["Description"]</th>
+            <th>@ViewData["Price"]</th>
+            <th>@ViewData["Amount"]</th>
+            <th>@ViewData["Delete"]</th>
         </tr>
 
 
@@ -52,7 +52,7 @@
                     <td>@bestellijn.Aantal</td>
 
                     <td>
-                        <input type="submit" asp-action="Remove" asp-route-id="@bestellijn.Id" value="Verwijder" />
+                        <input type="submit" asp-action="Remove" asp-route-id="@bestellijn.Id" value="@ViewData["Delete"]" />
                     </td>
 
                 </tr>
@@ -73,8 +73,8 @@
 
     </table>
 
-    <h2>Totaal prijs zonder korting = @TempData["TotaalPrijsZonderKorting"]</h2>
+    <h2>@ViewData["Total_Amount_Without_Reduction"] = @TempData["TotaalPrijsZonderKorting"] @ViewData["Euro"]</h2>
 
-    <input type="submit" formmethod="get" asp-action="MaakOrder" value="Bestelling Afwerken" />
+    <input type="submit" formmethod="get" asp-action="MaakOrder" value="@ViewData["Finalize_Order"]" />
 
 </form>
