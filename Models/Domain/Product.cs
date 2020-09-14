@@ -37,6 +37,9 @@ namespace WellStralerWebshop.Models.Domain
 
         public Product()
         {
+            OmschrijvingEN = "";
+            OmschrijvingFR = "";
+            OmschrijvingNL = "";
             productKoppelingen = new List<ProductKoppeling>();
         }
 
