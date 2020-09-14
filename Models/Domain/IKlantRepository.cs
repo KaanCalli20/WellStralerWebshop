@@ -8,6 +8,6 @@ namespace WellStralerWebshop.Models.Domain
     public interface IKlantRepository
     {
         IEnumerable<Klant> getKlanten();
-        public IEnumerable<Klant> getKlant(long id);
+        public Klant getKlant(long id);
     }
 }

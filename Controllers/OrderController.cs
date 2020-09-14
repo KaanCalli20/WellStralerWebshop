@@ -4,7 +4,9 @@ using Org.BouncyCastle.Crypto.Tls;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.InteropServices.ComTypes;
 using System.Security.Claims;
+using WellStralerWebshop.Filters;
 using WellStralerWebshop.Models.Domain;
 using WellStralerWebshop.Models.ViewModels;
 
@@ -17,40 +19,39 @@ namespace WellStralerWebshop.Controllers
         private readonly IOnlineBestelLijnRepository _onlineBestelLijnRepository;
         private readonly IKlantLoginRepository _klantLoginRepository;
         private readonly ITransportRepository _transportRepository;
+        private readonly IKlantRepository _klantRepository;
+        private readonly IOnlineBestellingRepository _onlineBestellingRepository;
 
-        private string _idKlantLogin;
-        private KlantLogin _klantLogin;
+
         public OrderController(IOnlineBestelLijnRepository onlineBestelLijnRepository
-            , IKlantLoginRepository klantLoginRepo,ITransportRepository transportRepository)
+            , IKlantLoginRepository klantLoginRepo,ITransportRepository transportRepository,
+            IKlantRepository klantRepo, IOnlineBestellingRepository onlineBestellingRepository)
         {
             this._onlineBestelLijnRepository = onlineBestelLijnRepository;
             this._klantLoginRepository = klantLoginRepo;
             this._transportRepository = transportRepository;
-        }
-        private void HaalKlantOp()
-        {
+            this._onlineBestellingRepository = onlineBestellingRepository;
 
-            _idKlantLogin = HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value;
-            _klantLogin = _klantLoginRepository.getLoginByLoginID(Convert.ToInt64(_idKlantLogin));
+            this._klantRepository = klantRepo;
+            
         }
-
-        public IActionResult Index()
+       
+        [ServiceFilter(typeof(KlantFilter))]
+        public IActionResult Index(KlantLogin klantLogin)
         {
-            HaalKlantOp();
-            winkelMandje = this._onlineBestelLijnRepository.getOnlineBestelLijnen(_klantLogin);
+            winkelMandje = this._onlineBestelLijnRepository.getOnlineBestelLijnen(klantLogin);
             totaalPrijs();
             return View(winkelMandje);
         }
 
-
-        public IActionResult Remove(long id)
+        [ServiceFilter(typeof(KlantFilter))]
+        public IActionResult Remove(long id, KlantLogin klantLogin)
         {
-            HaalKlantOp();
             OnlineBestelLijn teVerwijderenBestelLijn = _onlineBestelLijnRepository.getOnlineBestellijn(id);
             IEnumerable<OnlineBestelLijn> lijstBestellijnen;
             if (teVerwijderenBestelLijn.HoofdProdBestelLijnId == 0)
             {
-                lijstBestellijnen = _onlineBestelLijnRepository.getOnlineBestelLijnen(_klantLogin)
+                lijstBestellijnen = _onlineBestelLijnRepository.getOnlineBestelLijnen(klantLogin)
                     .Where(p => p.HoofdProdBestelLijnId == teVerwijderenBestelLijn.Id);
                 _onlineBestelLijnRepository.verwijderOBestelLijn(teVerwijderenBestelLijn);
                 if (lijstBestellijnen.Count() > 0) 
@@ -69,37 +70,57 @@ namespace WellStralerWebshop.Controllers
             {
 
             }
-            winkelMandje = this._onlineBestelLijnRepository.getOnlineBestelLijnen(_klantLogin);
+            winkelMandje = this._onlineBestelLijnRepository.getOnlineBestelLijnen(klantLogin);
             totaalPrijs();
             return View("Index", winkelMandje);
         }
 
+        [ServiceFilter(typeof(KlantFilter))]
         [HttpGet]
-        public IActionResult MaakOrder(string id)
+        public IActionResult MaakOrder(string id,KlantLogin klantLogin)
         {
-            HaalKlantOp();
-
+            
             List<Transport> lijstTransportTypes = _transportRepository.getAllTransport();
-            List<Klant> leverKlanten = new List<Klant>();
-            leverKlanten.Add(this._klantLogin.Klant);
-            foreach (KlantKoppeling klantKoppeling in this._klantLogin.Klant.KlantKoppelingen)
-            {
-                leverKlanten.Add(klantKoppeling.GekoppeldKlant);
-            }
+            List<Klant> leverKlanten= GetLijstLeverklanten(klantLogin);
 
-
-            MaakOrderViewModel vm = new MaakOrderViewModel(leverKlanten, leverKlanten.ElementAt(0),"","",lijstTransportTypes,lijstTransportTypes.ElementAt(0));
-           
-            winkelMandje = this._onlineBestelLijnRepository.getOnlineBestelLijnen(this._klantLogin);
-           
+            MaakOrderViewModel vm = new MaakOrderViewModel(leverKlanten, leverKlanten.ElementAt(0),"","",lijstTransportTypes,lijstTransportTypes.ElementAt(0));           
             
              return View(vm);
         }
 
         [HttpPost]
-        public IActionResult MaakOrder(string leverKlant, string referentie, string opmerking, string transportType)
+        [ServiceFilter(typeof(KlantFilter))]
+        public IActionResult MaakOrder( string referentie, string opmerking, short transportTypeId, long leverKlantId, KlantLogin klantLogin)
         {
-           // OnlineBestelling bestelling = new OnlineBestelling(klantLogin.Klant,)
+            try
+            {
+                if (leverKlantId == 0)
+                {
+                    throw new ArgumentException("Gelieve een leverklant te kiezen");
+                }
+                if (transportTypeId == 0)
+                {
+                    throw new ArgumentException("Gelieve een transportType te kiezen");
+                }
+                Klant leverKlant = this._klantRepository.getKlant(leverKlantId);
+                Transport transport = this._transportRepository.getTransportById(transportTypeId);
+                List<OnlineBestelLijn> lijstBestelLijnen= this._onlineBestelLijnRepository.getOnlineBestelLijnen(klantLogin);
+                OnlineBestelling bestelling = new OnlineBestelling(klantLogin.Klant, leverKlant, referentie, opmerking, transport, klantLogin, lijstBestelLijnen);
+                this._onlineBestellingRepository.voegOnlineBestellingToe(bestelling);
+                this._onlineBestellingRepository.SaveChanges();
+                TempData["message"] = "Bestelling succesvol geplaatst";
+                return RedirectToAction("Index", "Product");
+            }
+            catch (ArgumentException ex)
+            {
+                TempData["error"] = ex.Message;
+                List<Transport> lijstTransportTypes = _transportRepository.getAllTransport();
+                List<Klant> leverKlanten = GetLijstLeverklanten(klantLogin);
+                MaakOrderViewModel vm = new MaakOrderViewModel(leverKlanten,leverKlanten.ElementAt(0),referentie,opmerking,lijstTransportTypes,lijstTransportTypes.ElementAt(0));
+                return View("MaakOrder",vm);
+            }
+            
+
             return null;
         }
         public void totaalPrijs()
@@ -110,6 +131,16 @@ namespace WellStralerWebshop.Controllers
                 prijs = prijs + lijn.Prijs * lijn.Aantal;
             }
             TempData["TotaalPrijsZonderKorting"] = prijs ;
+        }
+        public List<Klant> GetLijstLeverklanten(KlantLogin klantLogin)
+        {
+            List<Klant> leverKlanten = new List<Klant>();
+            leverKlanten.Add(klantLogin.Klant);
+            foreach (KlantKoppeling klantKoppeling in klantLogin.Klant.KlantKoppelingen)
+            {
+                leverKlanten.Add(klantKoppeling.GekoppeldKlant);
+            }
+            return leverKlanten;
         }
     }
 }

@@ -7,7 +7,7 @@ namespace WellStralerWebshop.Models.Domain
 {
     public interface IOnlineBestelLijnRepository 
     {
-        public IEnumerable<OnlineBestelLijn> getOnlineBestelLijnen(KlantLogin klantLogin);
+        public List<OnlineBestelLijn> getOnlineBestelLijnen(KlantLogin klantLogin);
         public OnlineBestelLijn getOnlineBestellijn(long id);
         public void voegOnlineBestelLijnToe(OnlineBestelLijn onlineBestelLijn);
         public void voegOnlineBestelLijnenToe(List<OnlineBestelLijn> lijst);

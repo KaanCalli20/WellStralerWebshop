@@ -11,6 +11,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using WellStralerWebshop.Data;
 using WellStralerWebshop.Data.Repositories;
+using WellStralerWebshop.Filters;
 using WellStralerWebshop.Models.Domain;
 
 namespace WellStralerWebshop
@@ -46,6 +47,8 @@ namespace WellStralerWebshop
             services.AddScoped<IOnlineBestelLijnRepository, OnlineBestelLijnenRepository>();
             services.AddScoped<IOnlineBestellingRepository, OnlineBestellingRepository>();
             services.AddScoped<ITransportRepository,TransportRepository>();
+            services.AddScoped<KlantFilter>();
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
