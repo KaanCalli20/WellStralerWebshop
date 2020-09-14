@@ -135,7 +135,7 @@ namespace WellStralerWebshop.Controllers
             {
                 prijs = prijs + lijn.Prijs * lijn.Aantal;
             }
-            TempData["TotaalPrijsZonderKorting"] = prijs ;
+            ViewData["TotaalPrijsZonderKorting"] = prijs ;
         }
         public List<Klant> GetLijstLeverklanten(KlantLogin klantLogin)
         {

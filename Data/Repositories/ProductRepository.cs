@@ -30,19 +30,25 @@ namespace WellStralerWebshop.Data.Repositories
 
         public IEnumerable<Product> getProductenByTaalOmschrijving(string taal, string omschrijving)
         {
-
-
+            List<Product> gefilterdeLijst = new List<Product>();
+            try
+            {
                 switch (taal)
                 {
                     case "en":
-                        return getProducten().Where(p => p.OmschrijvingEN.Contains(omschrijving) != true ? p.OmschrijvingNL.Contains(omschrijving) : p.OmschrijvingEN.Contains(omschrijving)).ToList();
+                        return getProducten().Where(p =>p.OmschrijvingEN != null & p.OmschrijvingEN != "" ).Where(p=>p.OmschrijvingEN.ToUpper().Contains(omschrijving)).ToList();
                     case "fr":
-                        return getProducten().Where(p => p.OmschrijvingFR.Contains(omschrijving) != true ? p.OmschrijvingNL.Contains(omschrijving) : p.OmschrijvingFR.Contains(omschrijving)).ToList();
-                    case "nl":
-                        return getProducten().Where(p => p.OmschrijvingNL.Contains(omschrijving)).ToList();
-                default:
-                        return getProducten().Where(p => p.OmschrijvingNL.Contains(omschrijving)).ToList();
+                        return getProducten().Where(p =>p.OmschrijvingFR != null & p.OmschrijvingFR!="").Where(p=> p.OmschrijvingFR.ToUpper().Contains(omschrijving)).ToList();
+                    default:
+                        return getProducten().Where(p => p.OmschrijvingNL != null & p.OmschrijvingNL != "").Where(p => p.OmschrijvingNL.ToUpper().Contains(omschrijving)).ToList();
                 }
+            }
+            catch (ArgumentNullException ex)
+            {
+                Console.WriteLine("Omschrijving in taal niet gevonden overgegaan naar default taal!!!!!!" + ex.Message);
+                return getProducten().Where(p => p.OmschrijvingNL.Contains(omschrijving)).ToList();
+            }
+
 
         }
 

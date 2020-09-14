@@ -9,6 +9,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
+using System.Transactions;
 using WellStralerWebshop.Models.Domain;
 using WellStralerWebshop.Models.ViewModels;
 
@@ -47,6 +48,7 @@ namespace WellStralerWebshop.Controllers
         [HttpPost]
         public ViewResult Index(string SearchString)
         {
+            ApplyLanguage();
             IEnumerable<Product> lijstProducten = new List<Product>();
             var request = HttpContext.Features.Get<IRequestCultureFeature>();
             string taal = request.RequestCulture.Culture.Name;
@@ -252,10 +254,10 @@ namespace WellStralerWebshop.Controllers
                 vm = new ProductDetailViewModel(geselecteerdeProducten, hoofdProduct.gekoppeldProductenLijst(), index,aantal);
 
 
-                TempData["NormalePrijs"] = geefPrijs(geselecteerdeProducten) * aantal;
+                ViewData["NormalePrijs"] = geefPrijs(geselecteerdeProducten) * aantal;
                 //TempData["PrijsNaKorting"];
 
-                TempData["Stock"] = geselecteerdeProducten.ElementAt(0).Stock;
+                ViewData["Stock"] = geselecteerdeProducten.ElementAt(0).Stock;
 
                 return View("Details", vm);
 
@@ -296,14 +298,16 @@ namespace WellStralerWebshop.Controllers
             OnlineBestelLijn onlineBestelLijn = new OnlineBestelLijn(0,klantLogin,klant,hoofdProduct,aantal,hoofdProduct.Prijs,hoofdProduct.BtwPerc,DateTime.Now,0);
             _onlineBestelLijnRepo.voegOnlineBestelLijnToe(onlineBestelLijn);
             _onlineBestelLijnRepo.SaveChanges();
-            foreach (Product koppelProduct in geselecteerdeProducten)
-            {
-                lijstOnlineBestelLijn.Add(new OnlineBestelLijn(0, klantLogin, klant, koppelProduct, aantal, koppelProduct.Prijs, koppelProduct.BtwPerc, DateTime.Now,onlineBestelLijn.Id));
+            if (geselecteerdeProducten.Count()==0) { }
+            else{
+                foreach (Product koppelProduct in geselecteerdeProducten)
+                {
+                    lijstOnlineBestelLijn.Add(new OnlineBestelLijn(0, klantLogin, klant, koppelProduct, aantal, koppelProduct.Prijs, koppelProduct.BtwPerc, DateTime.Now, onlineBestelLijn.Id));
+                }
+                _onlineBestelLijnRepo.voegOnlineBestelLijnenToe(lijstOnlineBestelLijn);
+
+                _onlineBestelLijnRepo.SaveChanges();
             }
-            _onlineBestelLijnRepo.voegOnlineBestelLijnenToe(lijstOnlineBestelLijn);
-
-            _onlineBestelLijnRepo.SaveChanges();
-
             TempData["message"] = "Product succesvol geplaatst in het winkelmand";
             return RedirectToAction("Index", "Order");
 
@@ -332,32 +336,39 @@ namespace WellStralerWebshop.Controllers
 
             hoofdProduct = this._productRepo.getProductById(geselecteerdeProducten.ElementAt(0).Id);
 
-            huidigeKoppelProductLijst = hoofdProduct.gekoppeldProductenLijst().ElementAt(index);
-
-            foreach (ProductKoppeling item in huidigeKoppelProductLijst)
+            if (hoofdProduct.productKoppelingen == null || hoofdProduct.productKoppelingen.Count() == 0)
             {
-                teVerwijderenProduct = geselecteerdeProducten.SingleOrDefault(m => m.Id == item.GekoppeldProdId);
-                if (teVerwijderenProduct != null && item.KoppelType.Id!=1)
-                {
-                    geselecteerdeProducten.Remove(teVerwijderenProduct);
-                }
+
             }
-
-            foreach (long item in productId)
+            else
             {
-                if (item != 0)
+
+                huidigeKoppelProductLijst = hoofdProduct.gekoppeldProductenLijst().ElementAt(index);
+
+                foreach (ProductKoppeling item in huidigeKoppelProductLijst)
                 {
-                    if (!geselecteerdeProducten.Select(p => p.Id).Contains(item))
+                    teVerwijderenProduct = geselecteerdeProducten.SingleOrDefault(m => m.Id == item.GekoppeldProdId);
+                    if (teVerwijderenProduct != null && item.KoppelType.Id != 1)
                     {
-                        addProduct = this._productRepo.getProductById(item);
-                        geselecteerdeProducten.Add(addProduct);
+                        geselecteerdeProducten.Remove(teVerwijderenProduct);
                     }
                 }
 
+                foreach (long item in productId)
+                {
+                    if (item != 0)
+                    {
+                        if (!geselecteerdeProducten.Select(p => p.Id).Contains(item))
+                        {
+                            addProduct = this._productRepo.getProductById(item);
+                            geselecteerdeProducten.Add(addProduct);
+                        }
+                    }
+
+                }
+
+
             }
-
-
-
             return geselecteerdeProducten;
 
         }
@@ -377,15 +388,23 @@ namespace WellStralerWebshop.Controllers
             }
 
             hoofdProduct = this._productRepo.getProductById(geselecteerdeProducten.ElementAt(0).Id);
-
-            if (hoofdProduct.gekoppeldProductenLijst().ElementAt(index).ElementAt(0).KoppelType.Id == 3 && productId.Sum() == 0)
-            {
-                throw new ArgumentException("Dit is een verplichte keuze, gelieve uw keuze in te geven");
-            }
-            else
+            if (hoofdProduct.productKoppelingen == null||hoofdProduct.productKoppelingen.Count() ==0)
             {
                 return true;
             }
+            else
+            {
+                if (hoofdProduct.gekoppeldProductenLijst().ElementAt(index).ElementAt(0).KoppelType.Id == 3 && productId.Sum() == 0)
+                {
+                    throw new ArgumentException("Dit is een verplichte keuze, gelieve uw keuze in te geven");
+                }
+                else
+                {
+                    return true;
+                }
+            }
+              
+            
 
         }
 
