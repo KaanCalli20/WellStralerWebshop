@@ -27,7 +27,7 @@
                     <td> @product.Afk</td>
                     <td>
 
-                        @if (ViewData["Taal"].Equals("en"))
+                        @if (ViewData["Taal"] == "en")
                         {
                             @product.OmschrijvingEN
                         }
@@ -35,7 +35,7 @@
                         {
                             @product.OmschrijvingFR
                         }
-                        else
+                        else if (ViewData["Taal"].Equals("nl"))
                         {
                             @product.OmschrijvingNL
                         }

@@ -37,10 +37,9 @@ namespace WellStralerWebshop.Controllers
 
         public ViewResult Index()
         {
+            ApplyLanguage();
             IEnumerable<Product> lijstProducten = new List<Product>();
             lijstProducten = _productRepo.getProducten();
-
-            ApplyLanguage();
 
             return View(lijstProducten);
         }
@@ -51,6 +50,9 @@ namespace WellStralerWebshop.Controllers
             IEnumerable<Product> lijstProducten = new List<Product>();
             var request = HttpContext.Features.Get<IRequestCultureFeature>();
             string taal = request.RequestCulture.Culture.Name;
+
+
+            ApplyLanguage();
 
             if (SearchString != null)
             {
@@ -434,6 +436,11 @@ namespace WellStralerWebshop.Controllers
 
         private void ApplyLanguage()
         {
+            var request = HttpContext.Features.Get<IRequestCultureFeature>();
+            string taal = request.RequestCulture.Culture.Name;
+
+            ViewData["Taal"] = taal;
+
             ViewData["Description"] = _localizer["Description"];
             ViewData["Id"] = _localizer["Id"];
             ViewData["Price"] = _localizer["Price"];
@@ -445,11 +452,7 @@ namespace WellStralerWebshop.Controllers
             ViewData["Orders"] = _localizer["Orders"];
             ViewData["Login"] = _localizer["Login"];
             ViewData["Logout"] = _localizer["Logout"];
-
-            var request = HttpContext.Features.Get<IRequestCultureFeature>();
-            string taal = request.RequestCulture.Culture.Name;
-
-            ViewData["Taal"] = taal;
+ 
         }
     }
 }

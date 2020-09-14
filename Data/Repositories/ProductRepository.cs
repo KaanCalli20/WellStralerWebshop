@@ -31,12 +31,13 @@ namespace WellStralerWebshop.Data.Repositories
         public IEnumerable<Product> getProductenByTaalOmschrijving(string taal, string omschrijving)
         {
 
+
                 switch (taal)
                 {
                     case "en":
-                        return getProducten().Where(p => p.OmschrijvingEN.Contains(omschrijving)).ToList();
+                        return getProducten().Where(p => p.OmschrijvingEN.Contains(omschrijving) != true ? p.OmschrijvingNL.Contains(omschrijving) : p.OmschrijvingEN.Contains(omschrijving)).ToList();
                     case "fr":
-                        return getProducten().Where(p => p.OmschrijvingFR.Contains(omschrijving)).ToList();
+                        return getProducten().Where(p => p.OmschrijvingFR.Contains(omschrijving) != true ? p.OmschrijvingNL.Contains(omschrijving) : p.OmschrijvingFR.Contains(omschrijving)).ToList();
                     case "nl":
                         return getProducten().Where(p => p.OmschrijvingNL.Contains(omschrijving)).ToList();
                 default:
