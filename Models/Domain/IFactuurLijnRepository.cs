@@ -5,9 +5,9 @@ using System.Threading.Tasks;
 
 namespace WellStralerWebshop.Models.Domain
 {
-    public interface IKlantRepository
+    public interface IFactuurLijnRepository
     {
-        IEnumerable<Klant> getKlanten();
-        public Klant getKlant(long id);
+        public List<FactuurLijn> getFactuurLijnen();
+
     }
 }

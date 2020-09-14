@@ -21,5 +21,14 @@ namespace WellStralerWebshop.Data.Repositories
         {
             return _onlineBestellingen.Include(p=>p.OnlineBesltelLijnen).Include(p=>p.Klant).Include(t=>t.LeverKlant).Include(p=>p.Transport).ToList();
         }
+        public void voegOnlineBestellingToe(OnlineBestelling onlineBestelling)
+        {
+            this._onlineBestellingen.Add(onlineBestelling);
+
+        }
+        public void SaveChanges()
+        {
+            this._dbContext.SaveChanges();
+        }
     }
 }

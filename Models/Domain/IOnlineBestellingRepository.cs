@@ -8,6 +8,7 @@ namespace WellStralerWebshop.Models.Domain
     public interface IOnlineBestellingRepository
     {
         public IEnumerable<OnlineBestelling> getOnlineBestellingen();
-
+        public void voegOnlineBestellingToe(OnlineBestelling onlineBestelling);
+        public void SaveChanges();
     }
 }

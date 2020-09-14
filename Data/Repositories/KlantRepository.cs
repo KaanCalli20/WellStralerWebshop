@@ -24,9 +24,9 @@ namespace WellStralerWebshop.Data.Repositories
             return _klanten.Include(p=>p.KlantKoppelingen).ToList();
         }
         
-        public IEnumerable<Klant> getKlant(long id)
+        public Klant getKlant(long id)
         {
-            return _klanten.Where(m => m.Id == id).Include(m => m.KlantKoppelingen).ThenInclude(m => m.GekoppeldKlant);
+            return _klanten.Where(m => m.Id == id).Include(m => m.KlantKoppelingen).ThenInclude(m => m.GekoppeldKlant).SingleOrDefault();
         }
     }
 }

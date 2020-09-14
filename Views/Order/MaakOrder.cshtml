@@ -15,7 +15,7 @@
         @if (Model.lijstLeveradressen.Count < 2)
         {
             <tr>
-                <td><input type="checkbox" name="leverKlant" id="@Model.leverKlant.Id" value="@Model.leverKlant.Id" checked disabled /></td>
+                <td><input type="radio" name="leverKlantId" id="@Model.leverKlant.Id" value="@Model.leverKlant.Id" checked  /></td>
                 <td>@Model.leverKlant.Firma</td>
                 <td>@Model.leverKlant.Straat @Model.leverKlant.Postcode </td>
             </tr>
@@ -27,7 +27,7 @@
                 if (item.Equals(Model.leverKlant))
                 {
                     <tr>
-                        <td><input type="radio" name="leverKlant" id="@item.Id" value="@item.Id" checked /></td>
+                        <td><input type="radio" name="leverKlantId" id="@item.Id" value="@item.Id" checked /></td>
                         <td>@item.Firma</td>
                         <td>@item.Straat @item.Postcode </td>
                     </tr>
@@ -37,7 +37,7 @@
 
                 }
                 <tr>
-                    <td><input type="radio" name="leverKlant" id="@item.Id" value="@item.Id" /></td>
+                    <td><input type="radio" name="leverKlantId" id="@item.Id" value="@item.Id" /></td>
                     <td>@item.Firma</td>
                     <td>@item.Straat @item.Postcode </td>
                 </tr>
@@ -56,14 +56,14 @@
             if (item.Equals(Model.gekozenTransport))
             {
                 <tr>
-                    <td><input type="radio" name="transportType" id="@item.Id" value="@item.Id" checked /></td>
+                    <td><input type="radio" name="transportTypeId" id="@item.Id" value="@item.Id" checked /></td>
                     <td>@item.Naam</td>
                 </tr>
             }
             else
             {
                 <tr>
-                    <td><input type="radio" name="transportType" id="@item.Id" value="@item.Id" /></td>
+                    <td><input type="radio" name="transportTypeId" id="@item.Id" value="@item.Id" /></td>
                     <td>@item.Naam</td>
                 </tr>
             }
@@ -71,6 +71,6 @@
         }
 
     </table>
-    <input type="submit" asp-controller="Order" asp-action="MaakOrder" value="Maak bestelling aan" />
+    <input type="submit" formmethod="post" asp-controller="Order" asp-action="MaakOrder" value="Maak bestelling aan" />
 
 </form>

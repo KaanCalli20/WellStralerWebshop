@@ -20,10 +20,10 @@ namespace WellStralerWebshop.Data.Repositories
             _onlineBestelLijnen = _dbContext.OnlineBestelLijnen;
         }
 
-        public IEnumerable<OnlineBestelLijn> getOnlineBestelLijnen(KlantLogin klantLogin)
+        public List<OnlineBestelLijn> getOnlineBestelLijnen(KlantLogin klantLogin)
         {
             return _onlineBestelLijnen.Include(p => p.KlantLogin).Include(p => p.Klant).Include(p => p.Product)
-                .Where(p=>p.KlantId==klantLogin.KlantId).OrderBy(m=>m.Id).ThenBy(m=>m.HoofdProdBestelLijnId)
+                .Where(p=>p.KlantId==klantLogin.KlantId&& p.BestellingId==0).OrderBy(m=>m.Id).ThenBy(m=>m.HoofdProdBestelLijnId)
                 .ToList();
         }
 
