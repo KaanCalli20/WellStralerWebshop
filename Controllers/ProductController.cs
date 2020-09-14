@@ -1,7 +1,10 @@
 ﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Localization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.Extensions.Localization;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -18,9 +21,10 @@ namespace WellStralerWebshop.Controllers
         private readonly IKlantRepository _klantRepo;
         private readonly IKlantLoginRepository _klantLoginsRepo;
         private readonly IOnlineBestelLijnRepository _onlineBestelLijnRepo;
+        private readonly IStringLocalizer<ProductController> _localizer;
 
         public ProductController(IProductRepository productRepo, IKlantRepository klantRepo, IKlantLoginRepository klantLoginsRepo
-            , IOnlineBestelLijnRepository onlineBestelLijn)
+            , IOnlineBestelLijnRepository onlineBestelLijn, IStringLocalizer<ProductController> localizer)
         {
             this._onlineBestelLijnRepo = onlineBestelLijn;
 
@@ -28,12 +32,15 @@ namespace WellStralerWebshop.Controllers
             this._klantRepo = klantRepo;
             this._klantLoginsRepo = klantLoginsRepo;
 
+            this._localizer = localizer;
         }
 
         public ViewResult Index()
         {
             IEnumerable<Product> lijstProducten = new List<Product>();
             lijstProducten = _productRepo.getProducten();
+
+            ApplyLanguage();
 
             return View(lijstProducten);
         }
@@ -42,12 +49,14 @@ namespace WellStralerWebshop.Controllers
         public ViewResult Index(string SearchString)
         {
             IEnumerable<Product> lijstProducten = new List<Product>();
+            var request = HttpContext.Features.Get<IRequestCultureFeature>();
+            string taal = request.RequestCulture.Culture.Name;
 
             if (SearchString != null)
             {
                 try
                 {
-                    lijstProducten = _productRepo.getProductenByOmschrijving(SearchString.ToUpper());
+                    lijstProducten = _productRepo.getProductenByTaalOmschrijving(taal, SearchString.ToUpper());
                 }
                 catch (ArgumentNullException ex)
                 {
@@ -411,6 +420,36 @@ namespace WellStralerWebshop.Controllers
             return prijs;
         }
 
+        [HttpPost]
+        public IActionResult SetLanguage(string culture, string returnUrl)
+        {
+            Response.Cookies.Append(
+                CookieRequestCultureProvider.DefaultCookieName,
+                CookieRequestCultureProvider.MakeCookieValue(new RequestCulture(culture)),
+                new CookieOptions { Expires = DateTimeOffset.UtcNow.AddDays(30) }
+                );
 
+            return LocalRedirect(returnUrl);
+        }
+
+        private void ApplyLanguage()
+        {
+            ViewData["Description"] = _localizer["Description"];
+            ViewData["Id"] = _localizer["Id"];
+            ViewData["Price"] = _localizer["Price"];
+            ViewData["Order"] = _localizer["Order"];
+            ViewData["Filter"] = _localizer["Filter"];
+            ViewData["Search"] = _localizer["Search"];
+
+            ViewData["Products"] = _localizer["Products"];
+            ViewData["Orders"] = _localizer["Orders"];
+            ViewData["Login"] = _localizer["Login"];
+            ViewData["Logout"] = _localizer["Logout"];
+
+            var request = HttpContext.Features.Get<IRequestCultureFeature>();
+            string taal = request.RequestCulture.Culture.Name;
+
+            ViewData["Taal"] = taal;
+        }
     }
 }

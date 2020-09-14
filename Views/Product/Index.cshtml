@@ -1,38 +1,54 @@
 ﻿@model IEnumerable<WellStralerWebshop.Models.Domain.Product>
+@inject Microsoft.AspNetCore.Mvc.Localization.IViewLocalizer _localizer
 
-@{ 
+@{
     ViewData["Title"] = "Home Page";
 }
 
-<div >
+<div>
 
     <form asp-controller="Product" asp-action="Index">
-        Filter: 
-        <input type="text" name="SearchString"/>
-        <input type="submit" value="Search"/>
+        @ViewData["Filter"] :
+        <input type="text" name="SearchString" />
+        <input type="submit" value="@ViewData["Search"]" />
     </form>
 
     <table>
         <tr>
-            <th>Prod</th>
-            <th>Beschrijving</th>
-            <th>Prijs</th>
+            <th>@ViewData["Id"]</th>
+            <th>@ViewData["Description"]</th>
+            <th>@ViewData["Price"]</th>
         </tr>
 
-        @foreach(var product in Model){
+        @foreach (var product in Model)
+        {
             <tr>
                 <a>
                     <td> @product.Afk</td>
-                    <td> @product.OmschrijvingNL</td>
+                    <td>
+
+                        @if (ViewData["Taal"].Equals("en"))
+                        {
+                            @product.OmschrijvingEN
+                        }
+                        else if (ViewData["Taal"].Equals("fr"))
+                        {
+                            @product.OmschrijvingFR
+                        }
+                        else
+                        {
+                            @product.OmschrijvingNL
+                        }
+                    </td>
                     <td> @product.Prijs</td>
-                    <td> 
-                        <a asp-controller="Product" asp-action="Details" asp-route-id="@product.Id">Bestellen</a>  
+                    <td>
+                        <a asp-controller="Product" asp-action="Details" asp-route-id="@product.Id">@ViewData["Order"]</a>
                     </td>
                 </a>
-                
+
             </tr>
         }
 
     </table>
-         
+
 </div>

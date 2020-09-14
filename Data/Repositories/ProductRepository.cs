@@ -7,7 +7,7 @@ using WellStralerWebshop.Models.Domain;
 
 namespace WellStralerWebshop.Data.Repositories
 {
-    public class ProductRepository:IProductRepository
+    public class ProductRepository : IProductRepository
     {
         private readonly ApplicationDbContext _dbContext;
         private DbSet<Product> _producten;
@@ -20,7 +20,7 @@ namespace WellStralerWebshop.Data.Repositories
 
         public IEnumerable<Product> getProducten()
         {
-            return _producten.Include(p=>p.ProductType).Include(p=>p.productKoppelingen).ThenInclude(p=>p.KoppelType).ToList();
+            return _producten.Include(p => p.ProductType).Include(p => p.productKoppelingen).ThenInclude(p => p.KoppelType).ToList();
         }
 
         public Product getProductById(long Id)
@@ -28,10 +28,27 @@ namespace WellStralerWebshop.Data.Repositories
             return getProducten().SingleOrDefault(p => p.Id == Id);
         }
 
-        public IEnumerable<Product> getProductenByOmschrijving(string omschrijving)
+        public IEnumerable<Product> getProductenByTaalOmschrijving(string taal, string omschrijving)
         {
+            try
+            {
+                switch (taal)
+                {
+                    case "en":
+                        return getProducten().Where(p => p.OmschrijvingEN.Contains(omschrijving)).ToList();
+                    case "fr":
+                        return getProducten().Where(p => p.OmschrijvingFR.Contains(omschrijving)).ToList();
+                    default:
+                        return getProducten().Where(p => p.OmschrijvingNL.Contains(omschrijving)).ToList();
+                }
+            }
+            catch (ArgumentNullException ex)
+            {
+                Console.WriteLine("Omschrijving in taal niet gevonden overgegaan naar default taal!!!!!!" + ex.Message);
+                return getProducten().Where(p => p.OmschrijvingNL.Contains(omschrijving)).ToList();
+            }
 
-            return getProducten().Where(p => p.OmschrijvingNL.Contains(omschrijving)).ToList();
+
         }
 
     }

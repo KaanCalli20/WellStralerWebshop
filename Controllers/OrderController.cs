@@ -1,5 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Localization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Localization;
 using Org.BouncyCastle.Crypto.Tls;
 using System;
 using System.Collections.Generic;
@@ -17,15 +19,18 @@ namespace WellStralerWebshop.Controllers
         private readonly IOnlineBestelLijnRepository _onlineBestelLijnRepository;
         private readonly IKlantLoginRepository _klantLoginRepository;
         private readonly ITransportRepository _transportRepository;
+        private readonly IStringLocalizer<OrderController> _localizer;
 
         private string _idKlantLogin;
         private KlantLogin _klantLogin;
         public OrderController(IOnlineBestelLijnRepository onlineBestelLijnRepository
-            , IKlantLoginRepository klantLoginRepo,ITransportRepository transportRepository)
+            , IKlantLoginRepository klantLoginRepo,ITransportRepository transportRepository, IStringLocalizer<OrderController> localizer)
         {
             this._onlineBestelLijnRepository = onlineBestelLijnRepository;
             this._klantLoginRepository = klantLoginRepo;
             this._transportRepository = transportRepository;
+
+            this._localizer = localizer;
         }
         private void HaalKlantOp()
         {
@@ -39,6 +44,7 @@ namespace WellStralerWebshop.Controllers
             HaalKlantOp();
             winkelMandje = this._onlineBestelLijnRepository.getOnlineBestelLijnen(_klantLogin);
             totaalPrijs();
+            ApplyLanguage();
             return View(winkelMandje);
         }
 
@@ -110,6 +116,26 @@ namespace WellStralerWebshop.Controllers
                 prijs = prijs + lijn.Prijs * lijn.Aantal;
             }
             TempData["TotaalPrijsZonderKorting"] = prijs ;
+        }
+
+        private void ApplyLanguage()
+        {
+            ViewData["Description"] = _localizer["Description"];
+            ViewData["Id"] = _localizer["Id"];
+            ViewData["Price"] = _localizer["Price"];
+            ViewData["Order"] = _localizer["Order"];
+            ViewData["Amount"] = _localizer["Amount"];
+            ViewData["Delete"] = _localizer["Delete"];
+
+            ViewData["Products"] = _localizer["Products"];
+            ViewData["Orders"] = _localizer["Orders"];
+            ViewData["Login"] = _localizer["Login"];
+            ViewData["Logout"] = _localizer["Logout"];
+
+            var request = HttpContext.Features.Get<IRequestCultureFeature>();
+            string taal = request.RequestCulture.Culture.Name;
+
+            ViewData["Taal"] = taal;
         }
     }
 }

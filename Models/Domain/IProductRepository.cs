@@ -11,6 +11,6 @@ namespace WellStralerWebshop.Models.Domain
 
         Product getProductById(long Id);
 
-        IEnumerable<Product> getProductenByOmschrijving(String omschrijving);
+        IEnumerable<Product> getProductenByTaalOmschrijving(string taal, string omschrijving);
     }
 }
