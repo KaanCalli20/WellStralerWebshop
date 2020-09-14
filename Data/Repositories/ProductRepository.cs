@@ -30,7 +30,6 @@ namespace WellStralerWebshop.Data.Repositories
 
         public IEnumerable<Product> getProductenByTaalOmschrijving(string taal, string omschrijving)
         {
-            List<Product> gefilterdeLijst = new List<Product>();
             try
             {
                 switch (taal)

@@ -278,10 +278,10 @@ namespace WellStralerWebshop.Controllers
                 vm = new ProductDetailViewModel(geselecteerdeProducten, hoofdProduct.gekoppeldProductenLijst(), index, aantal);
 
 
-                TempData["NormalePrijs"] = geefPrijs(geselecteerdeProducten)*aantal;
+                ViewData["NormalePrijs"] = geefPrijs(geselecteerdeProducten)*aantal;
                 //TempData["PrijsNaKorting"];
 
-                TempData["Stock"] = geselecteerdeProducten.ElementAt(0).Stock;
+                ViewData["Stock"] = geselecteerdeProducten.ElementAt(0).Stock;
 
                 return View("Details", vm);
             }
