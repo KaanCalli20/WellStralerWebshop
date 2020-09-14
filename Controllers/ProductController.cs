@@ -33,6 +33,7 @@ namespace WellStralerWebshop.Controllers
             this._klantLoginsRepo = klantLoginsRepo;
 
             this._localizer = localizer;
+            //Test commit
         }
 
         public ViewResult Index()
