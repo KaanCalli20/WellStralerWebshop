@@ -84,10 +84,10 @@ namespace WellStralerWebshop.Controllers
             }
             vm = voegVasteProductenToe(geselecteerdeProducten, prod.gekoppeldProductenLijst(), 0);
 
-            TempData["NormalePrijs"] = geefPrijs(geselecteerdeProducten);
+            ViewData["NormalePrijs"] = geefPrijs(geselecteerdeProducten);
             //TempData["PrijsNaKorting"];
 
-            TempData["Stock"] = geselecteerdeProducten.ElementAt(0).Stock;
+            ViewData["Stock"] = geselecteerdeProducten.ElementAt(0).Stock;
             List<int> lijst = new List<int>();
                 for (int i = 1; i < 100; i++)
             {
