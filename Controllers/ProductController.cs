@@ -53,7 +53,6 @@ namespace WellStralerWebshop.Controllers
             var request = HttpContext.Features.Get<IRequestCultureFeature>();
             string taal = request.RequestCulture.Culture.Name;
 
-
             ApplyLanguage();
 
             if (SearchString != null)
