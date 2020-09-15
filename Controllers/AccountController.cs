@@ -5,10 +5,14 @@ using System.Net.Http.Headers;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Localization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.Extensions.Localization;
+using WellStralerWebshop.Filters;
 using WellStralerWebshop.Models.Domain;
+using WellStralerWebshop.Models.ViewModels;
 
 namespace WellStralerWebshop.Controllers
 {
@@ -91,6 +95,32 @@ namespace WellStralerWebshop.Controllers
 
             await HttpContext.SignOutAsync("CookieAuth");
             return RedirectToAction("Index", "Product");
+        }
+        [Authorize]
+        [ServiceFilter(typeof(KlantFilter))]
+        public IActionResult BeheerAccount(KlantLogin klantLogin)
+        {
+            Klant klant = klantLogin.Klant;
+
+            AccountViewModel vm = new AccountViewModel(klant);
+            List<string> talen = new List<string>();
+            talen.Add("nl");
+            talen.Add("en");
+            talen.Add("fr");
+            ViewData["talen"] = new SelectList(talen);
+            ApplyLanguage();
+            return View(vm);
+        }
+        [Authorize]
+        [HttpPost]
+        [ServiceFilter(typeof(KlantFilter))]
+        public IActionResult BeheerAccount(KlantLogin klantLogin,string taal)
+        {
+            Klant klant = klantLogin.Klant;
+
+            AccountViewModel vm = new AccountViewModel(klant);
+            ApplyLanguage();
+            return View(vm);
         }
         private void ApplyLanguage()
         {

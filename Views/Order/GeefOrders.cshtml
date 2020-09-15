@@ -7,66 +7,98 @@
 
 <div>
     <h2>Bestellingen in verwerking</h2>
-    <form asp-controller="Product" asp-action="Index">
-        @ViewData["Filter"] :
-        <input type="text" name="SearchString" />
-        <input type="submit" value="@ViewData["Search"]" />
+    <form asp-controller="Order" asp-action="GeefOrders">
+        <label>Product</label>
+        <input type="text" name="productNaam" value="" />
+        <br />
+        <label>Datum</label><br />
+        <label>Van</label>
+        <input type="date" name="vanDatum" value=" " />
+        <br />
+        <label>Tot</label>
+        <input type="date" name="totDatum" value="" />
+        <br />
+        <label>Leveradres</label>
+        <input type="text" name="leverAdres" value="" />
+        <br />
+        <label>Geleverd?</label>
+        <br />
+        <input type="radio" name="geleverd" value="0" />
+        <label> Ja</label>
+        <br />
+        <input type="radio" name="geleverd" value="1" />
+        <label>nee</label>
+        <br />
+        <input type="radio" name="geleverd" checked value="2" />
+        <label>Alle</label>
+        <br />
+
+        <input type="submit" value="Filter" />
+
     </form>
 
-    <table>
-        <tr>
-            <th>BestellingNr</th>
-            <th>Datum</th>
-            <th>Geleverd aan </th>
-            <th>Totaalbedrag </th>
-            <th>Detail </th>
-        </tr>
+    @if (Model.Bestellingen == null)
+    {
+        <p>Voer het filter uit</p>
+    }
+    else
+    {
 
-        @foreach (var bestelling in Model.Bestellingen)
-        {
+
+        <table>
             <tr>
-                <a>
-                    <td> @bestelling.Id</td>
-                    <td>
-                        @bestelling.Datum.ToShortDateString()
-                    </td>
-                    <td>
-                        @bestelling.KlantLeverFirma
-                    </td>
-                    @if (bestelling.Afgewerkt == 1)
-                    {
-                        <td>
-                            Afgewerkt
-                        </td>
-                    }
-                    else
-                    {
-                        <td>
-                            Nog niet afgewerkt
-                        </td>
-                    }
-
-                    @{
-                        decimal prijs = 0;
-                        foreach (var lijn in bestelling.Bestelijnen)
-                        {
-                            prijs = prijs + lijn.Prijs * lijn.Aantal;
-                        }
-                    }
-                    <td>
-                        € @prijs
-                    </td>
-                    <td>
-                        <a asp-controller="Bestelling" asp-action="Details" asp-route-id="@bestelling.Id">bestellen</a>
-                    </td>
-                </a>
-
+                <th>BestellingNr</th>
+                <th>Datum</th>
+                <th>Geleverd aan </th>
+                <th>Totaalbedrag </th>
+                <th>Detail </th>
             </tr>
-        }
 
-    </table>
+            @foreach (var bestelling in Model.Bestellingen)
+            {
+                <tr>
+                    <a>
+                        <td> @bestelling.Id</td>
+                        <td>
+                            @bestelling.Datum.ToShortDateString()
+                        </td>
+                        <td>
+                            @bestelling.KlantLeverFirma
+                        </td>
+                        @if (bestelling.Afgewerkt == 1)
+                        {
+                            <td>
+                                Afgewerkt
+                            </td>
+                        }
+                        else
+                        {
+                            <td>
+                                Nog niet afgewerkt
+                            </td>
+                        }
 
-    <h2>Geplaatste bestellingen</h2>
+                        @{
+                            decimal prijs = 0;
+                            foreach (var lijn in bestelling.Bestelijnen)
+                            {
+                                prijs = prijs + lijn.Prijs * lijn.Aantal;
+                            }
+                        }
+                        <td>
+                            € @prijs
+                        </td>
+                        <td>
+                            <a asp-controller="Bestelling" asp-action="Details" asp-route-id="@bestelling.Id">Details</a>
+                        </td>
+                    </a>
+
+                </tr>
+            }
+
+        </table>
+    }
 
 </div>
+
 

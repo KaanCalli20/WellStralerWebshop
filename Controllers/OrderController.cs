@@ -175,9 +175,18 @@ namespace WellStralerWebshop.Controllers
         public IActionResult GeefOrders(KlantLogin klantLogin)
         {
             List<Bestelling> bestellingen = _bestellingRepo.getBestellingen(klantLogin);
-            BestellingViewModel vm = new BestellingViewModel(bestellingen);
+            BestellingViewModel vm = new BestellingViewModel(null);
 
             return View(vm);
+        }
+
+        [HttpPost]
+        [ServiceFilter(typeof(KlantFilter))]
+        public IActionResult GeefOrders(KlantLogin klantLogin, string productNaam,DateTime vanDatum,DateTime totDatum
+            ,string leverAdres,int geleverd)
+        {
+
+            return null;
         }
         public void totaalPrijs()
         {

@@ -1,0 +1,38 @@
+﻿@model WellStralerWebshop.Models.ViewModels.AccountViewModel;
+@{
+    ViewData["Title"] = "BeheerAccount";
+}
+
+<h1>BeheerAccount</h1>
+
+<form asp-controller="Account" asp-action="BeheerAccount" method="post">
+    <label class="control-label">Wijzig taal</label>
+    <select name="taal" id="maand" size="1"  asp-items="@(ViewData["talen"] as SelectList)">
+        <option value="">@Model.Taal</option>
+    </select>
+    <table>
+        <thead>
+        <th>
+            Naam
+        </th>
+        <th>
+            Straat
+        </th>
+        <th>
+            Postcode
+        </th>
+        </thead>
+        <tbody>
+            @foreach (var item in Model.Klant.KlantKoppelingen)
+            {
+                <tr>
+                    <td>@item.GekoppeldKlant.Firma</td>
+                    <td>@item.GekoppeldKlant.Straat</td>
+                    <td>@item.GekoppeldKlant.Postcode</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+    <input type="submit" value="wijzig" />
+</form>
