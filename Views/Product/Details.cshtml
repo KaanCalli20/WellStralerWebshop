@@ -5,7 +5,20 @@
     ViewData["Title"] = "Details";
 }
 
-<h1>@Model.geselecteerdeProducten.ElementAt(0).OmschrijvingNL</h1>
+<h1>
+    @if (ViewData["Taal"].Equals("en"))
+    {
+        @Model.geselecteerdeProducten.ElementAt(0).OmschrijvingEN
+    }
+    else if (ViewData["Taal"].Equals("fr"))
+    {
+        @Model.geselecteerdeProducten.ElementAt(0).OmschrijvingFR
+    }
+    else if (ViewData["Taal"].Equals("nl"))
+    {
+        @Model.geselecteerdeProducten.ElementAt(0).OmschrijvingNL
+    }
+</h1>
 
 <form asp-controller="Product">
     <h3>@ViewData["Quantity"]</h3>
@@ -24,7 +37,20 @@
             {
                 <tr id="0">
                     <td><input type="checkbox" checked disabled name="selectedProds" id="@item.Id" value="@item.Id" /> </td>
-                    <td>@item.OmschrijvingNL</td>
+                    <td>
+                        @if (ViewData["Taal"].Equals("en"))
+                        {
+                            @item.OmschrijvingEN
+                        }
+                        else if (ViewData["Taal"].Equals("fr"))
+                        {
+                            @item.OmschrijvingFR
+                        }
+                        else if (ViewData["Taal"].Equals("nl"))
+                        {
+                            @item.OmschrijvingNL
+                        }
+                    </td>
                     <td>@item.Prijs</td>
                 </tr>
             }
@@ -113,7 +139,6 @@
                             }
 
 
-
                             <td> @item.Id</td>
                             <td>
                                 @if (ViewData["Taal"].Equals("en"))
@@ -130,6 +155,7 @@
                                 }
                             </td>
                             <td>@item.GekoppeldProduct.PrijsGekoppeld</td>
+
 
                         </tr>
                     }

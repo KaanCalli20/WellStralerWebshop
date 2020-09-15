@@ -131,10 +131,10 @@ namespace WellStralerWebshop.Controllers
             hoofdProduct = this._productRepo.getProductById(geselecteerdeProducten.ElementAt(0).Id);
             vm = new ProductDetailViewModel(geselecteerdeProducten, hoofdProduct.gekoppeldProductenLijst(), index ,aantal);
 
-            TempData["NormalePrijs"] = geefPrijs(geselecteerdeProducten)*aantal;
+            ViewData["NormalePrijs"] = geefPrijs(geselecteerdeProducten)*aantal;
             //TempData["PrijsNaKorting"];
 
-            TempData["Stock"] = geselecteerdeProducten.ElementAt(0).Stock;
+            ViewData["Stock"] = geselecteerdeProducten.ElementAt(0).Stock;
             List<int> lijst = new List<int>();
             for (int i = 1; i < 100; i++)
             {
@@ -172,10 +172,10 @@ namespace WellStralerWebshop.Controllers
             hoofdProduct = this._productRepo.getProductById(geselecteerdeProducten.ElementAt(0).Id);
             vm = new ProductDetailViewModel(geselecteerdeProducten, hoofdProduct.gekoppeldProductenLijst(), index ,aantal);
 
-            TempData["NormalePrijs"] = geefPrijs(geselecteerdeProducten);
+            ViewData["NormalePrijs"] = geefPrijs(geselecteerdeProducten);
             //TempData["PrijsNaKorting"];
 
-            TempData["Stock"] = geselecteerdeProducten.ElementAt(0).Stock;
+            ViewData["Stock"] = geselecteerdeProducten.ElementAt(0).Stock;
             List<int> lijst = new List<int>();
             for (int i = 1; i < 100; i++)
             {
@@ -214,10 +214,10 @@ namespace WellStralerWebshop.Controllers
             vm = new ProductDetailViewModel(geselecteerdeProducten, hoofdProduct.gekoppeldProductenLijst(), index, aantal) ;
 
 
-            TempData["NormalePrijs"] = geefPrijs(geselecteerdeProducten) * aantal;
+            ViewData["NormalePrijs"] = geefPrijs(geselecteerdeProducten) * aantal;
             //TempData["PrijsNaKorting"];
 
-            TempData["Stock"] = geselecteerdeProducten.ElementAt(0).Stock;
+            ViewData["Stock"] = geselecteerdeProducten.ElementAt(0).Stock;
             List<int> lijst = new List<int>();
             for (int i = 1; i < 100; i++)
             {
@@ -265,11 +265,26 @@ namespace WellStralerWebshop.Controllers
                 return View("Details", vm);
 
             }
+            var request = HttpContext.Features.Get<IRequestCultureFeature>();
+            string taal = request.RequestCulture.Culture.Name;
             try
             {
                 if (aantal < 1)
                 {
-                    throw new ArgumentException("Gelieve een getal hoger dan 0 te geven");
+                    
+                    if (taal == "en")
+                    {
+                        throw new ArgumentException("Please enter a number higher than 0");
+                    }
+                    else if (taal == "fr")
+                    {
+                        throw new ArgumentException("Veuillez saisir un nombre supérieur à 0");
+
+                    }
+                    else
+                    {
+                        throw new ArgumentException("Gelieve een getal hoger dan 0 te geven");
+                    }
                 }
             }
             catch(ArgumentException ex)
@@ -311,7 +326,20 @@ namespace WellStralerWebshop.Controllers
 
                 _onlineBestelLijnRepo.SaveChanges();
             }
-            TempData["message"] = "Product succesvol geplaatst in het winkelmand";
+            
+            if (taal == "en")
+            {
+                TempData["message"] = "Succesful Add To Cart";
+            }
+            else if(taal=="fr")
+            {
+                TempData["message"] = "Produit placé avec succès dans le chariot";
+
+            }
+            else
+            {
+                TempData["message"] = "Product succesvol geplaatst in het winkelwagen";
+            } 
             return RedirectToAction("Index", "Order");
 
         }
@@ -399,7 +427,21 @@ namespace WellStralerWebshop.Controllers
             {
                 if (hoofdProduct.gekoppeldProductenLijst().ElementAt(index).ElementAt(0).KoppelType.Id == 3 && productId.Sum() == 0)
                 {
-                    throw new ArgumentException("Dit is een verplichte keuze, gelieve uw keuze in te geven");
+                    var request = HttpContext.Features.Get<IRequestCultureFeature>();
+                    string taal = request.RequestCulture.Culture.Name;
+                    if (taal == "en")
+                    {
+                        throw new ArgumentException("This is a mandatory choice, please enter your choice");
+                    }
+                    else if (taal == "fr")
+                    {
+                        throw new ArgumentException("Ceci est un choix obligatoire, veuillez entrer votre choix");
+
+                    }
+                    else
+                    {
+                        throw new ArgumentException("Dit is een verplichte keuze, gelieve uw keuze in te geven");
+                    }
                 }
                 else
                 {

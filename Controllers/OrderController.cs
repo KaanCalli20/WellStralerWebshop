@@ -52,6 +52,7 @@ namespace WellStralerWebshop.Controllers
         [ServiceFilter(typeof(KlantFilter))]
         public IActionResult Remove(long id, KlantLogin klantLogin)
         {
+            ApplyLanguage();
             OnlineBestelLijn teVerwijderenBestelLijn = _onlineBestelLijnRepository.getOnlineBestellijn(id);
             IEnumerable<OnlineBestelLijn> lijstBestellijnen;
             if (teVerwijderenBestelLijn.HoofdProdBestelLijnId == 0)
