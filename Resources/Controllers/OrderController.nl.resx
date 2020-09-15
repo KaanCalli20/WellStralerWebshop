@@ -126,6 +126,12 @@
   <data name="Delete" xml:space="preserve">
     <value>Verwijder</value>
   </data>
+  <data name="Delivery adres" xml:space="preserve">
+    <value>Leveradres</value>
+  </data>
+  <data name="DeliveryType" xml:space="preserve">
+    <value>Manier van leveren</value>
+  </data>
   <data name="Description" xml:space="preserve">
     <value>Omschrijving</value>
   </data>
@@ -150,6 +156,9 @@
   <data name="Logout" xml:space="preserve">
     <value>Loguit</value>
   </data>
+  <data name="MakeOrder" xml:space="preserve">
+    <value>Plaats bestelling</value>
+  </data>
   <data name="Order" xml:space="preserve">
     <value>Bestellen</value>
   </data>
@@ -161,6 +170,15 @@
   </data>
   <data name="Products" xml:space="preserve">
     <value>Producten</value>
+  </data>
+  <data name="Put Order" xml:space="preserve">
+    <value>Bestellen</value>
+  </data>
+  <data name="Put something" xml:space="preserve">
+    <value>Zet iets</value>
+  </data>
+  <data name="Reference" xml:space="preserve">
+    <value>Referentie</value>
   </data>
   <data name="Search" xml:space="preserve">
     <value>Zoek</value>

@@ -126,6 +126,12 @@
   <data name="Delete" xml:space="preserve">
     <value>Delete</value>
   </data>
+  <data name="Delivery adres" xml:space="preserve">
+    <value>Delivery address</value>
+  </data>
+  <data name="DeliveryType" xml:space="preserve">
+    <value>Delivery method</value>
+  </data>
   <data name="Description" xml:space="preserve">
     <value>Description</value>
   </data>
@@ -150,6 +156,9 @@
   <data name="Logout" xml:space="preserve">
     <value>Logout</value>
   </data>
+  <data name="MakeOrder" xml:space="preserve">
+    <value>place order</value>
+  </data>
   <data name="Order" xml:space="preserve">
     <value>Order</value>
   </data>
@@ -161,6 +170,15 @@
   </data>
   <data name="Products" xml:space="preserve">
     <value>Products</value>
+  </data>
+  <data name="Put Order" xml:space="preserve">
+    <value>Purchase</value>
+  </data>
+  <data name="Put something" xml:space="preserve">
+    <value>Put something</value>
+  </data>
+  <data name="Reference" xml:space="preserve">
+    <value>Reference</value>
   </data>
   <data name="Search" xml:space="preserve">
     <value>Search</value>

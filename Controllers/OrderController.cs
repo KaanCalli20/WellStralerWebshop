@@ -23,18 +23,22 @@ namespace WellStralerWebshop.Controllers
         private readonly ITransportRepository _transportRepository;
         private readonly IKlantRepository _klantRepository;
         private readonly IOnlineBestellingRepository _onlineBestellingRepository;
+        private readonly IBestelLijnRepository _bestelLijnRepo;
+        private readonly IBestellingRepository _bestellingRepo;
         private readonly IStringLocalizer<OrderController> _localizer;
 
 
         public OrderController(IOnlineBestelLijnRepository onlineBestelLijnRepository
             , IKlantLoginRepository klantLoginRepo,ITransportRepository transportRepository,
-            IKlantRepository klantRepo, IOnlineBestellingRepository onlineBestellingRepository, IStringLocalizer<OrderController> localizer)
+            IKlantRepository klantRepo, IOnlineBestellingRepository onlineBestellingRepository,
+            IBestelLijnRepository bestellijnRepo, IBestellingRepository bestellingRepo,IStringLocalizer<OrderController> localizer)
         {
             this._onlineBestelLijnRepository = onlineBestelLijnRepository;
             this._klantLoginRepository = klantLoginRepo;
             this._transportRepository = transportRepository;
             this._onlineBestellingRepository = onlineBestellingRepository;
-
+            this._bestelLijnRepo = bestellijnRepo;
+            this._bestellingRepo = bestellingRepo;
             this._klantRepository = klantRepo;
 
             this._localizer = localizer;
@@ -43,6 +47,8 @@ namespace WellStralerWebshop.Controllers
         [ServiceFilter(typeof(KlantFilter))]
         public IActionResult Index(KlantLogin klantLogin)
         {
+
+
             winkelMandje = this._onlineBestelLijnRepository.getOnlineBestelLijnen(klantLogin);
             ApplyLanguage();
             totaalPrijs();
@@ -85,7 +91,7 @@ namespace WellStralerWebshop.Controllers
         [HttpGet]
         public IActionResult MaakOrder(string id,KlantLogin klantLogin)
         {
-            
+            ApplyLanguage();
             List<Transport> lijstTransportTypes = _transportRepository.getAllTransport();
             List<Klant> leverKlanten= GetLijstLeverklanten(klantLogin);
 
@@ -98,6 +104,7 @@ namespace WellStralerWebshop.Controllers
         [ServiceFilter(typeof(KlantFilter))]
         public IActionResult MaakOrder( string referentie, string opmerking, short transportTypeId, long leverKlantId, KlantLogin klantLogin)
         {
+            ApplyLanguage();
             try
             {
                 if (leverKlantId == 0)
@@ -133,9 +140,10 @@ namespace WellStralerWebshop.Controllers
 
         public IActionResult GeefOrders(KlantLogin klantLogin)
         {
+            List<Bestelling> bestellingen = _bestellingRepo.getBestellingen(klantLogin);
+            BestellingViewModel vm = new BestellingViewModel(bestellingen);
 
-
-            return null;
+            return View(vm);
         }
         public void totaalPrijs()
         {
@@ -170,11 +178,20 @@ namespace WellStralerWebshop.Controllers
             ViewData["Euro"] = _localizer["Euro"];
             ViewData["Cart"] = _localizer["Cart"];
 
+            ViewData["MakeOrder"] = _localizer["MakeOrder"];
+            ViewData["Reference"] = _localizer["Reference"];
+            ViewData["Remark"] = _localizer["Remark"];
+            ViewData["Delivery adres"] = _localizer["Delivery adres"];
+            ViewData["Put something"] = _localizer["Put something"];
+            ViewData["DeliveryType"] = _localizer["DeliveryType"];
+            ViewData["Put Order"] = _localizer["Put Order"];
+
             ViewData["Products"] = _localizer["Products"];
             ViewData["Orders"] = _localizer["Orders"];
             ViewData["Login"] = _localizer["Login"];
             ViewData["Logout"] = _localizer["Logout"];
-
+            ViewData["Invoices"] = _localizer["Invoices"];
+            ViewData["Cart"] = _localizer["Cart"];
             var request = HttpContext.Features.Get<IRequestCultureFeature>();
             string taal = request.RequestCulture.Culture.Name;
 

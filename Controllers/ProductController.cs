@@ -522,6 +522,8 @@ namespace WellStralerWebshop.Controllers
             ViewData["Orders"] = _localizer["Orders"];
             ViewData["Login"] = _localizer["Login"];
             ViewData["Logout"] = _localizer["Logout"];
+            ViewData["Invoices"] = _localizer["Invoices"];
+            ViewData["Cart"] = _localizer["Cart"];
  
         }
     }

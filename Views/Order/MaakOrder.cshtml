@@ -3,19 +3,26 @@
     ViewData["Title"] = "MaakOrder";
 }
 
-<h1>MaakOrder</h1>
+<h1>@ViewData["MaakOrder"]</h1>
 <form>
 
-    <label for="referentie">Referentie</label><br />
-    <input type="text" name="referentie" placeholder="Zelf in te vullen" /><br />
-    <label for="opmerking">Opmerking</label><br />
-    <input type="text" name="opmerking" placeholder="Zelf in te vullen" /><br />
-    <label> Kies leveradres</label><br />
+    <label for="referentie">@ViewData["Reference"]</label><br />
+    <input type="text" name="referentie" placeholder="@ViewData["Put something"]" /><br />
+
+    <label for="opmerking">
+        @ViewData["Remark"]
+    </label><br />
+    <input type="text" name="opmerking" placeholder="@ViewData["Put something"]" /><br />
+
+    <label>
+        @ViewData["Delivery adres"]
+    </label><br />
+
     <table>
         @if (Model.lijstLeveradressen.Count < 2)
         {
             <tr>
-                <td><input type="radio" name="leverKlantId" id="@Model.leverKlant.Id" value="@Model.leverKlant.Id" checked  /></td>
+                <td><input type="radio" name="leverKlantId" id="@Model.leverKlant.Id" value="@Model.leverKlant.Id" checked /></td>
                 <td>@Model.leverKlant.Firma</td>
                 <td>@Model.leverKlant.Straat @Model.leverKlant.Postcode </td>
             </tr>
@@ -48,7 +55,7 @@
 
 
     </table><br />
-    <label>Manier van leveren</label><br />
+    <label>@ViewData["DeliveryType"]</label><br />
     <table>
 
         @foreach (var item in Model.transportTypes)
@@ -71,6 +78,6 @@
         }
 
     </table>
-    <input type="submit" formmethod="post" asp-controller="Order" asp-action="MaakOrder" value="Maak bestelling aan" />
+    <input type="submit" formmethod="post" asp-controller="Order" asp-action="MaakOrder" value="@ViewData["Put Order"]" />
 
 </form>

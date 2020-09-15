@@ -1,7 +1,72 @@
-﻿
+﻿@model WellStralerWebshop.Models.ViewModels.BestellingViewModel
 @{
     ViewData["Title"] = "GeefOrders";
 }
 
-<h1>GeefOrders</h1>
+<h1>@ViewData["Orders"]</h1>
+
+<div>
+    <h2>Bestellingen in verwerking</h2>
+    <form asp-controller="Product" asp-action="Index">
+        @ViewData["Filter"] :
+        <input type="text" name="SearchString" />
+        <input type="submit" value="@ViewData["Search"]" />
+    </form>
+
+    <table>
+        <tr>
+            <th>BestellingNr</th>
+            <th>Datum</th>
+            <th>Geleverd aan </th>
+            <th>Totaalbedrag </th>
+            <th>Detail </th>
+        </tr>
+
+        @foreach (var bestelling in Model.Bestellingen)
+        {
+            <tr>
+                <a>
+                    <td> @bestelling.Id</td>
+                    <td>
+                        @bestelling.Datum.ToShortDateString()
+                    </td>
+                    <td>
+                        @bestelling.KlantLeverFirma
+                    </td>
+                    @if (bestelling.Afgewerkt == 1)
+                    {
+                        <td>
+                            Afgewerkt
+                        </td>
+                    }
+                    else
+                    {
+                        <td>
+                            Nog niet afgewerkt
+                        </td>
+                    }
+
+                    @{
+                        decimal prijs = 0;
+                        foreach (var lijn in bestelling.Bestelijnen)
+                        {
+                            prijs = prijs + lijn.Prijs * lijn.Aantal;
+                        }
+                    }
+                    <td>
+                        € @prijs
+                    </td>
+                    <td>
+                        <a asp-controller="Bestelling" asp-action="Details" asp-route-id="@bestelling.Id">bestellen</a>
+                    </td>
+                </a>
+
+            </tr>
+        }
+
+    </table>
+
+    <h2>Geplaatste bestellingen</h2>
+
+</div>
 

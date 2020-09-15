@@ -54,8 +54,21 @@
             {
                 <tr>
                     <td>+ @bestellijn.Product.Afk</td>
-                    <td>@bestellijn.Product.OmschrijvingNL</td>
-                    <td>@bestellijn.Product.Prijs</td>
+                    <td>
+                        @if (ViewData["Taal"].Equals("en"))
+                        {
+                            @bestellijn.Product.OmschrijvingEN
+                        }
+                        else if (ViewData["Taal"].Equals("fr"))
+                        {
+                            @bestellijn.Product.OmschrijvingFR
+                        }
+                        else
+                        {
+                            @bestellijn.Product.OmschrijvingNL
+                        }
+                    </td>
+                    <td>€ @bestellijn.Product.Prijs</td>
                     <td>@bestellijn.Aantal</td>
 
                 </tr>
