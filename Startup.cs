@@ -68,7 +68,7 @@ namespace WellStralerWebshop
                     new CultureInfo("fr"),
                 };
 
-                opts.DefaultRequestCulture = new RequestCulture("nl");
+                opts.DefaultRequestCulture = new RequestCulture("en");
                 opts.SupportedCultures = supportedCultures;
                 opts.SupportedUICultures = supportedCultures;
 

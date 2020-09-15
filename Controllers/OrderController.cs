@@ -105,15 +105,39 @@ namespace WellStralerWebshop.Controllers
         public IActionResult MaakOrder( string referentie, string opmerking, short transportTypeId, long leverKlantId, KlantLogin klantLogin)
         {
             ApplyLanguage();
+            var request = HttpContext.Features.Get<IRequestCultureFeature>();
+            string taal = request.RequestCulture.Culture.Name;
             try
             {
                 if (leverKlantId == 0)
                 {
-                    throw new ArgumentException("Gelieve een leverklant te kiezen");
+                    if (taal == "en")
+                    {
+                        throw new ArgumentException("Please choose a delivery address");
+                    }
+                    else if (taal == "fr")
+                    {
+                        throw new ArgumentException("Veuillez choisir une adresse de livraison");
+                    }
+                    else
+                    {
+                        throw new ArgumentException("Gelieve een leveradres te kiezen");
+                    }
                 }
                 if (transportTypeId == 0)
                 {
-                    throw new ArgumentException("Gelieve een transportType te kiezen");
+                    if (taal == "en")
+                    {
+                        throw new ArgumentException("Please choose a transport Type");
+                    }
+                    else if (taal == "fr")
+                    {
+                        throw new ArgumentException("Veuillez choisir un type de transport");
+                    }
+                    else
+                    {
+                        throw new ArgumentException("Gelieve een transportType te kiezen");
+                    }
                 }
                 Klant leverKlant = this._klantRepository.getKlant(leverKlantId);
                 Transport transport = this._transportRepository.getTransportById(transportTypeId);
@@ -122,6 +146,19 @@ namespace WellStralerWebshop.Controllers
                 this._onlineBestellingRepository.voegOnlineBestellingToe(bestelling);
                 this._onlineBestellingRepository.SaveChanges();
                 TempData["message"] = "Bestelling succesvol geplaatst";
+                if (taal == "en")
+                {
+                    TempData["message"] = "Order placed successfully";
+                }
+                else if (taal == "fr")
+                {
+                    TempData["message"] = "Commande passée avec succès";
+
+                }
+                else
+                {
+                    TempData["message"] = "Bestelling succesvol geplaatst";
+                }
                 return RedirectToAction("Index", "Product");
             }
             catch (ArgumentException ex)
@@ -132,9 +169,6 @@ namespace WellStralerWebshop.Controllers
                 MaakOrderViewModel vm = new MaakOrderViewModel(leverKlanten,leverKlanten.ElementAt(0),referentie,opmerking,lijstTransportTypes,lijstTransportTypes.ElementAt(0));
                 return View("MaakOrder",vm);
             }
-            
-
-            return null;
         }
         [ServiceFilter(typeof(KlantFilter))]
 

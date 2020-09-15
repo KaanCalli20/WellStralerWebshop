@@ -44,7 +44,7 @@ namespace WellStralerWebshop.Data.Repositories
                         {
                             if (lijn.ProductOmschrijving != null)
                             {
-                                if (lijn.ProductOmschrijving.Contains(productNaam))
+                                if (lijn.ProductOmschrijving.ToUpper().Contains(productNaam.ToUpper()))
                                 {
                                     gefilterdeFacturen.Add(item);
                                     break;

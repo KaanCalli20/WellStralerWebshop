@@ -16,7 +16,16 @@
         <br />
         <label>Datum</label><br />
         <label>Van</label>
-        <input type="date" name="vanDatum" value="@Model.VanDatum " />
+        @if (Model.VanDatum != null)
+        {
+    <p>@Model.VanDatum.Value.ToShortDateString()</p>
+            <input type="date" name="vanDatum" value="@Model.VanDatum.Value "  />
+        }
+        else
+        {
+            <input type="date" name="vanDatum" value="@Model.VanDatum " />
+        }
+
         <br />
         <label>Tot</label>
         <input type="date" name="totDatum" value="@Model.TotDatum" />

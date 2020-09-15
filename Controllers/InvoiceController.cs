@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
@@ -41,7 +42,7 @@ namespace WellStralerWebshop.Controllers
 
             vm.ProductNaam = productNaam;
             vm.FactuurNr = factuurNr;
-            vm.VanDatum = vanDatum;
+            vm.VanDatum =vanDatum;
             vm.TotDatum = totDatum;
             vm.ZendNotaNr = zendNotaNr;
             vm.Serienummer = serienummer;
