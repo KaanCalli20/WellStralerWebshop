@@ -17,6 +17,7 @@ namespace WellStralerWebshop.Data.Mappers
             builder.Property(x => x.Id).HasColumnName("tBESNummer");
             builder.Property(x => x.Datum).HasColumnName("tBESDatum");
             builder.Property(x => x.KlantId).HasColumnName("tBESKLAId");
+            builder.Property(x => x.LevKlantId).HasColumnName("tBESLEVKlaId");
             builder.Property(x => x.Afleverdag).HasColumnName("tBESAfleverdag");
             builder.Property(x => x.DatumInbreng).HasColumnName("tBESDatumInbreng");
             builder.Property(x => x.DatumWijziging).HasColumnName("tBESDatumWijziging");
@@ -38,6 +39,18 @@ namespace WellStralerWebshop.Data.Mappers
             builder.Property(x => x.KlantBtwPlicht).HasColumnName("tBESKLABTWPlicht");
             builder.Property(x => x.Geblokkeerd).HasColumnName("tBESGeblokkeerd");
             builder.Property(x => x.Afgewerkt).HasColumnName("tBESAfgewerkt");
+
+            builder.HasMany(t => t.Bestelijnen)
+            .WithOne(p=>p.Bestelling).IsRequired()
+            .HasForeignKey(t => t.BestellingId)
+            .OnDelete(DeleteBehavior.Cascade);
+
+            builder.HasOne(p => p.Klant)
+                .WithMany()
+                .HasForeignKey(p => p.KlantId);
+            builder.HasOne(p => p.KlantLev)
+               .WithMany()
+               .HasForeignKey(p => p.LevKlantId);
         }
     }
 }

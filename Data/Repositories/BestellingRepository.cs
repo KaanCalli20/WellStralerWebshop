@@ -19,7 +19,7 @@ namespace WellStralerWebshop.Data.Repositories
         }
         public List<Bestelling> getBestellingen()
         {
-            return _bestellingen.ToList();
+            return _bestellingen.Include(m=>m.Bestelijnen).Include(m=>m.Klant).ToList();
         }
     }
 }

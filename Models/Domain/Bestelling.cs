@@ -20,6 +20,7 @@ namespace WellStralerWebshop.Models.Domain
         public string KlantStraat { get; set; }
         public string KlantPostcode { get; set; }
         public string KlantLand { get; set; }
+        public long LevKlantId { get; set; }
         public string KlantLeverFirma { get; set; }
         public string KlantLeverNaam { get; set; }
         public string KlantLevStraat { get; set; }
@@ -34,5 +35,8 @@ namespace WellStralerWebshop.Models.Domain
         public byte Geblokkeerd { get; set; }
         public byte Afgewerkt { get; set; }
 
+        public List<BestelLijn> Bestelijnen { get; set; }
+        public Klant Klant { get; set; }
+        public Klant KlantLev { get; set; } 
     }
 }

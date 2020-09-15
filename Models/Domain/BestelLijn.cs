@@ -23,12 +23,10 @@ namespace WellStralerWebshop.Models.Domain
         public byte Afgewerkt { get; set; }
         public byte Geblokkeerd { get; set; }
         public DateTime DatumInbreng { get; set; }
-        //public long CreatedBy { get; set; }
         public DateTime DatumWijziging { get; set; }
-       // public long ModifiedBy { get; set; }
         public long HoofdProdBestelId { get; set; }
 
-        //public Product Product { get; set; }
-        //public Order Order { get; set; }
+        public Bestelling Bestelling { get; set; }
+        public Product Product { get; set; }
     }
 }

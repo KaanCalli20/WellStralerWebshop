@@ -33,11 +33,13 @@ namespace WellStralerWebshop.Data.Mappers
             builder.Property(x => x.Afgewerkt).HasColumnName("tBESLAfgewerkt");
             builder.Property(x => x.Geblokkeerd).HasColumnName("tBESLGeblokkeerd");
             builder.Property(x => x.DatumInbreng).HasColumnName("tBESLDatumInbreng");
-            //builder.Property(x => x.CreatedBy).HasColumnName("tBESLUsrIdInbreng");
             builder.Property(x => x.DatumWijziging).HasColumnName("tBESLDatumWijziging");
-            //builder.Property(x => x.ModifiedBy).HasColumnName("tBESLUsrIdWijziging");
             builder.Property(x => x.HoofdProdBestelId).HasColumnName("tBESLHoofdProdBeslId");
-            
+
+            builder.HasOne(p => p.Product)
+                .WithMany()
+                .HasForeignKey(m => m.ProductId);
+
         }
     }
 }
