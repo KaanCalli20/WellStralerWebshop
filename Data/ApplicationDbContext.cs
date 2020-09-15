@@ -43,6 +43,7 @@ namespace WellStralerWebshop.Data
             builder.ApplyConfiguration(new FactuurConfiguration());
             builder.ApplyConfiguration(new FactuurLijnConfiguration());
 
+            builder.ApplyConfiguration(new BestelLijnConfiguration());
 
         }
 
