@@ -320,7 +320,7 @@ namespace WellStralerWebshop.Controllers
             else{
                 foreach (Product koppelProduct in geselecteerdeProducten)
                 {
-                    lijstOnlineBestelLijn.Add(new OnlineBestelLijn(0, klantLogin, klant, koppelProduct, aantal, koppelProduct.Prijs, koppelProduct.BtwPerc, DateTime.Now, onlineBestelLijn.Id));
+                    lijstOnlineBestelLijn.Add(new OnlineBestelLijn(0, klantLogin, klant, koppelProduct, aantal, koppelProduct.PrijsGekoppeld, koppelProduct.BtwPerc, DateTime.Now, onlineBestelLijn.Id));
                 }
                 _onlineBestelLijnRepo.voegOnlineBestelLijnenToe(lijstOnlineBestelLijn);
 
@@ -333,7 +333,7 @@ namespace WellStralerWebshop.Controllers
             }
             else if(taal=="fr")
             {
-                TempData["message"] = "Produit placé avec succès dans le chariot";
+                TempData["message"] = "Produit placé avec succès dans le panier";
 
             }
             else
@@ -476,11 +476,11 @@ namespace WellStralerWebshop.Controllers
         {
             Product productVoorPrijs;
             Decimal prijs = 0;
-            //For moet vanaf 1 beginnen en de prijs van het hoofdproduct moet alvorens bijgerekend worden.
-            for (int i = 0; i < geselecteerdeProducten.Count; i++)
+            prijs = geselecteerdeProducten.ElementAt(0).Prijs;
+            for (int i = 1; i < geselecteerdeProducten.Count; i++)
             {
-                productVoorPrijs = geselecteerdeProducten.ElementAt(i);
-                prijs = prijs +  productVoorPrijs.Prijs;
+                prijs = prijs + geselecteerdeProducten.ElementAt(i).PrijsGekoppeld;
+                
             }
 
             return prijs;
@@ -516,7 +516,7 @@ namespace WellStralerWebshop.Controllers
             ViewData["Previous"] = _localizer["Previous"];
             ViewData["Change"] = _localizer["Change"];
             ViewData["Next"] = _localizer["Next"];
-
+            ViewData["Back"] = _localizer["Back"];
 
             ViewData["Products"] = _localizer["Products"];
             ViewData["Orders"] = _localizer["Orders"];

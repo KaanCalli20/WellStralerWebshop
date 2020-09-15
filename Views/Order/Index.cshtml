@@ -4,7 +4,7 @@
     ViewData["Title"] = "Index";
 }
 
-<h1>WinkelMand</h1>
+<h1>@ViewData["Cart"]</h1>
 
 <form asp-controller="Order">
     <table>
@@ -24,14 +24,7 @@
 
             @if (bestellijn.HoofdProdBestelLijnId == 0)
             {
-                <tr>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-
-                </tr>
+                
                 <tr>
                     <td>@bestellijn.Product.Afk</td>
                     <td>
@@ -73,7 +66,7 @@
 
     </table>
 
-    <h2>@ViewData["Total_Amount_Without_Reduction"] = @TempData["TotaalPrijsZonderKorting"] @ViewData["Euro"]</h2>
+    <h2>@ViewData["Total_Amount_Without_Reduction"] = @ViewData["TotaalPrijsZonderKorting"] @ViewData["Euro"]</h2>
 
     <input type="submit" formmethod="get" asp-action="MaakOrder" value="@ViewData["Finalize_Order"]" />
 

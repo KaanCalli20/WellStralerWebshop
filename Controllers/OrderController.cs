@@ -129,6 +129,14 @@ namespace WellStralerWebshop.Controllers
 
             return null;
         }
+        [ServiceFilter(typeof(KlantFilter))]
+
+        public IActionResult GeefOrders(KlantLogin klantLogin)
+        {
+
+
+            return null;
+        }
         public void totaalPrijs()
         {
             decimal prijs = 0;
@@ -160,6 +168,7 @@ namespace WellStralerWebshop.Controllers
             ViewData["Total_Amount_Without_Reduction"] = _localizer["Total Amount Without Reduction"];
             ViewData["Finalize_Order"] = _localizer["Finalize Order"];
             ViewData["Euro"] = _localizer["Euro"];
+            ViewData["Cart"] = _localizer["Cart"];
 
             ViewData["Products"] = _localizer["Products"];
             ViewData["Orders"] = _localizer["Orders"];

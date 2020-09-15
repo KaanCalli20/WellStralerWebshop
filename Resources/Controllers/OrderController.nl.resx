@@ -120,6 +120,9 @@
   <data name="Amount" xml:space="preserve">
     <value>Aantal</value>
   </data>
+  <data name="Cart" xml:space="preserve">
+    <value>Winkelwagen</value>
+  </data>
   <data name="Delete" xml:space="preserve">
     <value>Verwijder</value>
   </data>
@@ -138,6 +141,9 @@
   <data name="Id" xml:space="preserve">
     <value>Id</value>
   </data>
+  <data name="Invoices" xml:space="preserve">
+    <value>Facturen</value>
+  </data>
   <data name="Login" xml:space="preserve">
     <value>Login</value>
   </data>
@@ -148,7 +154,7 @@
     <value>Bestellen</value>
   </data>
   <data name="Orders" xml:space="preserve">
-    <value>Bestelingen</value>
+    <value>Bestellingen</value>
   </data>
   <data name="Price" xml:space="preserve">
     <value>Prijs</value>

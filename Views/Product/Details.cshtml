@@ -4,7 +4,7 @@
 @{
     ViewData["Title"] = "Details";
 }
-
+<a class="btn btn-secondary" asp-area="" asp-controller="Product" asp-action="Index">@ViewData["Back"]</a>
 <h1>
     @if (ViewData["Taal"].Equals("en"))
     {
@@ -32,9 +32,14 @@
                 <th>@ViewData["Description"]</th>
                 <th>@ViewData["Price"]</th>
             </tr>
+            @{
+                var teller = 0;
+            }
 
             @foreach (var item in Model.geselecteerdeProducten)
             {
+
+
                 <tr id="0">
                     <td><input type="checkbox" checked disabled name="selectedProds" id="@item.Id" value="@item.Id" /> </td>
                     <td>
@@ -51,7 +56,16 @@
                             @item.OmschrijvingNL
                         }
                     </td>
-                    <td>@item.Prijs</td>
+                    @if (teller == 0)
+                    {
+                        <td>@item.Prijs</td>
+                    }
+                    else
+                    {
+                        <td>@item.PrijsGekoppeld</td>
+                    }
+                    @{teller = teller + 1;}
+
                 </tr>
             }
 

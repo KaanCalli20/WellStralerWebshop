@@ -120,6 +120,9 @@
   <data name="Amount" xml:space="preserve">
     <value>Nombre</value>
   </data>
+  <data name="Cart" xml:space="preserve">
+    <value>Panier</value>
+  </data>
   <data name="Delete" xml:space="preserve">
     <value>Supprimer</value>
   </data>
@@ -137,6 +140,9 @@
   </data>
   <data name="Id" xml:space="preserve">
     <value>Id</value>
+  </data>
+  <data name="Invoices" xml:space="preserve">
+    <value>Factures</value>
   </data>
   <data name="Login" xml:space="preserve">
     <value>s'identifier</value>

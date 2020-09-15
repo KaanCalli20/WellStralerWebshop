@@ -22,16 +22,13 @@
                             <a class="nav-link text-dark" asp-area="" asp-controller="Product" asp-action="Index">@ViewData["Products"]</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Product" asp-action="Index">@ViewData["Orders"]</a>
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Order" asp-action="Index">@ViewData["Cart"]</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Order" asp-action="Index">WinkelWagen</a>
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Order" asp-action="GeefOrders">@ViewData["Orders"]</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Bestelling" asp-action="Index">Bestellingen</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Invoice" asp-action="Index">Factuur</a>
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Invoice" asp-action="Index">@ViewData["Invoice"]</a>
                         </li>
                         @if (!User.Identity.IsAuthenticated)
                         {

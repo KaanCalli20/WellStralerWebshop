@@ -120,6 +120,9 @@
   <data name="Add to cart" xml:space="preserve">
     <value>Ajouter au chariot</value>
   </data>
+  <data name="Back" xml:space="preserve">
+    <value>arrière</value>
+  </data>
   <data name="Change" xml:space="preserve">
     <value>Changement</value>
   </data>
@@ -131,6 +134,9 @@
   </data>
   <data name="Id" xml:space="preserve">
     <value>Id</value>
+  </data>
+  <data name="Invoices" xml:space="preserve">
+    <value>Factures</value>
   </data>
   <data name="Login" xml:space="preserve">
     <value>s'identifier</value>
