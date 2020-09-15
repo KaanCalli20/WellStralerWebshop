@@ -469,6 +469,12 @@ namespace WellStralerWebshop.Controllers
             ViewData["Order"] = _localizer["Order"];
             ViewData["Filter"] = _localizer["Filter"];
             ViewData["Search"] = _localizer["Search"];
+            ViewData["Quantity"] = _localizer["Quantity"];
+            ViewData["Add to cart"] = _localizer["Add to cart"];
+            ViewData["Previous"] = _localizer["Previous"];
+            ViewData["Change"] = _localizer["Change"];
+            ViewData["Next"] = _localizer["Next"];
+
 
             ViewData["Products"] = _localizer["Products"];
             ViewData["Orders"] = _localizer["Orders"];

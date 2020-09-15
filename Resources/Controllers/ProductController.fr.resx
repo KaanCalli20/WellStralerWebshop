@@ -117,6 +117,12 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="Add to cart" xml:space="preserve">
+    <value>Ajouter au chariot</value>
+  </data>
+  <data name="Change" xml:space="preserve">
+    <value>Changement</value>
+  </data>
   <data name="Description" xml:space="preserve">
     <value>Description</value>
   </data>
@@ -132,17 +138,29 @@
   <data name="Logout" xml:space="preserve">
     <value>Se déconnecter</value>
   </data>
+  <data name="Name" xml:space="preserve">
+    <value>Nom</value>
+  </data>
+  <data name="Next" xml:space="preserve">
+    <value>Suivante</value>
+  </data>
   <data name="Order" xml:space="preserve">
     <value>Commander</value>
   </data>
   <data name="Orders" xml:space="preserve">
     <value>Ordres</value>
   </data>
+  <data name="Previous" xml:space="preserve">
+    <value>Précédent</value>
+  </data>
   <data name="Price" xml:space="preserve">
     <value>Prix</value>
   </data>
   <data name="Products" xml:space="preserve">
     <value>Produit</value>
+  </data>
+  <data name="Quantity" xml:space="preserve">
+    <value>Quantité</value>
   </data>
   <data name="Search" xml:space="preserve">
     <value>Chercher</value>

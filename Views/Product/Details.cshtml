@@ -8,7 +8,7 @@
 <h1>@Model.geselecteerdeProducten.ElementAt(0).OmschrijvingNL</h1>
 
 <form asp-controller="Product">
-    <h3>Hoeveelheid</h3>
+    <h3>@ViewData["Quantity"]</h3>
     <select name="quantity" id="quantity" size="1" asp-items="@(ViewData["aantal"] as SelectList)">
         <option id="quantity" value="@Model.aantal">@Model.aantal</option>
     </select>
@@ -16,8 +16,8 @@
         <table class="Wagentje">
             <tr>
                 <th>Prod</th>
-                <th>Omschrijving</th>
-                <th>prijs</th>
+                <th>@ViewData["Description"]</th>
+                <th>@ViewData["Price"]</th>
             </tr>
 
             @foreach (var item in Model.geselecteerdeProducten)
@@ -32,7 +32,7 @@
 
         </table>
     </ul>
-    <p>Prijs= @ViewData["NormalePrijs"]</p>
+    <p>@ViewData["Price"] € @ViewData["NormalePrijs"]</p>
 
     @if (Model.productKoppelingen == null)
     {
@@ -45,9 +45,9 @@
             <thead>
                 <tr>
                     <th>Box</th>
-                    <th>ID</th>
-                    <th>Naam</th>
-                    <th>Prijs</th>
+                    <th>@ViewData["Id"]</th>
+                    <th>@ViewData["Name"]</th>
+                    <th>@ViewData["Price"]</th>
                 </tr>
             </thead>
             <tbody>
@@ -67,8 +67,21 @@
                             }
 
                             <td> @item.GekoppeldProdId</td>
-                            <td> @item.GekoppeldProduct.OmschrijvingNL</td>
-                            <td> @item.GekoppeldProduct.Prijs</td>
+                            <td>
+                                @if (ViewData["Taal"].Equals("en"))
+                                {
+                                    @item.GekoppeldProduct.OmschrijvingEN
+                                }
+                                else if (ViewData["Taal"].Equals("fr"))
+                                {
+                                    @item.GekoppeldProduct.OmschrijvingFR
+                                }
+                                else if (ViewData["Taal"].Equals("nl"))
+                                {
+                                    @item.GekoppeldProduct.OmschrijvingNL
+                                }
+                            </td>
+                            <td>€ @item.GekoppeldProduct.PrijsGekoppeld</td>
                         </tr>
                     }
 
@@ -102,7 +115,22 @@
 
 
                             <td> @item.Id</td>
-                            <td> @item.GekoppeldProduct.OmschrijvingNL</td>
+                            <td>
+                                @if (ViewData["Taal"].Equals("en"))
+                                {
+                                    @item.GekoppeldProduct.OmschrijvingEN
+                                }
+                                else if (ViewData["Taal"].Equals("fr"))
+                                {
+                                    @item.GekoppeldProduct.OmschrijvingFR
+                                }
+                                else if (ViewData["Taal"].Equals("nl"))
+                                {
+                                    @item.GekoppeldProduct.OmschrijvingNL
+                                }
+                            </td>
+                            <td>@item.GekoppeldProduct.PrijsGekoppeld</td>
+
                         </tr>
                     }
 
@@ -110,17 +138,17 @@
                 <tr>
                     @if (Model.index > 0)
                     {
-                        <td><input type="submit" asp-action="Vorige" value="Vorige" asp-route-selectedProds="@String.Format(Model.index + "," + string.Join(",", @Model.geselecteerdeProducten.Select(m => m.Id).ToList())) " /></td>
+                        <td><input type="submit" asp-action="Vorige" value="@ViewData["Previous"]" asp-route-selectedProds="@String.Format(Model.index + "," + string.Join(",", @Model.geselecteerdeProducten.Select(m => m.Id).ToList())) " /></td>
 
                     }
                     @if (Model.index == Model.max || Model.index == 0)
                     {
-                        <td><input type="submit" asp-action="Wijzig" value="Wijzig" asp-route-selectedProds="@String.Format(Model.index + "," + string.Join(",", @Model.geselecteerdeProducten.Select(m => m.Id).ToList())) " /></td>
+                        <td><input type="submit" asp-action="Wijzig" value="@ViewData["Change"]" asp-route-selectedProds="@String.Format(Model.index + "," + string.Join(",", @Model.geselecteerdeProducten.Select(m => m.Id).ToList())) " /></td>
 
                     }
                     @if (Model.index < Model.max)
                     {
-                        <td><input type="submit" asp-action="Volgende" value="Volgende" asp-route-selectedProds="@String.Format(Model.index + "," + string.Join(",", @Model.geselecteerdeProducten.Select(m => m.Id).ToList())) " /></td>
+                        <td><input type="submit" asp-action="Volgende" value="@ViewData["Next"]" asp-route-selectedProds="@String.Format(Model.index + "," + string.Join(",", @Model.geselecteerdeProducten.Select(m => m.Id).ToList())) " /></td>
 
                     }
                 </tr>
@@ -129,7 +157,7 @@
         </table>
     }
 
-    <input type="submit" asp-action="PlaatsInWinkelmand" value="Voeg in winkelmand toe" asp-route-selectedProds="@String.Format(Model.index + "," + string.Join(",", @Model.geselecteerdeProducten.Select(m => m.Id).ToList())) " />
+    <input type="submit" asp-action="PlaatsInWinkelmand" value="@ViewData["Add to cart"]" asp-route-selectedProds="@String.Format(Model.index + "," + string.Join(",", @Model.geselecteerdeProducten.Select(m => m.Id).ToList())) " />
 
 </form>
 
