@@ -7,20 +7,19 @@ using WellStralerWebshop.Models.Domain;
 
 namespace WellStralerWebshop.Data.Repositories
 {
-    public class BestelLijnRepository : IBestelLijnRepository
+    public class BestellingRepository : IBestellingRepository
     {
         private readonly ApplicationDbContext _dbContext;
-        private DbSet<BestelLijn> _bestelLijnen;
+        private DbSet<Bestelling> _bestellingen;
 
-        public BestelLijnRepository(ApplicationDbContext dbContext)
+        public BestellingRepository(ApplicationDbContext dbContext)
         {
             _dbContext = dbContext;
-            _bestelLijnen = _dbContext.BestelLijnen;
+            _bestellingen = _dbContext.Bestellingen;
         }
-
-        public List<BestelLijn> getBestelLijnen()
+        public List<Bestelling> getBestellingen()
         {
-            return _bestelLijnen.ToList();
+            return _bestellingen.ToList();
         }
     }
 }

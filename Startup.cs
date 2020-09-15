@@ -82,6 +82,8 @@ namespace WellStralerWebshop
             services.AddScoped<ITransportRepository,TransportRepository>();
             services.AddScoped<IFactuurLijnRepository, FactuurLijnRepository>();
             services.AddScoped<IFactuurRepository, FactuurRepository>();
+            services.AddScoped<IBestelLijnRepository, BestelLijnRepository>();
+            services.AddScoped<IBestellingRepository, BestellingRepository>();
             services.AddScoped<KlantFilter>();
 
         }

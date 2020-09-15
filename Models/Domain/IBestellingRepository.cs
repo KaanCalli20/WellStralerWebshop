@@ -5,8 +5,8 @@ using System.Threading.Tasks;
 
 namespace WellStralerWebshop.Models.Domain
 {
-    public interface IBestelLijnRepository
+    public interface IBestellingRepository
     {
-        public List<BestelLijn> getBestelLijnen();
+        public List<Bestelling> getBestellingen();
     }
 }

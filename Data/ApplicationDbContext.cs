@@ -20,6 +20,9 @@ namespace WellStralerWebshop.Data
         public DbSet<FactuurLijn> FactuurLijnen { get; set; }
         public DbSet<Factuur> Facturen { get; set; }
 
+        public DbSet<BestelLijn> BestelLijnen { get; set; }
+        public DbSet<Bestelling> Bestellingen { get; set; }
+
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
            : base(options)
         {
@@ -44,7 +47,7 @@ namespace WellStralerWebshop.Data
             builder.ApplyConfiguration(new FactuurLijnConfiguration());
 
             builder.ApplyConfiguration(new BestelLijnConfiguration());
-
+            builder.ApplyConfiguration(new BestellingConfiguration());
         }
 
     }
