@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using WellStralerWebshop.Filters;
 using WellStralerWebshop.Models.Domain;
+using WellStralerWebshop.Models.ViewModels;
 
 namespace WellStralerWebshop.Controllers
 {
@@ -16,13 +18,22 @@ namespace WellStralerWebshop.Controllers
             this._bestelLijnRepo = bestellijnRepo;
             this._bestellingRepo = bestellingRepo;
         }
-        public IActionResult Index()
+        [ServiceFilter(typeof(KlantFilter))]
+        public IActionResult Index(KlantLogin klantLogin)
         {
-            List<BestelLijn> bestelLijnen = _bestelLijnRepo.getBestelLijnen();
-            List<Bestelling> bestellingen = _bestellingRepo.getBestellingen();
+            List<Bestelling> bestellingen = _bestellingRepo.getBestellingen(klantLogin);
+            BestellingViewModel vm = new BestellingViewModel(bestellingen);
+           
 
+            return View(vm);
+        }
 
-            return View();
+        [ServiceFilter(typeof(KlantFilter))]
+        public IActionResult Details(int id, KlantLogin klantLogin)
+        {
+            Bestelling bestelling =_bestellingRepo.getBestellingById(id,klantLogin);
+            BestellingDetailViewModel vm = new BestellingDetailViewModel(bestelling);
+            return View(vm);
         }
     }
 }

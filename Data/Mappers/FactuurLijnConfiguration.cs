@@ -27,6 +27,7 @@ namespace WellStralerWebshop.Data.Mappers
 			//builder.Property(x => x.ZendLijnNummer).HasColumnName("tFACLZENLId");
 			builder.Property(x => x.DatumInbreng).HasColumnName("tFACLDatumInbreng");
 			
+			
 		}
 	}
 }

@@ -1,0 +1,67 @@
+﻿@model WellStralerWebshop.Models.ViewModels.BestellingDetailViewModel;
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h1>Detail Bestelling</h1>
+
+<p>Datum @Model.Bestelling.Datum </p>
+<p>Geleverd bij @Model.Bestelling.KlantLeverFirma</p>
+<table>
+    <thead>
+        <th>
+            Datum
+        </th>
+        <th>
+            Prod
+        </th>
+        <th>
+            Omschrijving
+        </th>
+        <th>
+            Aantal
+        </th>
+        <th>
+            Te leveren
+        </th>
+        <th>
+            Eenh Prijs
+        </th>
+        <th>
+            Totaal
+        </th>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.Bestelling.Bestelijnen)
+        {
+        <tr>
+            <td>
+                @item.DatumInbreng.ToShortDateString()
+            </td>
+            <td>
+                @item.Product.Afk
+            </td>
+            <td>
+                @item.ProductOmschrijving
+            </td>
+            <td>
+                @item.Aantal
+            </td>
+            @{
+                decimal prijs = item.Prijs * item.Aantal;
+                int teLeveren = item.Aantal - item.AantalGeleverd;
+            }
+            <td>
+                @teLeveren
+            </td>
+            <td>
+                @item.Prijs
+            </td>
+
+            <td>
+                @prijs
+            </td>
+        </tr>
+        }
+    </tbody>
+</table>

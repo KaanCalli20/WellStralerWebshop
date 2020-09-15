@@ -54,7 +54,6 @@ namespace WellStralerWebshop.Controllers
             var request = HttpContext.Features.Get<IRequestCultureFeature>();
             string taal = request.RequestCulture.Culture.Name;
 
-            ApplyLanguage();
 
             if (SearchString != null)
             {
@@ -78,6 +77,7 @@ namespace WellStralerWebshop.Controllers
 
         public IActionResult Details(long Id)
         {
+            ApplyLanguage();
             List<Product> geselecteerdeProducten = new List<Product>();
 
             ProductDetailViewModel vm;
@@ -105,6 +105,7 @@ namespace WellStralerWebshop.Controllers
         [HttpPost]
         public IActionResult Volgende(string selectedProds, List<long>? productId,  string? quantity)
         {
+            ApplyLanguage();
             List<string> stringSelectedValues = selectedProds.Split(",").ToList();
             List<Product> geselecteerdeProducten;
             Product hoofdProduct;
@@ -145,6 +146,7 @@ namespace WellStralerWebshop.Controllers
         [HttpPost]
         public IActionResult Vorige(string selectedProds, List<long>? productId, string? quantity)
         {
+            ApplyLanguage();
             List<string> stringSelectedValues = selectedProds.Split(",").ToList();
             List<Product> geselecteerdeProducten;
             Product hoofdProduct;
@@ -185,6 +187,7 @@ namespace WellStralerWebshop.Controllers
 
         public IActionResult Wijzig(string selectedProds, List<long>? productId, string? quantity)
         {
+            ApplyLanguage();
             List<string> stringSelectedValues = selectedProds.Split(",").ToList();
             List<Product> geselecteerdeProducten;
             Product hoofdProduct;

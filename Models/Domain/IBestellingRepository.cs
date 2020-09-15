@@ -7,6 +7,7 @@ namespace WellStralerWebshop.Models.Domain
 {
     public interface IBestellingRepository
     {
-        public List<Bestelling> getBestellingen();
+        public List<Bestelling> getBestellingen(KlantLogin klantLogin);
+        public Bestelling getBestellingById(int id, KlantLogin klantLogin);
     }
 }

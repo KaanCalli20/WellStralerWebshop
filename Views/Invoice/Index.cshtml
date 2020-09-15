@@ -1,7 +1,91 @@
-﻿
+﻿@model WellStralerWebshop.Models.ViewModels.FactuurViewModel
 @{
     ViewData["Title"] = "Index";
 }
 
-<h1>Index</h1>
+<h1>Factuur</h1>
 
+<div>
+
+    <form asp-controller="Invoice" asp-action="Index">
+        <label>Product</label>
+        <input type="text" name="productNaam" value="@Model.ProductNaam" />
+        <br />
+        <label>Nummer</label>
+        <input type="text" name="factuurNr" value="@Model.FactuurNr" />
+        <br />
+        <label>Datum</label><br />
+        <label>Van</label>
+        <input type="date" name="vanDatum" value="@Model.VanDatum " />
+        <br />
+        <label>Tot</label>
+        <input type="date" name="totDatum" value="@Model.TotDatum" />
+        <br />
+        <label>Zendnotnr</label>
+        <input type="text" name="zendNotaNr" value="@Model.ZendNotaNr" />
+        <br />
+        <label>Serienummer</label>
+        <input type="text" name="serienummer" value="@Model.Serienummer" />
+        <br />
+
+        <input type="submit" value="Filter" />
+
+    </form>
+
+    <table>
+        <tr>
+            <th>Factuurnr</th>
+            <th>Datum</th>
+            <th>Geleverd aan</th>
+            <th>Totaalbedrag</th>
+            <th>Details</th>
+        </tr>
+
+        @foreach (var factuur in Model.Facturen)
+        {
+            <tr>
+                <a>
+                    <td> @factuur.FactuurNummer</td>
+                    <td>
+                        @factuur.Datum.ToShortDateString()
+                    </td>
+
+                    @if (factuur.LeverKlant != null)
+                    {
+                        <td>
+                            @factuur.LeverKlant.Firma
+                        </td>
+                    }
+                    else
+                    {
+                        <td>
+                            @factuur.KlantFirma
+                        </td>
+                    }
+                    <td>
+                        @factuur.
+                    </td>
+                    @{ 
+                        decimal prijs = 0;
+                        foreach (var lijn in factuur.FactuurLijnen)
+                        {
+                            prijs = prijs + lijn.Prijs * lijn.Aantal;
+                        }
+                    }
+                    
+                    <td>
+                       € @prijs
+                    </td>
+
+
+                    <td>
+                        <a asp-controller="Invoice" asp-action="Details" asp-route-id="@factuur.Id">Details bekijken</a>
+                    </td>
+                </a>
+
+            </tr>
+        }
+
+    </table>
+
+</div>
