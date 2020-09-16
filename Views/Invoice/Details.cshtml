@@ -3,32 +3,32 @@
     ViewData["Title"] = "Details";
 }
 
-<h1>Details factuur</h1>
-<a class="btn btn-secondary" asp-area="" asp-controller="Invoice" asp-action="Index">Terug</a>
-<a class="btn btn-secondary" asp-area="" asp-controller="Product" asp-action="Index">Home</a>
-<p>Factuurnr @Model.Factuur.FactuurNummer</p> <p>Totaalbedrag € @Model.Totaalbedrag</p>
+<h1>@ViewData["Detail"]</h1>
+<a class="btn btn-secondary" asp-area="" asp-controller="Invoice" asp-action="Index">@ViewData["Back"]</a>
+<a class="btn btn-secondary" asp-area="" asp-controller="Product" asp-action="Index">@ViewData["Home"]</a>
+<p>@ViewData["InvoiceId"]: @Model.Factuur.FactuurNummer</p> <p>@ViewData["Total amount"] € @Model.Totaalbedrag</p>
 <br />
-<p>Datum @Model.Factuur.Datum.ToShortDateString()</p>
+<p>@ViewData["Date"]: @Model.Factuur.Datum.ToShortDateString()</p>
 
 <table>
     <thead>
     <th>
-        Zendnota
+        @ViewData["Shipping note"]
     </th>
     <th>
-        Aantal
+        @ViewData["Number"]
     </th>
     <th>
-        Omschrijving
+        @ViewData["Description"]
     </th>
     <th>
-        Serienummer
+        @ViewData["Serial number"]
     </th>
     <th>
-        Eenh Prijs
+        @ViewData["Price per"]
     </th>
     <th>
-        Bedrag
+        @ViewData["Amountt"]
     </th>
     </thead>
     <tbody>

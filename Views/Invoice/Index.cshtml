@@ -3,23 +3,23 @@
     ViewData["Title"] = "Index";
 }
 
-<h1>Factuur</h1>
+<h1>@ViewData["Invoice"]</h1>
 
 <div>
 
     <form asp-controller="Invoice" asp-action="Index">
-        <label>Product</label>
+        <label>@ViewData["Product"]</label>
         <input type="text" name="productNaam" value="@Model.ProductNaam" />
         <br />
-        <label>Nummer</label>
+        <label>@ViewData["InvoiceId"]</label>
         <input type="text" name="factuurNr" value="@Model.FactuurNr" />
         <br />
-        <label>Datum</label><br />
-        <label>Van</label>
+        <label>@ViewData["Date"]</label><br />
+        <label>@ViewData["From"]</label>
         @if (Model.VanDatum != null)
         {
-    <p>@Model.VanDatum.Value.ToShortDateString()</p>
-            <input type="date" name="vanDatum" value="@Model.VanDatum.Value "  />
+            <p>@Model.VanDatum.Value.ToShortDateString()</p>
+            <input type="date" name="vanDatum" value="@Model.VanDatum.Value " />
         }
         else
         {
@@ -27,27 +27,27 @@
         }
 
         <br />
-        <label>Tot</label>
+        <label>@ViewData["To"]</label>
         <input type="date" name="totDatum" value="@Model.TotDatum" />
         <br />
-        <label>Zendnotnr</label>
+        <label>@ViewData["Dispatch note"]</label>
         <input type="text" name="zendNotaNr" value="@Model.ZendNotaNr" />
         <br />
-        <label>Serienummer</label>
+        <label>@ViewData["Serial Number"]</label>
         <input type="text" name="serienummer" value="@Model.Serienummer" />
         <br />
 
-        <input type="submit" value="Filter" />
+        <input type="submit" value="@ViewData["Filter"]"/>
 
     </form>
 
     <table>
         <tr>
-            <th>Factuurnr</th>
-            <th>Datum</th>
-            <th>Geleverd aan</th>
-            <th>Totaalbedrag</th>
-            <th>Details</th>
+            <th>@ViewData["InvoiceId"]</th>
+            <th>@ViewData["Date"]</th>
+            <th>@ViewData["Delivered to"]</th>
+            <th>@ViewData["Total amount"]</th>
+            <th>@ViewData["Detail"]</th>
         </tr>
 
         @foreach (var factuur in Model.Facturen)
@@ -74,21 +74,21 @@
                     <td>
                         @factuur.
                     </td>
-                    @{ 
+                    @{
                         decimal prijs = 0;
                         foreach (var lijn in factuur.FactuurLijnen)
                         {
                             prijs = prijs + lijn.Prijs * lijn.Aantal;
                         }
                     }
-                    
+
                     <td>
-                       € @prijs
+                        € @prijs
                     </td>
 
 
                     <td>
-                        <a asp-controller="Invoice" asp-action="Details" asp-route-id="@factuur.Id">Details bekijken</a>
+                        <a asp-controller="Invoice" asp-action="Details" asp-route-id="@factuur.Id">@ViewData["View Details"]</a>
                     </td>
                 </a>
 

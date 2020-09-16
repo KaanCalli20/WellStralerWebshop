@@ -118,126 +118,126 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="Amount" xml:space="preserve">
-    <value>Aantal</value>
+    <value>Nombre</value>
   </data>
   <data name="Amountt" xml:space="preserve">
-    <value>Bedrag</value>
+    <value>Montant</value>
   </data>
   <data name="Cart" xml:space="preserve">
-    <value>Winkelwagen</value>
+    <value>Panier</value>
   </data>
   <data name="Date" xml:space="preserve">
-    <value>Datum</value>
+    <value>Date</value>
   </data>
   <data name="Delete" xml:space="preserve">
-    <value>Verwijder</value>
+    <value>Supprimer</value>
   </data>
   <data name="Delivered To" xml:space="preserve">
-    <value>Geleverd aan</value>
+    <value>Livré à</value>
   </data>
   <data name="Delivery adres" xml:space="preserve">
-    <value>Leveradres</value>
+    <value>Adresse de livraison</value>
   </data>
   <data name="DeliveryType" xml:space="preserve">
-    <value>Manier van leveren</value>
+    <value>Méthode de livraison</value>
   </data>
   <data name="Description" xml:space="preserve">
-    <value>Omschrijving</value>
+    <value>Description</value>
   </data>
   <data name="Detail" xml:space="preserve">
-    <value>Details</value>
+    <value>Détail</value>
   </data>
   <data name="Dispatch note" xml:space="preserve">
-    <value>ZendnotaNr</value>
+    <value>Bordereau d'envoi</value>
   </data>
   <data name="Euro" xml:space="preserve">
     <value>Euro</value>
   </data>
   <data name="Filter" xml:space="preserve">
-    <value>Filter</value>
+    <value>Filtre</value>
   </data>
   <data name="Finalize Order" xml:space="preserve">
-    <value>Bestelling afwerken</value>
+    <value>Finaliser la commande</value>
   </data>
   <data name="From" xml:space="preserve">
-    <value>Van</value>
+    <value>de</value>
   </data>
   <data name="Id" xml:space="preserve">
     <value>Id</value>
   </data>
   <data name="InvoiceId" xml:space="preserve">
-    <value>Factuur nr</value>
+    <value>Numéro de facture</value>
   </data>
   <data name="Invoices" xml:space="preserve">
-    <value>Facturen</value>
+    <value>Factures</value>
   </data>
   <data name="Login" xml:space="preserve">
-    <value>Login</value>
+    <value>s'identifier</value>
   </data>
   <data name="Logout" xml:space="preserve">
-    <value>Loguit</value>
+    <value>Se déconnecter</value>
   </data>
   <data name="MakeOrder" xml:space="preserve">
-    <value>Plaats bestelling</value>
+    <value>Passer la commande</value>
   </data>
   <data name="Number" xml:space="preserve">
-    <value>Aantal</value>
+    <value>Nombre</value>
   </data>
   <data name="Order" xml:space="preserve">
-    <value>Bestellen</value>
+    <value>Commander</value>
   </data>
   <data name="OrderID" xml:space="preserve">
-    <value>Order nummer</value>
+    <value>Numéro de commande</value>
   </data>
   <data name="Orders" xml:space="preserve">
-    <value>Bestellingen</value>
+    <value>Ordres</value>
   </data>
   <data name="Orders not yet processed" xml:space="preserve">
-    <value>Nog niet verwerkte bestellingen</value>
+    <value>Commandes non encore traitées</value>
   </data>
   <data name="Price" xml:space="preserve">
-    <value>Prijs</value>
+    <value>Prix</value>
   </data>
   <data name="Price per" xml:space="preserve">
-    <value>Eenh Prijs</value>
+    <value>Prix ​​unitaire</value>
   </data>
   <data name="Product" xml:space="preserve">
-    <value>Product</value>
+    <value>Produit</value>
   </data>
   <data name="Products" xml:space="preserve">
-    <value>Producten</value>
+    <value>Produit</value>
   </data>
   <data name="Put Order" xml:space="preserve">
-    <value>Bestellen</value>
+    <value>Commander</value>
   </data>
   <data name="Put something" xml:space="preserve">
-    <value>Zet iets</value>
+    <value>Mettez quelque chose</value>
   </data>
   <data name="Reference" xml:space="preserve">
-    <value>Referentie</value>
+    <value>Référence</value>
   </data>
   <data name="Search" xml:space="preserve">
-    <value>Zoek</value>
+    <value>Chercher</value>
   </data>
   <data name="Serial Number" xml:space="preserve">
-    <value>Serienummer</value>
+    <value>Numéro de série</value>
   </data>
   <data name="Shipping note" xml:space="preserve">
-    <value>Zendnota</value>
+    <value>Note d'expédition</value>
   </data>
   <data name="To" xml:space="preserve">
-    <value>Tot</value>
+    <value>à</value>
   </data>
   <data name="To deliver" xml:space="preserve">
-    <value>Te leveren</value>
+    <value>Livrer</value>
   </data>
   <data name="Total amount" xml:space="preserve">
-    <value>Totaalbedrag</value>
+    <value>Montant total</value>
   </data>
   <data name="Total Amount Without Reduction" xml:space="preserve">
-    <value>Totale prijs zonder korting</value>
+    <value>Montant total sans réduction</value>
   </data>
   <data name="View Details" xml:space="preserve">
-    <value>Details bekijken</value>
+    <value>Voir les détails</value>
   </data>
 </root>
