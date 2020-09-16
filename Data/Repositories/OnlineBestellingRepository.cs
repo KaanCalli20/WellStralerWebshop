@@ -19,7 +19,7 @@ namespace WellStralerWebshop.Data.Repositories
         }
         public IEnumerable<OnlineBestelling> getOnlineBestellingen(KlantLogin klantLogin)
         {
-            return _onlineBestellingen.Include(p=>p.OnlineBesltelLijnen).Include(p=>p.Klant).Include(t=>t.LeverKlant).Include(p=>p.Transport)
+            return _onlineBestellingen.Include(p=>p.OnlineBesltelLijnen).ThenInclude(p=>p.Product).Include(p=>p.Klant).Include(t=>t.LeverKlant).Include(p=>p.Transport)
                 .OrderByDescending(m=>m.Datum).Where(m=>m.KlantLogin==klantLogin).ToList();
         }
         public void voegOnlineBestellingToe(OnlineBestelling onlineBestelling)
@@ -27,9 +27,21 @@ namespace WellStralerWebshop.Data.Repositories
             this._onlineBestellingen.Add(onlineBestelling);
 
         }
+
+        public OnlineBestelling getOnlineBestellingById(long id, KlantLogin klantLogin)
+        {
+            return getOnlineBestellingen(klantLogin).Where(m => m.Id == id).SingleOrDefault();
+        }
+        public void verwijderOnlineBestelling(OnlineBestelling onlineBestelling)
+        {
+            _onlineBestellingen.Remove(onlineBestelling);
+        }
+
         public void SaveChanges()
         {
             this._dbContext.SaveChanges();
         }
+
+        
     }
 }

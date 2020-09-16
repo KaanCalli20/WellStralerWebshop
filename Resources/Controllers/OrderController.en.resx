@@ -168,6 +168,9 @@
   <data name="MakeOrder" xml:space="preserve">
     <value>place order</value>
   </data>
+  <data name="Number" xml:space="preserve">
+    <value>Number</value>
+  </data>
   <data name="Order" xml:space="preserve">
     <value>Order</value>
   </data>
@@ -182,6 +185,12 @@
   </data>
   <data name="Price" xml:space="preserve">
     <value>Price</value>
+  </data>
+  <data name="Price per" xml:space="preserve">
+    <value>Unit price</value>
+  </data>
+  <data name="Product" xml:space="preserve">
+    <value>Product</value>
   </data>
   <data name="Products" xml:space="preserve">
     <value>Products</value>

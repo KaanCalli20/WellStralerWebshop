@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.InteropServices.ComTypes;
 using System.Security.Claims;
+using System.Security.Cryptography.X509Certificates;
 using WellStralerWebshop.Filters;
 using WellStralerWebshop.Models.Domain;
 using WellStralerWebshop.Models.ViewModels;
@@ -171,7 +172,6 @@ namespace WellStralerWebshop.Controllers
             }
         }
         [ServiceFilter(typeof(KlantFilter))]
-
         public IActionResult GeefOrders(KlantLogin klantLogin)
         {
             ApplyLanguage();
@@ -196,6 +196,82 @@ namespace WellStralerWebshop.Controllers
             BestellingViewModel vm = new BestellingViewModel(bestellingen,onlinebestellingen);
             ApplyLanguage();
             return View(vm);
+        }
+
+        [ServiceFilter(typeof(KlantFilter))]
+        public IActionResult GeefOnlineOrderDetails(long id,KlantLogin klantLogin)
+        {
+            OnlineBestelling onlineBestelling= _onlineBestellingRepository.getOnlineBestellingById(id,klantLogin);
+            ApplyLanguage();
+            var request = HttpContext.Features.Get<IRequestCultureFeature>();
+            string taal = request.RequestCulture.Culture.Name;
+            OnlineBestellingDetailViewModel vm = new OnlineBestellingDetailViewModel(onlineBestelling, taal);
+            return View(vm);
+        }
+        [ServiceFilter(typeof(KlantFilter))]
+        public IActionResult RemoveBestelLijn(long id, KlantLogin klantLogin)
+        {
+            ApplyLanguage();
+            OnlineBestelLijn teVerwijderenBestelLijn = _onlineBestelLijnRepository.getOnlineBestellijn(id);
+            long onlineBestellingId = teVerwijderenBestelLijn.BestellingId;
+            OnlineBestelling onlineBestelling = _onlineBestellingRepository.getOnlineBestellingById(onlineBestellingId,klantLogin);
+
+            List<OnlineBestelLijn> lijstBestellijnen;
+
+            var request = HttpContext.Features.Get<IRequestCultureFeature>();
+            string taal = request.RequestCulture.Culture.Name;
+            if (teVerwijderenBestelLijn.HoofdProdBestelLijnId == 0)
+            {
+                
+                lijstBestellijnen = onlineBestelling.OnlineBesltelLijnen.Where(m=>m.HoofdProdBestelLijnId==teVerwijderenBestelLijn.Id).ToList();
+                _onlineBestelLijnRepository.verwijderOBestelLijn(teVerwijderenBestelLijn);
+                if (lijstBestellijnen.Count() > 0)
+                {
+                    foreach (OnlineBestelLijn item in lijstBestellijnen)
+                    {
+                        _onlineBestelLijnRepository.verwijderOBestelLijn(item);
+                    }
+                }
+                _onlineBestelLijnRepository.SaveChanges();
+                if (onlineBestelling.OnlineBesltelLijnen.Count < 1 || onlineBestelling.OnlineBesltelLijnen ==null)
+                {
+                    _onlineBestellingRepository.verwijderOnlineBestelling(onlineBestelling);
+                    TempData["message"] = "";
+                    _onlineBestelLijnRepository.SaveChanges();
+                    if (taal == "en")
+                    {
+                        TempData["message"] = "Order deleted successfully";
+                    }
+                    else if (taal == "fr")
+                    {
+                        TempData["message"] = "Commande supprimée avec succès";
+
+                    }
+                    else
+                    {
+                        TempData["message"] = "Bestelling succesvol verwijderd";
+                    }
+                    return RedirectToAction("GeefOrders");
+                } 
+            }
+            else
+            {
+
+            }
+            if (taal == "en")
+            {
+                TempData["message"] = "OrderLine deleted successfully";
+            }
+            else if (taal == "fr")
+            {
+                TempData["message"] = "Ligne de commande supprimée avec succès";
+
+            }
+            else
+            {
+                TempData["message"] = "Bestellings lijn succesvol verwijderdt";
+            }
+            return RedirectToAction("GeefOnlineOrderDetails", new { id = onlineBestellingId } );
         }
         public void totaalPrijs()
         {
@@ -253,7 +329,10 @@ namespace WellStralerWebshop.Controllers
             ViewData["Detail"] = _localizer["Detail"];
             ViewData["Orders not yet processed"] = _localizer["Orders not yet processed"];
             ViewData["View Details"] = _localizer["View Details"];
-
+            ViewData["Product"] =_localizer["Product"];
+            ViewData["Description"] = _localizer["Description"];
+            ViewData["Number"] = _localizer["Number"];
+            ViewData["Price per"] = _localizer["Price per"];
             var request = HttpContext.Features.Get<IRequestCultureFeature>();
             string taal = request.RequestCulture.Culture.Name;
 
