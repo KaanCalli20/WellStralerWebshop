@@ -23,13 +23,12 @@ else
 
 
 <form asp-controller="Account" asp-action="LogIn">
-    <label>Gebruikersnaam</label>
+    <label>@ViewData["UserName"]</label>
     <input type="text" name="gebruikersnaam" />
     <br />
-    <label>Wachtwoord</label>
+    <label>@ViewData["Password"]</label>
     <input type="password" name="wachtwoord" />
     <br />
     <input type="submit" value="Login" />
-    <input type="button" value="Cancel" />
 </form>
 

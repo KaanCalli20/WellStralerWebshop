@@ -156,6 +156,9 @@
   <data name="Orders" xml:space="preserve">
     <value>Orders</value>
   </data>
+  <data name="Password" xml:space="preserve">
+    <value>Password</value>
+  </data>
   <data name="Previous" xml:space="preserve">
     <value>Previous</value>
   </data>
@@ -176,5 +179,8 @@
   </data>
   <data name="Succesful Add To Cart" xml:space="preserve">
     <value>Product successfully placed in the cart</value>
+  </data>
+  <data name="UserName" xml:space="preserve">
+    <value>Username</value>
   </data>
 </root>
