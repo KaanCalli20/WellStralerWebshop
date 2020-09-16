@@ -171,6 +171,9 @@
   <data name="Search" xml:space="preserve">
     <value>Search</value>
   </data>
+  <data name="Settings" xml:space="preserve">
+    <value>Settings</value>
+  </data>
   <data name="Succesful Add To Cart" xml:space="preserve">
     <value>Product successfully placed in the cart</value>
   </data>

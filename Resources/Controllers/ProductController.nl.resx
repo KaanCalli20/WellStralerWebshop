@@ -171,6 +171,9 @@
   <data name="Search" xml:space="preserve">
     <value>Zoek</value>
   </data>
+  <data name="Settings" xml:space="preserve">
+    <value>Instellingen</value>
+  </data>
   <data name="Succesful Add To Cart" xml:space="preserve">
     <value>Product succesvol geplaatst in het winkelmand</value>
   </data>

@@ -118,99 +118,99 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="Add to cart" xml:space="preserve">
-    <value>Voeg toe aan winkelwagen </value>
+    <value>Ajouter au chariot</value>
   </data>
   <data name="Address" xml:space="preserve">
-    <value>Adres</value>
+    <value>Adresse</value>
   </data>
   <data name="Back" xml:space="preserve">
-    <value>terug</value>
+    <value>arrière</value>
   </data>
   <data name="Change" xml:space="preserve">
-    <value>Wijzig</value>
+    <value>Changement</value>
   </data>
   <data name="Change language" xml:space="preserve">
-    <value>Wijzig taal</value>
+    <value>Changer de langue</value>
   </data>
   <data name="Change Password" xml:space="preserve">
-    <value>Wijzig wachtwoord</value>
+    <value>Changer le mot de passe</value>
   </data>
   <data name="City" xml:space="preserve">
-    <value>Gemeente</value>
+    <value>Commune</value>
   </data>
   <data name="Company" xml:space="preserve">
-    <value>Bedrijf</value>
+    <value>Compagnie</value>
   </data>
   <data name="Delivery customers" xml:space="preserve">
-    <value>Leverklanten</value>
+    <value>Clients de livraison</value>
   </data>
   <data name="Description" xml:space="preserve">
-    <value>Omschrijving</value>
+    <value>Description</value>
   </data>
   <data name="Email" xml:space="preserve">
-    <value>E-mail</value>
+    <value>Email</value>
   </data>
   <data name="Filter" xml:space="preserve">
-    <value>Filter</value>
+    <value>Filtre</value>
   </data>
   <data name="Id" xml:space="preserve">
     <value>Id</value>
   </data>
   <data name="Information" xml:space="preserve">
-    <value>Informatie</value>
+    <value>Information</value>
   </data>
   <data name="Invoices" xml:space="preserve">
-    <value>Facturen</value>
+    <value>Factures</value>
   </data>
   <data name="Language" xml:space="preserve">
-    <value>Taal</value>
+    <value>Langue</value>
   </data>
   <data name="Login" xml:space="preserve">
-    <value>Login</value>
+    <value>s'identifier</value>
   </data>
   <data name="Logout" xml:space="preserve">
-    <value>Loguit</value>
+    <value>Se déconnecter</value>
   </data>
   <data name="Name" xml:space="preserve">
-    <value>Naam</value>
+    <value>Nom</value>
   </data>
   <data name="New password" xml:space="preserve">
-    <value>Nieuwe wachtwoord</value>
+    <value>Nouveau mot de passe</value>
   </data>
   <data name="Next" xml:space="preserve">
-    <value>Volgende</value>
+    <value>Suivante</value>
   </data>
   <data name="Old password" xml:space="preserve">
-    <value>Oude wachtwoord</value>
+    <value>Ancien mot de passe</value>
   </data>
   <data name="Order" xml:space="preserve">
-    <value>Bestellen</value>
+    <value>Commander</value>
   </data>
   <data name="Orders" xml:space="preserve">
-    <value>Bestelingen</value>
+    <value>Ordres</value>
   </data>
   <data name="Previous" xml:space="preserve">
-    <value>Vorige</value>
+    <value>Précédent</value>
   </data>
   <data name="Price" xml:space="preserve">
-    <value>Prijs</value>
+    <value>Prix</value>
   </data>
   <data name="Products" xml:space="preserve">
-    <value>Producten</value>
+    <value>Produit</value>
   </data>
   <data name="Quantity" xml:space="preserve">
-    <value>Hoeveelheid</value>
+    <value>Quantité</value>
   </data>
   <data name="Repeat password" xml:space="preserve">
-    <value>Herhaal wachtwoord</value>
+    <value>Répéter le mot de passe</value>
   </data>
   <data name="Search" xml:space="preserve">
-    <value>Zoek</value>
+    <value>Chercher</value>
   </data>
   <data name="Settings" xml:space="preserve">
-    <value>Instellingen</value>
+    <value>Paramètres</value>
   </data>
   <data name="Succesful Add To Cart" xml:space="preserve">
-    <value>Product succesvol geplaatst in het winkelmand</value>
+    <value>Produit placé avec succès dans le chariot</value>
   </data>
 </root>

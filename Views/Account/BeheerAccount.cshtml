@@ -3,39 +3,39 @@
     ViewData["Title"] = "BeheerAccount";
 }
 
-<h1>Instellingen</h1>
-<h2>Informatie</h2>
+<h1>@ViewData["Settings"]</h1>
+<h2>@ViewData["Information"]</h2>
 <table>
     <tbody>
         <tr>
-            <td>Firma:</td>
+            <td>@ViewData["Company"]:</td>
             <td>@Model.Klant.Firma</td>
         </tr>
         <tr>
-            <td> E-mail:</td>
+            <td>@ViewData["email"]:</td>
             <td>@Model.Klant.Email</td>
         </tr>
         <tr>
-            <td> Adres:</td>
+            <td> @ViewData["Address"]:</td>
             <td>@Model.Klant.FacturatieAdres</td>
         </tr>
     </tbody>
 </table>
 
 <form asp-controller="Account" asp-action="BeheerAccount" method="post">
-    <h2>Wijzig wachtwoord</h2>
+    <h2>@ViewData["Change Password"]</h2>
     <table>
         <tbody>
             <tr>
-                <td> <label>Oud wachtwoord</label></td>
+                <td> <label>@ViewData["Old password"]:</label></td>
                 <td><input type="password" name="oudWachtwoord" /></td>
             </tr>
             <tr>
-                <td><label>Nieuwe wachtwoord</label></td>
+                <td><label>@ViewData["New password"]:</label></td>
                 <td><input type="password" name="nieuweWachtwoord" /><br /></td>
             </tr>
             <tr>
-                <td><label>Herhaal nieuwe wachtwoord</label></td>
+                <td><label>@ViewData["Repeat password"]:</label></td>
                 <td><input type="password" name="herhaalWachtwoord" /><br /></td>
             </tr>
         </tbody>
@@ -47,23 +47,23 @@
     
     
     
-    <h2>Wijzig taal</h2>
-    <label class="control-label">Wijzig taal</label>
+    <h2>@ViewData["Language"]</h2>
+    <label class="control-label">@ViewData["Change language"]</label>
     <select name="taal" id="maand" size="1" asp-items="@(ViewData["talen"] as SelectList)">
         <option value="">@Model.Taal</option>
     </select>
 
-    <h2>Leverklanten</h2>
+    <h2>@ViewData["Delivery customers"]</h2>
     <table>
         <thead>
         <th>
-            Naam
+            @ViewData["Name"]
         </th>
         <th>
-            Straat
+            @ViewData["Address"]
         </th>
         <th>
-            Postcode
+            @ViewData["City"]
         </th>
         </thead>
         <tbody>
@@ -78,5 +78,5 @@
         </tbody>
     </table>
 
-    <input type="submit" value="wijzig" />
+    <input type="submit" value="@ViewData["Change"]" />
 </form>

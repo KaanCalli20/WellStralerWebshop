@@ -47,22 +47,12 @@ namespace WellStralerWebshop.Controllers
 
             if (lg_psw_encrypted.Equals(kl.Paswoord))
             {
-                if (taal == "en")
-                {
-                    TempData["Message"] = "You have successfully logged in";
-                }
-                else if (taal == "fr")
-                {
-                    TempData["Message"] = "Vous vous êtes connecté avec succès";
-                }
-                else
-                {
-                    TempData["Message"] = "U bent succesvol ingelogd";
-                }
+
+                TempData["Message"] = "You have successfully logged in";
+
             }
             else
             {
-
                 TempData["error"] = "Username and Password do not match";
                 return View();
             }
@@ -82,7 +72,7 @@ namespace WellStralerWebshop.Controllers
             var userPrincipal = new ClaimsPrincipal(new[] { identityy });
 
             await HttpContext.SignInAsync(userPrincipal);
-            
+
             switch (kl.Taal)
             {
                 case 1:
@@ -113,7 +103,7 @@ namespace WellStralerWebshop.Controllers
         [ServiceFilter(typeof(KlantFilter))]
         public IActionResult BeheerAccount(KlantLogin klantLogin)
         {
-            string taal="";
+            string taal = "";
             Klant klant = klantLogin.Klant;
             switch (klantLogin.Taal)
             {
@@ -127,7 +117,7 @@ namespace WellStralerWebshop.Controllers
                     taal = "fr";
                     break;
             }
-            AccountViewModel vm = new AccountViewModel(klant, taal) ;
+            AccountViewModel vm = new AccountViewModel(klant, taal);
             List<string> talen = new List<string>();
             talen.Add("nl");
             talen.Add("en");
@@ -156,8 +146,8 @@ namespace WellStralerWebshop.Controllers
                     {
                         throw new ArgumentException("Uw nieuwe wachtwoord komt niet over met de herhaal wachtwoord");
                     }
-                    nieuweWachtwoordGehashed = Encryption.Encrypt(oudWachtwoord, "dst.be rules");
-                    klantLogin.Paswoord = nieuweWachtwoord;
+                    nieuweWachtwoordGehashed = Encryption.Encrypt(nieuweWachtwoord, "dst.be rules");
+                    klantLogin.Paswoord = nieuweWachtwoordGehashed;
                     _loginRepo.SaveChanges();
                     TempData["message"] = "Gegevens succesvol gewijzigd";
 
@@ -197,7 +187,7 @@ namespace WellStralerWebshop.Controllers
 
             Klant klant = klantLogin.Klant;
 
-            AccountViewModel vm = new AccountViewModel(klant,taal);
+            AccountViewModel vm = new AccountViewModel(klant, taal);
             ApplyLanguage();
             return RedirectToAction("BeheerAccount");
         }
@@ -213,7 +203,20 @@ namespace WellStralerWebshop.Controllers
             ViewData["Finalize_Order"] = _localizer["Finalize Order"];
             ViewData["Euro"] = _localizer["Euro"];
             ViewData["Cart"] = _localizer["Cart"];
-
+            ViewData["Information"] = _localizer["Information"];
+            ViewData["Company"] = _localizer["Company"];
+            ViewData["Email"] = _localizer["Email"];
+            ViewData["Address"] = _localizer["Address"];
+            ViewData["Change Password"] = _localizer["Change Password"];
+            ViewData["Old password"] = _localizer["Old password"];
+            ViewData["New password"] = _localizer["New password"];
+            ViewData["Repeat password"] = _localizer["Repeat password"];
+            ViewData["Language"] = _localizer["Language"];
+            ViewData["Change language"] = _localizer["Change language"];
+            ViewData["Delivery customers"] = _localizer["Delivery customers"];
+            ViewData["Name"] = _localizer["Name"];
+            ViewData["City"] = _localizer["City"];
+            ViewData["Change"] = _localizer["Change"];
 
 
             ViewData["Products"] = _localizer["Products"];

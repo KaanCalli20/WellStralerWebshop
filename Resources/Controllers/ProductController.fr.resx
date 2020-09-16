@@ -171,6 +171,9 @@
   <data name="Search" xml:space="preserve">
     <value>Chercher</value>
   </data>
+  <data name="Settings" xml:space="preserve">
+    <value>Paramètres</value>
+  </data>
   <data name="Succesful Add To Cart" xml:space="preserve">
     <value>Produit placé avec succès dans le chariot</value>
   </data>

@@ -118,37 +118,16 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="Add to cart" xml:space="preserve">
-    <value>Voeg toe aan winkelwagen </value>
-  </data>
-  <data name="Address" xml:space="preserve">
-    <value>Adres</value>
+    <value>Add to cart</value>
   </data>
   <data name="Back" xml:space="preserve">
-    <value>terug</value>
+    <value>Back</value>
   </data>
   <data name="Change" xml:space="preserve">
-    <value>Wijzig</value>
-  </data>
-  <data name="Change language" xml:space="preserve">
-    <value>Wijzig taal</value>
-  </data>
-  <data name="Change Password" xml:space="preserve">
-    <value>Wijzig wachtwoord</value>
-  </data>
-  <data name="City" xml:space="preserve">
-    <value>Gemeente</value>
-  </data>
-  <data name="Company" xml:space="preserve">
-    <value>Bedrijf</value>
-  </data>
-  <data name="Delivery customers" xml:space="preserve">
-    <value>Leverklanten</value>
+    <value>Change</value>
   </data>
   <data name="Description" xml:space="preserve">
-    <value>Omschrijving</value>
-  </data>
-  <data name="Email" xml:space="preserve">
-    <value>E-mail</value>
+    <value>Description</value>
   </data>
   <data name="Filter" xml:space="preserve">
     <value>Filter</value>
@@ -156,61 +135,43 @@
   <data name="Id" xml:space="preserve">
     <value>Id</value>
   </data>
-  <data name="Information" xml:space="preserve">
-    <value>Informatie</value>
-  </data>
   <data name="Invoices" xml:space="preserve">
-    <value>Facturen</value>
-  </data>
-  <data name="Language" xml:space="preserve">
-    <value>Taal</value>
+    <value>Invoices</value>
   </data>
   <data name="Login" xml:space="preserve">
     <value>Login</value>
   </data>
   <data name="Logout" xml:space="preserve">
-    <value>Loguit</value>
+    <value>Logout</value>
   </data>
   <data name="Name" xml:space="preserve">
-    <value>Naam</value>
-  </data>
-  <data name="New password" xml:space="preserve">
-    <value>Nieuwe wachtwoord</value>
+    <value>Name</value>
   </data>
   <data name="Next" xml:space="preserve">
-    <value>Volgende</value>
-  </data>
-  <data name="Old password" xml:space="preserve">
-    <value>Oude wachtwoord</value>
+    <value>Next</value>
   </data>
   <data name="Order" xml:space="preserve">
-    <value>Bestellen</value>
+    <value>Order</value>
   </data>
   <data name="Orders" xml:space="preserve">
-    <value>Bestelingen</value>
+    <value>Orders</value>
   </data>
   <data name="Previous" xml:space="preserve">
-    <value>Vorige</value>
+    <value>Previous</value>
   </data>
   <data name="Price" xml:space="preserve">
-    <value>Prijs</value>
+    <value>Price</value>
   </data>
   <data name="Products" xml:space="preserve">
-    <value>Producten</value>
+    <value>Products</value>
   </data>
   <data name="Quantity" xml:space="preserve">
-    <value>Hoeveelheid</value>
-  </data>
-  <data name="Repeat password" xml:space="preserve">
-    <value>Herhaal wachtwoord</value>
+    <value>Quantity</value>
   </data>
   <data name="Search" xml:space="preserve">
-    <value>Zoek</value>
-  </data>
-  <data name="Settings" xml:space="preserve">
-    <value>Instellingen</value>
+    <value>Search</value>
   </data>
   <data name="Succesful Add To Cart" xml:space="preserve">
-    <value>Product succesvol geplaatst in het winkelmand</value>
+    <value>Product successfully placed in the cart</value>
   </data>
 </root>
