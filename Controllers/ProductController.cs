@@ -3,13 +3,18 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Localization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Formatters.Xml;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.Extensions.Localization;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Security.Claims;
 using System.Transactions;
+using WellStralerWebshop.Filters;
 using WellStralerWebshop.Models.Domain;
 using WellStralerWebshop.Models.ViewModels;
 
@@ -22,17 +27,19 @@ namespace WellStralerWebshop.Controllers
         private readonly IKlantRepository _klantRepo;
         private readonly IKlantLoginRepository _klantLoginsRepo;
         private readonly IOnlineBestelLijnRepository _onlineBestelLijnRepo;
+        private readonly IParameterRepository _parameterRepo;
+
         private readonly IStringLocalizer<ProductController> _localizer;
 
         public ProductController(IProductRepository productRepo, IKlantRepository klantRepo, IKlantLoginRepository klantLoginsRepo
-            , IOnlineBestelLijnRepository onlineBestelLijn, IStringLocalizer<ProductController> localizer)
+            , IOnlineBestelLijnRepository onlineBestelLijn, IParameterRepository parameterRepo, IStringLocalizer<ProductController> localizer)
         {
             this._onlineBestelLijnRepo = onlineBestelLijn;
 
             this._productRepo = productRepo;
             this._klantRepo = klantRepo;
             this._klantLoginsRepo = klantLoginsRepo;
-
+            this._parameterRepo = parameterRepo;
             this._localizer = localizer;
             //Test commit
         }
@@ -73,9 +80,9 @@ namespace WellStralerWebshop.Controllers
 
             return View(lijstProducten);
         }
+        [ServiceFilter(typeof(KlantFilter))]
 
-
-        public IActionResult Details(long Id)
+        public IActionResult Details(long Id, KlantLogin klantLogin)
         {
             ApplyLanguage();
             List<Product> geselecteerdeProducten = new List<Product>();
@@ -86,14 +93,14 @@ namespace WellStralerWebshop.Controllers
             {
                 geselecteerdeProducten.Add(prod);
             }
-            vm = voegVasteProductenToe(geselecteerdeProducten, prod.gekoppeldProductenLijst(), 0);
+            vm = voegVasteProductenToe(geselecteerdeProducten, prod.gekoppeldProductenLijst(), 0, klantLogin);
 
             ViewData["NormalePrijs"] = geefPrijs(geselecteerdeProducten);
-            //TempData["PrijsNaKorting"];
+            ViewData["PrijsNaKorting"] = geefPrijsNaKorting(geselecteerdeProducten, klantLogin);
 
-            ViewData["Stock"] = geselecteerdeProducten.ElementAt(0).Stock;
+            ViewData["Stock"] = geefStockWaarde(geselecteerdeProducten.ElementAt(0));
             List<int> lijst = new List<int>();
-                for (int i = 1; i < 100; i++)
+            for (int i = 1; i < 100; i++)
             {
                 lijst.Add(i);
             }
@@ -102,8 +109,10 @@ namespace WellStralerWebshop.Controllers
             return View(vm);
         }
 
+        [ServiceFilter(typeof(KlantFilter))]
+
         [HttpPost]
-        public IActionResult Volgende(string selectedProds, List<long>? productId,  string? quantity)
+        public IActionResult Volgende(string selectedProds, List<long>? productId, string? quantity, KlantLogin klantLogin)
         {
             ApplyLanguage();
             List<string> stringSelectedValues = selectedProds.Split(",").ToList();
@@ -127,12 +136,12 @@ namespace WellStralerWebshop.Controllers
                 }
                 TempData["error"] = ex.Message;
             }
-            
-            hoofdProduct = this._productRepo.getProductById(geselecteerdeProducten.ElementAt(0).Id);
-            vm = new ProductDetailViewModel(geselecteerdeProducten, hoofdProduct.gekoppeldProductenLijst(), index ,aantal);
 
-            ViewData["NormalePrijs"] = geefPrijs(geselecteerdeProducten)*aantal;
-            //TempData["PrijsNaKorting"];
+            hoofdProduct = this._productRepo.getProductById(geselecteerdeProducten.ElementAt(0).Id);
+            vm = new ProductDetailViewModel(geselecteerdeProducten, hoofdProduct.gekoppeldProductenLijst(), index, aantal, klantLogin.Klant);
+
+            ViewData["NormalePrijs"] = geefPrijs(geselecteerdeProducten) * aantal;
+            ViewData["PrijsNaKorting"] = geefPrijsNaKorting(geselecteerdeProducten, klantLogin) * aantal;
 
             ViewData["Stock"] = geselecteerdeProducten.ElementAt(0).Stock;
             List<int> lijst = new List<int>();
@@ -143,8 +152,11 @@ namespace WellStralerWebshop.Controllers
             ViewData["aantal"] = new SelectList(lijst);
             return View("Details", vm);
         }
+
         [HttpPost]
-        public IActionResult Vorige(string selectedProds, List<long>? productId, string? quantity)
+        [ServiceFilter(typeof(KlantFilter))]
+
+        public IActionResult Vorige(string selectedProds, List<long>? productId, string? quantity, KlantLogin klantLogin)
         {
             ApplyLanguage();
             List<string> stringSelectedValues = selectedProds.Split(",").ToList();
@@ -168,12 +180,12 @@ namespace WellStralerWebshop.Controllers
                 }
                 TempData["error"] = ex.Message;
             }
-           
-            hoofdProduct = this._productRepo.getProductById(geselecteerdeProducten.ElementAt(0).Id);
-            vm = new ProductDetailViewModel(geselecteerdeProducten, hoofdProduct.gekoppeldProductenLijst(), index ,aantal);
 
-            ViewData["NormalePrijs"] = geefPrijs(geselecteerdeProducten);
-            //TempData["PrijsNaKorting"];
+            hoofdProduct = this._productRepo.getProductById(geselecteerdeProducten.ElementAt(0).Id);
+            vm = new ProductDetailViewModel(geselecteerdeProducten, hoofdProduct.gekoppeldProductenLijst(), index, aantal, klantLogin.Klant);
+
+            ViewData["NormalePrijs"] = geefPrijs(geselecteerdeProducten) * aantal;
+            ViewData["PrijsNaKorting"] = geefPrijsNaKorting(geselecteerdeProducten, klantLogin) * aantal;
 
             ViewData["Stock"] = geselecteerdeProducten.ElementAt(0).Stock;
             List<int> lijst = new List<int>();
@@ -184,8 +196,9 @@ namespace WellStralerWebshop.Controllers
             ViewData["aantal"] = new SelectList(lijst);
             return View("Details", vm);
         }
+        [ServiceFilter(typeof(KlantFilter))]
 
-        public IActionResult Wijzig(string selectedProds, List<long>? productId, string? quantity)
+        public IActionResult Wijzig(string selectedProds, List<long>? productId, string? quantity, KlantLogin klantLogin)
         {
             ApplyLanguage();
             List<string> stringSelectedValues = selectedProds.Split(",").ToList();
@@ -194,7 +207,7 @@ namespace WellStralerWebshop.Controllers
             ProductDetailViewModel vm;
             int index = Convert.ToInt32(stringSelectedValues.ElementAt(0));
             int aantal = Convert.ToInt32(quantity);
-            
+
             stringSelectedValues.RemoveAt(0);
             try
             {
@@ -211,11 +224,11 @@ namespace WellStralerWebshop.Controllers
             }
 
             hoofdProduct = this._productRepo.getProductById(geselecteerdeProducten.ElementAt(0).Id);
-            vm = new ProductDetailViewModel(geselecteerdeProducten, hoofdProduct.gekoppeldProductenLijst(), index, aantal) ;
+            vm = new ProductDetailViewModel(geselecteerdeProducten, hoofdProduct.gekoppeldProductenLijst(), index, aantal, klantLogin.Klant);
 
 
             ViewData["NormalePrijs"] = geefPrijs(geselecteerdeProducten) * aantal;
-            //TempData["PrijsNaKorting"];
+            ViewData["PrijsNaKorting"] = geefPrijsNaKorting(geselecteerdeProducten, klantLogin) * aantal;
 
             ViewData["Stock"] = geselecteerdeProducten.ElementAt(0).Stock;
             List<int> lijst = new List<int>();
@@ -227,8 +240,9 @@ namespace WellStralerWebshop.Controllers
             return View("Details", vm);
 
         }
+        [ServiceFilter(typeof(KlantFilter))]
 
-        public IActionResult PlaatsInWinkelmand(string selectedProds, List<long>? productId, string? quantity)
+        public IActionResult PlaatsInWinkelmand(string selectedProds, List<long>? productId, string? quantity, KlantLogin klantLogin)
         {
             List<string> stringSelectedValues = selectedProds.Split(",").ToList();
             List<Product> geselecteerdeProducten;
@@ -242,7 +256,7 @@ namespace WellStralerWebshop.Controllers
             try
             {
                 geselecteerdeProducten = wijzigSelectie(selectedProds, productId);
-               
+
             }
             catch (ArgumentException ex)
             {
@@ -254,13 +268,13 @@ namespace WellStralerWebshop.Controllers
                 TempData["error"] = ex.Message;
 
                 hoofdProduct = this._productRepo.getProductById(geselecteerdeProducten.ElementAt(0).Id);
-                vm = new ProductDetailViewModel(geselecteerdeProducten, hoofdProduct.gekoppeldProductenLijst(), index,aantal);
+                vm = new ProductDetailViewModel(geselecteerdeProducten, hoofdProduct.gekoppeldProductenLijst(), index, aantal, klantLogin.Klant);
 
 
                 ViewData["NormalePrijs"] = geefPrijs(geselecteerdeProducten) * aantal;
-                //TempData["PrijsNaKorting"];
+                ViewData["PrijsNaKorting"] = geefPrijsNaKorting(geselecteerdeProducten, klantLogin) * aantal;
 
-                ViewData["Stock"] = geselecteerdeProducten.ElementAt(0).Stock;
+                /// ViewData["Stock"] = geselecteerdeProducten.ElementAt(0).Stock;
 
                 return View("Details", vm);
 
@@ -271,7 +285,7 @@ namespace WellStralerWebshop.Controllers
             {
                 if (aantal < 1)
                 {
-                    
+
                     if (taal == "en")
                     {
                         throw new ArgumentException("Please enter a number higher than 0");
@@ -287,51 +301,68 @@ namespace WellStralerWebshop.Controllers
                     }
                 }
             }
-            catch(ArgumentException ex)
+            catch (ArgumentException ex)
             {
-               
+
                 TempData["error"] = ex.Message;
 
                 hoofdProduct = this._productRepo.getProductById(geselecteerdeProducten.ElementAt(0).Id);
-                vm = new ProductDetailViewModel(geselecteerdeProducten, hoofdProduct.gekoppeldProductenLijst(), index, aantal);
+                vm = new ProductDetailViewModel(geselecteerdeProducten, hoofdProduct.gekoppeldProductenLijst(), index, aantal, klantLogin.Klant);
 
 
-                ViewData["NormalePrijs"] = geefPrijs(geselecteerdeProducten)*aantal;
+                ViewData["NormalePrijs"] = geefPrijsNaKorting(geselecteerdeProducten, klantLogin) * aantal;
                 //TempData["PrijsNaKorting"];
 
                 ViewData["Stock"] = geselecteerdeProducten.ElementAt(0).Stock;
 
                 return View("Details", vm);
             }
-            
+
             hoofdProduct = this._productRepo.getProductById(geselecteerdeProducten.ElementAt(0).Id);
 
             geselecteerdeProducten.RemoveAt(0);
 
             //get klant en klantLogin
-            string idKlantLogin = HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value;
-            KlantLogin klantLogin = _klantLoginsRepo.getLoginByLoginID(Convert.ToInt64(idKlantLogin));
             Klant klant = klantLogin.Klant;
 
-            OnlineBestelLijn onlineBestelLijn = new OnlineBestelLijn(0,klantLogin,klant,hoofdProduct,aantal,hoofdProduct.Prijs,hoofdProduct.BtwPerc,DateTime.Now,0);
+            decimal prijs = 0;
+
+            if (hoofdProduct.Typekorting == 1)
+            {
+                prijs = hoofdProduct.Prijs - hoofdProduct.Prijs * Convert.ToDecimal(klantLogin.Klant.Korting1) / 100;
+            }
+            else if (hoofdProduct.Typekorting == 2)
+            {
+                prijs = hoofdProduct.Prijs - hoofdProduct.Prijs * Convert.ToDecimal(klantLogin.Klant.Korting2) / 100;
+            }
+            OnlineBestelLijn onlineBestelLijn = new OnlineBestelLijn(0, klantLogin, klant, hoofdProduct, aantal, prijs, hoofdProduct.BtwPerc, DateTime.Now, 0);
             _onlineBestelLijnRepo.voegOnlineBestelLijnToe(onlineBestelLijn);
             _onlineBestelLijnRepo.SaveChanges();
-            if (geselecteerdeProducten.Count()==0) { }
-            else{
+            if (geselecteerdeProducten.Count() == 0) { }
+            else
+            {
                 foreach (Product koppelProduct in geselecteerdeProducten)
                 {
-                    lijstOnlineBestelLijn.Add(new OnlineBestelLijn(0, klantLogin, klant, koppelProduct, aantal, koppelProduct.PrijsGekoppeld, koppelProduct.BtwPerc, DateTime.Now, onlineBestelLijn.Id));
+                    if (koppelProduct.Typekorting == 1)
+                    {
+                        prijs = koppelProduct.PrijsGekoppeld - koppelProduct.PrijsGekoppeld * Convert.ToDecimal(klantLogin.Klant.Korting1) / 100;
+                    }
+                    else if (koppelProduct.Typekorting == 2)
+                    {
+                        prijs = koppelProduct.PrijsGekoppeld - koppelProduct.PrijsGekoppeld * Convert.ToDecimal(klantLogin.Klant.Korting2) / 100;
+                    }
+                    lijstOnlineBestelLijn.Add(new OnlineBestelLijn(0, klantLogin, klant, koppelProduct, aantal, prijs, koppelProduct.BtwPerc, DateTime.Now, onlineBestelLijn.Id));
                 }
                 _onlineBestelLijnRepo.voegOnlineBestelLijnenToe(lijstOnlineBestelLijn);
 
                 _onlineBestelLijnRepo.SaveChanges();
             }
-            
+
             if (taal == "en")
             {
                 TempData["message"] = "Succesful Add To Cart";
             }
-            else if(taal=="fr")
+            else if (taal == "fr")
             {
                 TempData["message"] = "Produit placé avec succès dans le panier";
 
@@ -339,7 +370,7 @@ namespace WellStralerWebshop.Controllers
             else
             {
                 TempData["message"] = "Product succesvol geplaatst in het winkelwagen";
-            } 
+            }
             return RedirectToAction("Index", "Order");
 
         }
@@ -419,7 +450,7 @@ namespace WellStralerWebshop.Controllers
             }
 
             hoofdProduct = this._productRepo.getProductById(geselecteerdeProducten.ElementAt(0).Id);
-            if (hoofdProduct.productKoppelingen == null||hoofdProduct.productKoppelingen.Count() ==0)
+            if (hoofdProduct.productKoppelingen == null || hoofdProduct.productKoppelingen.Count() == 0)
             {
                 return true;
             }
@@ -448,12 +479,12 @@ namespace WellStralerWebshop.Controllers
                     return true;
                 }
             }
-              
-            
+
+
 
         }
 
-        public ProductDetailViewModel voegVasteProductenToe(List<Product> geselecteerdeProducten, List<List<ProductKoppeling>> productKoppelingen, int index)
+        public ProductDetailViewModel voegVasteProductenToe(List<Product> geselecteerdeProducten, List<List<ProductKoppeling>> productKoppelingen, int index, KlantLogin klantLogin)
         {
             ProductDetailViewModel vm;
 
@@ -467,22 +498,50 @@ namespace WellStralerWebshop.Controllers
                     }
                 }
             }
-            vm = new ProductDetailViewModel(geselecteerdeProducten, productKoppelingen, index,1);
+            vm = new ProductDetailViewModel(geselecteerdeProducten, productKoppelingen, index, 1, klantLogin.Klant);
             return vm;
 
         }
 
+        private Decimal geefPrijsNaKorting(List<Product> geselecteerdeProducten, KlantLogin klantLogin)
+        {
+            Decimal prijs = 0;
+            Product product = geselecteerdeProducten.ElementAt(0);
+            if (product.Typekorting == 1)
+            {
+                prijs = product.Prijs - product.Prijs * Convert.ToDecimal(klantLogin.Klant.Korting1) / 100;
+            }
+            else if (product.Typekorting == 2)
+            {
+                prijs = product.Prijs - product.Prijs * Convert.ToDecimal(klantLogin.Klant.Korting2) / 100;
+            }
+
+            for (int i = 1; i < geselecteerdeProducten.Count; i++)
+            {
+                product = geselecteerdeProducten.ElementAt(i);
+                if (product.Typekorting == 1)
+                {
+                    prijs = prijs + product.PrijsGekoppeld - product.PrijsGekoppeld * Convert.ToDecimal(klantLogin.Klant.Korting1) / 100;
+                }
+                else if (product.Typekorting == 2)
+                {
+                    prijs = prijs + product.PrijsGekoppeld - product.PrijsGekoppeld * Convert.ToDecimal(klantLogin.Klant.Korting2) / 100;
+                }
+
+            }
+
+            return prijs;
+        }
+
         private Decimal geefPrijs(List<Product> geselecteerdeProducten)
         {
-            Product productVoorPrijs;
             Decimal prijs = 0;
             prijs = geselecteerdeProducten.ElementAt(0).Prijs;
             for (int i = 1; i < geselecteerdeProducten.Count; i++)
             {
                 prijs = prijs + geselecteerdeProducten.ElementAt(i).PrijsGekoppeld;
-                
-            }
 
+            }
             return prijs;
         }
 
@@ -508,6 +567,7 @@ namespace WellStralerWebshop.Controllers
             ViewData["Description"] = _localizer["Description"];
             ViewData["Id"] = _localizer["Id"];
             ViewData["Price"] = _localizer["Price"];
+            ViewData["PriceWithReduction"] = _localizer["PriceWithReduction"];
             ViewData["Order"] = _localizer["Order"];
             ViewData["Filter"] = _localizer["Filter"];
             ViewData["Search"] = _localizer["Search"];
@@ -525,6 +585,48 @@ namespace WellStralerWebshop.Controllers
             ViewData["Invoices"] = _localizer["Invoices"];
             ViewData["Cart"] = _localizer["Cart"];
             ViewData["Settings"] = _localizer["Settings"];
+        }
+        private string geefStockWaarde(Product product)
+        {
+            List<Parameters> parameters = _parameterRepo.GetParameters().Where(m => m.ParameterTable.Contains("stock")).ToList();
+
+            int? kleinerDan = 0;
+            int? groterDan = 0;
+            int? gelijkAan = 0;
+            int? waarde = 0;
+            string response = "";
+            Parameters item;
+            for (int i = parameters.Count - 1; i >= 0; i--)
+            {
+                item = parameters.ElementAt(i);
+                kleinerDan = item.ParameterKleinerDan;
+                groterDan = item.ParameterGroterDan;
+                gelijkAan = item.ParameterGelijkAan;
+                waarde = item.ParameterWaarde;
+                if (item.ParameterKleinerDan == 1)
+                {
+                    if (item.ParameterGelijkAan == 1)
+                    {
+                        response = product.Stock <= waarde ? item.ParameterBeschrijving1 : "";
+                        break;
+                    }
+                }
+                else if (item.ParameterGroterDan == 1)
+                {
+                    if (item.ParameterGelijkAan == 1)
+                    {
+                        response = product.Stock >= waarde ? item.ParameterBeschrijving1 : "";
+                        break;
+                    }
+                }
+                else if (item.ParameterGelijkAan == 1)
+                {
+
+                    response = product.Stock == waarde ? item.ParameterBeschrijving1 : "";
+                    break;
+                }
+            }
+            return response;
         }
     }
 }

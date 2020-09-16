@@ -31,6 +31,7 @@
                 <th>Prod</th>
                 <th>@ViewData["Description"]</th>
                 <th>@ViewData["Price"]</th>
+                <th>@ViewData["PriceWithReduction"]</th>
             </tr>
             @{
                 var teller = 0;
@@ -58,11 +59,38 @@
                     </td>
                     @if (teller == 0)
                     {
-                        <td>@item.Prijs</td>
+
+                        <td> € @item.Prijs</td>
+
+                        decimal prijsNaKorting = 0;
+                        if (item.Typekorting == 1)
+                        {
+                            prijsNaKorting = item.Prijs - item.Prijs * Convert.ToDecimal(Model.klant.Korting1) / 100;
+
+                        }
+                        else if (item.Typekorting == 2)
+                        {
+                            prijsNaKorting = item.Prijs - item.Prijs * Convert.ToDecimal(Model.klant.Korting2) / 100;
+                        }
+                        <td> € @prijsNaKorting</td>
+
                     }
                     else
                     {
-                        <td>@item.PrijsGekoppeld</td>
+                        <td>€ @item.PrijsGekoppeld</td>
+
+                        decimal prijsNaKorting = 0;
+                        if (item.Typekorting == 1)
+                        {
+                            prijsNaKorting = item.PrijsGekoppeld - item.PrijsGekoppeld * Convert.ToDecimal(Model.klant.Korting1) / 100;
+
+                        }
+                        else if (item.Typekorting == 2)
+                        {
+                            prijsNaKorting = item.PrijsGekoppeld - item.PrijsGekoppeld * Convert.ToDecimal(Model.klant.Korting2) / 100;
+                        }
+                        <td>€ @prijsNaKorting</td>
+
                     }
                     @{teller = teller + 1;}
 
@@ -72,7 +100,9 @@
 
         </table>
     </ul>
-    <p>@ViewData["Price"] € @ViewData["NormalePrijs"]</p>
+    <p>@ViewData["Price"]: € @ViewData["NormalePrijs"]</p>
+    <p>@ViewData["PriceWithReduction"]: € @ViewData["PrijsNaKorting"]</p>
+    <p>Stock: @ViewData["Stock"]</p>
 
     @if (Model.productKoppelingen == null)
     {
@@ -88,6 +118,7 @@
                     <th>@ViewData["Id"]</th>
                     <th>@ViewData["Name"]</th>
                     <th>@ViewData["Price"]</th>
+                    <th>@ViewData["PriceWithReduction"]</th>
                 </tr>
             </thead>
             <tbody>
@@ -96,33 +127,45 @@
 
                     @foreach (var item in Model.productKoppelingen.ElementAt(Model.index))
                     {
-                        <tr>
-                            @if (Model.geselecteerdeProducten.Select(m => m.Id).Contains(item.GekoppeldProdId))
-                            {
-                                <td><input type="radio" id="@item.GekoppeldProdId" name="productId" value="@item.GekoppeldProdId" checked /></td>
-                            }
-                            else
-                            {
-                                <td><input type="radio" id="@item.GekoppeldProdId" name="productId" value="@item.GekoppeldProdId" /></td>
-                            }
+                <tr>
+                    @if (Model.geselecteerdeProducten.Select(m => m.Id).Contains(item.GekoppeldProdId))
+                    {
+                        <td><input type="radio" id="@item.GekoppeldProdId" name="productId" value="@item.GekoppeldProdId" checked /></td>
+                    }
+                    else
+                    {
+                        <td><input type="radio" id="@item.GekoppeldProdId" name="productId" value="@item.GekoppeldProdId" /></td>
+                    }
 
-                            <td> @item.GekoppeldProdId</td>
-                            <td>
-                                @if (ViewData["Taal"].Equals("en"))
-                                {
-                                    @item.GekoppeldProduct.OmschrijvingEN
-                                }
-                                else if (ViewData["Taal"].Equals("fr"))
-                                {
-                                    @item.GekoppeldProduct.OmschrijvingFR
-                                }
-                                else if (ViewData["Taal"].Equals("nl"))
-                                {
-                                    @item.GekoppeldProduct.OmschrijvingNL
-                                }
-                            </td>
-                            <td>€ @item.GekoppeldProduct.PrijsGekoppeld</td>
-                        </tr>
+                    <td> € @item.GekoppeldProdId</td>
+                    <td>
+                        @if (ViewData["Taal"].Equals("en"))
+                        {
+                            @item.GekoppeldProduct.OmschrijvingEN
+                        }
+                        else if (ViewData["Taal"].Equals("fr"))
+                        {
+                            @item.GekoppeldProduct.OmschrijvingFR
+                        }
+                        else if (ViewData["Taal"].Equals("nl"))
+                        {
+                            @item.GekoppeldProduct.OmschrijvingNL
+                        }
+                    </td>
+                    <td>€ @item.GekoppeldProduct.PrijsGekoppeld</td>
+                    @{decimal prijsNaKorting = 0;
+                        if (item.GekoppeldProduct.Typekorting == 1)
+                        {
+                            prijsNaKorting = item.GekoppeldProduct.PrijsGekoppeld - item.GekoppeldProduct.PrijsGekoppeld * Convert.ToDecimal(Model.klant.Korting1) / 100;
+
+                        }
+                        else if (item.GekoppeldProduct.Typekorting == 2)
+                        {
+                            prijsNaKorting = item.GekoppeldProduct.PrijsGekoppeld - item.GekoppeldProduct.PrijsGekoppeld * Convert.ToDecimal(Model.klant.Korting2) / 100;
+                        }
+                    }
+                    <td> € @prijsNaKorting</td>
+                </tr>
                     }
 
 
@@ -168,8 +211,19 @@
                                     @item.GekoppeldProduct.OmschrijvingNL
                                 }
                             </td>
-                            <td>@item.GekoppeldProduct.PrijsGekoppeld</td>
+                            <td>€ @item.GekoppeldProduct.PrijsGekoppeld</td>
+                            @{decimal prijsNaKorting = 0;
+                                if (item.GekoppeldProduct.Typekorting == 1)
+                                {
+                                    prijsNaKorting = item.GekoppeldProduct.PrijsGekoppeld - item.GekoppeldProduct.PrijsGekoppeld * Convert.ToDecimal(Model.klant.Korting1) / 100;
 
+                                }
+                                else if (item.GekoppeldProduct.Typekorting == 2)
+                                {
+                                    prijsNaKorting = item.GekoppeldProduct.PrijsGekoppeld - item.GekoppeldProduct.PrijsGekoppeld * Convert.ToDecimal(Model.klant.Korting2) / 100;
+                                }
+                            }
+                            <td>€ @prijsNaKorting</td>
 
                         </tr>
                     }

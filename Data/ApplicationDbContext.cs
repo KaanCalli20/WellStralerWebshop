@@ -22,6 +22,7 @@ namespace WellStralerWebshop.Data
 
         public DbSet<BestelLijn> BestelLijnen { get; set; }
         public DbSet<Bestelling> Bestellingen { get; set; }
+        public DbSet<Parameters> Parameters { get; set; }
 
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
            : base(options)
@@ -48,6 +49,8 @@ namespace WellStralerWebshop.Data
 
             builder.ApplyConfiguration(new BestelLijnConfiguration());
             builder.ApplyConfiguration(new BestellingConfiguration());
+            builder.ApplyConfiguration(new ParameterConfiguration());
+
         }
 
     }

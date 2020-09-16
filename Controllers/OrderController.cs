@@ -287,6 +287,7 @@ namespace WellStralerWebshop.Controllers
         public void totaalPrijs()
         {
             decimal prijs = 0;
+            int teller = 0;
             foreach (OnlineBestelLijn lijn in winkelMandje)
             {
                 prijs = prijs + lijn.Prijs * lijn.Aantal;

@@ -165,6 +165,9 @@
   <data name="Price" xml:space="preserve">
     <value>Prijs</value>
   </data>
+  <data name="PriceWithReduction" xml:space="preserve">
+    <value>PrijsNaKorting</value>
+  </data>
   <data name="Products" xml:space="preserve">
     <value>Producten</value>
   </data>
