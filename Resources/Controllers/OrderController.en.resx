@@ -123,8 +123,14 @@
   <data name="Cart" xml:space="preserve">
     <value>Cart</value>
   </data>
+  <data name="Date" xml:space="preserve">
+    <value>Date</value>
+  </data>
   <data name="Delete" xml:space="preserve">
     <value>Delete</value>
+  </data>
+  <data name="Delivered To" xml:space="preserve">
+    <value>Delivered To</value>
   </data>
   <data name="Delivery adres" xml:space="preserve">
     <value>Delivery address</value>
@@ -134,6 +140,9 @@
   </data>
   <data name="Description" xml:space="preserve">
     <value>Description</value>
+  </data>
+  <data name="Detail" xml:space="preserve">
+    <value>Detail</value>
   </data>
   <data name="Euro" xml:space="preserve">
     <value>Euro</value>
@@ -162,8 +171,14 @@
   <data name="Order" xml:space="preserve">
     <value>Order</value>
   </data>
+  <data name="OrderID" xml:space="preserve">
+    <value>OrderID</value>
+  </data>
   <data name="Orders" xml:space="preserve">
     <value>Orders</value>
+  </data>
+  <data name="Orders not yet processed" xml:space="preserve">
+    <value>Orders not yet processed</value>
   </data>
   <data name="Price" xml:space="preserve">
     <value>Price</value>
@@ -183,7 +198,13 @@
   <data name="Search" xml:space="preserve">
     <value>Search</value>
   </data>
+  <data name="Total amount" xml:space="preserve">
+    <value>Total amount</value>
+  </data>
   <data name="Total Amount Without Reduction" xml:space="preserve">
     <value>Total Amount Without Reduction</value>
+  </data>
+  <data name="View Details" xml:space="preserve">
+    <value>View Details</value>
   </data>
 </root>

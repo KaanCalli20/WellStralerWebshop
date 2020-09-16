@@ -5,6 +5,60 @@
 
 <h1>@ViewData["Orders"]</h1>
 
+
+
+@if (Model.OnlineBestellingen != null)
+{
+    @if (Model.OnlineBestellingen.Count() > 0)
+    {
+        <h2>@ViewData["Orders not yet processed"]</h2>
+        <table>
+            <thead>
+            <th>
+                @ViewData["OrderID"]
+            </th>
+            <th>
+                @ViewData["Date"]
+            </th>
+            <th>
+                @ViewData["Delivered To"]
+            </th>
+            <th>
+                @ViewData["Total amount"]
+            </th>
+            <th>
+                @ViewData["View Details"]
+            </th>
+            </thead>
+            <tbody>
+                @foreach (var item in Model.OnlineBestellingen)
+                {
+                    <tr>
+                        <td>
+                            @item.Id
+                        </td>
+                        <td>
+                            @item.Datum.ToShortDateString()
+                        </td>
+                        <td>
+                            @item.LeverKlant.Firma
+                        </td>
+                        <td>
+                            @item.OnlineBesltelLijnen.Sum(m => m.Prijs * m.Aantal)
+                        </td>
+                        <td>
+                            <a asp-controller="Order" asp-action="GeefOnlineOrderDetails" asp-route-id="@item.Id">@ViewData["View Details"]</a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+
+        </table>
+
+    }
+}
+
+
 <div>
     <h2>Bestellingen in verwerking</h2>
     <form asp-controller="Order" asp-action="GeefOrders">
@@ -23,13 +77,13 @@
         <br />
         <label>Geleverd?</label>
         <br />
-        <input type="radio" name="geleverd" value="0" />
+        <input type="radio" name="geleverd" value="2" />
         <label> Ja</label>
         <br />
         <input type="radio" name="geleverd" value="1" />
         <label>nee</label>
         <br />
-        <input type="radio" name="geleverd" checked value="2" />
+        <input type="radio" name="geleverd" value="3" />
         <label>Alle</label>
         <br />
 
@@ -44,14 +98,16 @@
     else
     {
 
-
         <table>
             <tr>
-                <th>BestellingNr</th>
-                <th>Datum</th>
-                <th>Geleverd aan </th>
-                <th>Totaalbedrag </th>
-                <th>Detail </th>
+                <th> @ViewData["OrderID"]</th>
+                <th>
+                    @ViewData["Date"]
+                </th>
+                <th>@ViewData["Delivered To"] </th>
+                <th> @ViewData["Total amount"] </th>
+                <th> @ViewData["Processed"] </th>
+                <th>@ViewData["View Details"] </th>
             </tr>
 
             @foreach (var bestelling in Model.Bestellingen)

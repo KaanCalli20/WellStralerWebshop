@@ -17,9 +17,10 @@ namespace WellStralerWebshop.Data.Repositories
             _dbContext = dbContext;
             _onlineBestellingen = _dbContext.OnlineBestellingen;
         }
-        public IEnumerable<OnlineBestelling> getOnlineBestellingen()
+        public IEnumerable<OnlineBestelling> getOnlineBestellingen(KlantLogin klantLogin)
         {
-            return _onlineBestellingen.Include(p=>p.OnlineBesltelLijnen).Include(p=>p.Klant).Include(t=>t.LeverKlant).Include(p=>p.Transport).ToList();
+            return _onlineBestellingen.Include(p=>p.OnlineBesltelLijnen).Include(p=>p.Klant).Include(t=>t.LeverKlant).Include(p=>p.Transport)
+                .OrderByDescending(m=>m.Datum).Where(m=>m.KlantLogin==klantLogin).ToList();
         }
         public void voegOnlineBestellingToe(OnlineBestelling onlineBestelling)
         {

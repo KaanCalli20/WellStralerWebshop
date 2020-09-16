@@ -18,15 +18,16 @@ namespace WellStralerWebshop.Controllers
             this._bestelLijnRepo = bestellijnRepo;
             this._bestellingRepo = bestellingRepo;
         }
-        [ServiceFilter(typeof(KlantFilter))]
+        /*[ServiceFilter(typeof(KlantFilter))]
         public IActionResult Index(KlantLogin klantLogin)
         {
             List<Bestelling> bestellingen = _bestellingRepo.getBestellingen(klantLogin);
-            BestellingViewModel vm = new BestellingViewModel(bestellingen);
+            BestellingDetailViewModel 
+            //BestellingViewModel vm = new BestellingViewModel(bestellingen,on);
            
 
             return View(vm);
-        }
+        }*/
 
         [ServiceFilter(typeof(KlantFilter))]
         public IActionResult Details(int id, KlantLogin klantLogin)

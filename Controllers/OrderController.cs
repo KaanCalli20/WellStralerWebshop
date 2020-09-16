@@ -174,19 +174,28 @@ namespace WellStralerWebshop.Controllers
 
         public IActionResult GeefOrders(KlantLogin klantLogin)
         {
+            ApplyLanguage();
             List<Bestelling> bestellingen = _bestellingRepo.getBestellingen(klantLogin);
-            BestellingViewModel vm = new BestellingViewModel(null);
+            IEnumerable<OnlineBestelling> onlinebestellingen = _onlineBestellingRepository.getOnlineBestellingen(klantLogin);
+            BestellingViewModel vm = new BestellingViewModel(null,onlinebestellingen);
 
             return View(vm);
         }
 
         [HttpPost]
         [ServiceFilter(typeof(KlantFilter))]
-        public IActionResult GeefOrders(KlantLogin klantLogin, string productNaam,DateTime vanDatum,DateTime totDatum
-            ,string leverAdres,int geleverd)
+        public IActionResult GeefOrders(KlantLogin klantLogin, string? productNaam,DateTime? vanDatum,DateTime? totDatum
+            ,string? leverAdres,byte? geleverd)
         {
-
-            return null;
+            if (productNaam == null && vanDatum == null && totDatum == null  &&
+            leverAdres == null && geleverd == null){
+                return RedirectToAction("GeefOrders");
+            }
+            List<Bestelling> bestellingen = _bestellingRepo.getBestellingenByFilter(klantLogin,productNaam, vanDatum, totDatum, leverAdres,geleverd) ;
+            IEnumerable<OnlineBestelling> onlinebestellingen = _onlineBestellingRepository.getOnlineBestellingen(klantLogin);
+            BestellingViewModel vm = new BestellingViewModel(bestellingen,onlinebestellingen);
+            ApplyLanguage();
+            return View(vm);
         }
         public void totaalPrijs()
         {
@@ -236,6 +245,14 @@ namespace WellStralerWebshop.Controllers
             ViewData["Invoices"] = _localizer["Invoices"];
             ViewData["Cart"] = _localizer["Cart"];
             ViewData["Settings"] = _localizer["Settings"];
+
+            ViewData["OrderID"] = _localizer["OrderID"];
+            ViewData["Date"] = _localizer["Date"];
+            ViewData["Delivered To"] = _localizer["Delivered To"];
+            ViewData["Total amount"] = _localizer["Total amount"];
+            ViewData["Detail"] = _localizer["Detail"];
+            ViewData["Orders not yet processed"] = _localizer["Orders not yet processed"];
+            ViewData["View Details"] = _localizer["View Details"];
 
             var request = HttpContext.Features.Get<IRequestCultureFeature>();
             string taal = request.RequestCulture.Culture.Name;

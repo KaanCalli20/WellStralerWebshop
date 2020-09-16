@@ -10,9 +10,11 @@ namespace WellStralerWebshop.Models.ViewModels
     {
         public List<Bestelling> Bestellingen { get; set; }
 
-        public BestellingViewModel(List<Bestelling> bestellingen) 
+        public IEnumerable<OnlineBestelling> OnlineBestellingen { get; set; }
+        public BestellingViewModel(List<Bestelling> bestellingen,IEnumerable<OnlineBestelling> onlineBestellingen) 
         {
             this.Bestellingen = bestellingen;
+            this.OnlineBestellingen = onlineBestellingen;
         }
         
 
