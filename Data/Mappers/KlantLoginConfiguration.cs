@@ -23,6 +23,8 @@ namespace WellStralerWebshop.Data.Mappers
 			builder.Property(x => x.Actief).HasColumnName("tKLLActief");
 			builder.Property(x => x.Wijzigbaar).HasColumnName("tKLLWijzigbaar");
 			builder.Property(x => x.KlantId).HasColumnName("tKLL_tKLAId");
+			builder.Property(x => x.Taal).HasColumnName("tKLLTaal");
+
 
 			builder.HasOne(p => p.Klant)
 				.WithMany()

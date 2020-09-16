@@ -3,13 +3,57 @@
     ViewData["Title"] = "BeheerAccount";
 }
 
-<h1>BeheerAccount</h1>
+<h1>Instellingen</h1>
+<h2>Informatie</h2>
+<table>
+    <tbody>
+        <tr>
+            <td>Firma:</td>
+            <td>@Model.Klant.Firma</td>
+        </tr>
+        <tr>
+            <td> E-mail:</td>
+            <td>@Model.Klant.Email</td>
+        </tr>
+        <tr>
+            <td> Adres:</td>
+            <td>@Model.Klant.FacturatieAdres</td>
+        </tr>
+    </tbody>
+</table>
 
 <form asp-controller="Account" asp-action="BeheerAccount" method="post">
+    <h2>Wijzig wachtwoord</h2>
+    <table>
+        <tbody>
+            <tr>
+                <td> <label>Oud wachtwoord</label></td>
+                <td><input type="password" name="oudWachtwoord" /></td>
+            </tr>
+            <tr>
+                <td><label>Nieuwe wachtwoord</label></td>
+                <td><input type="password" name="nieuweWachtwoord" /><br /></td>
+            </tr>
+            <tr>
+                <td><label>Herhaal nieuwe wachtwoord</label></td>
+                <td><input type="password" name="herhaalWachtwoord" /><br /></td>
+            </tr>
+        </tbody>
+    </table>
+   
+    
+    
+    
+    
+    
+    
+    <h2>Wijzig taal</h2>
     <label class="control-label">Wijzig taal</label>
-    <select name="taal" id="maand" size="1"  asp-items="@(ViewData["talen"] as SelectList)">
+    <select name="taal" id="maand" size="1" asp-items="@(ViewData["talen"] as SelectList)">
         <option value="">@Model.Taal</option>
     </select>
+
+    <h2>Leverklanten</h2>
     <table>
         <thead>
         <th>

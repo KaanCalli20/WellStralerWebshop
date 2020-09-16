@@ -235,6 +235,8 @@ namespace WellStralerWebshop.Controllers
             ViewData["Logout"] = _localizer["Logout"];
             ViewData["Invoices"] = _localizer["Invoices"];
             ViewData["Cart"] = _localizer["Cart"];
+            ViewData["Settings"] = _localizer["Settings"];
+
             var request = HttpContext.Features.Get<IRequestCultureFeature>();
             string taal = request.RequestCulture.Culture.Name;
 

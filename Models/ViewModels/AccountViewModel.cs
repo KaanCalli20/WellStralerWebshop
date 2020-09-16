@@ -10,26 +10,12 @@ namespace WellStralerWebshop.Models.ViewModels
     {
         public string Taal { get; set; }
         public Klant Klant { get; set; }
-
-        public AccountViewModel(Klant klant)
+        
+        public AccountViewModel(Klant klant,string taal)
         {
             this.Klant = klant;
-            zetTaal();
+            this.Taal = taal;
         }
-        public void zetTaal()
-        {
-            if (Klant.Taal == 0)
-            {
-                Taal = "nl";
-            }
-            else if (Klant.Taal == 1)
-            {
-                Taal = "fr";
-            }
-            else
-            {
-                Taal = "en";
-            }
-        }
+        
     }
 }

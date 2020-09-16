@@ -34,5 +34,9 @@ namespace WellStralerWebshop.Data.Repositories
         {
             return _klantLogins.Include(p => p.Klant).ThenInclude(m=>m.KlantKoppelingen).ThenInclude(m=>m.GekoppeldKlant).SingleOrDefault(kl => kl.Id.Equals(id));
         }
+        public void SaveChanges()
+        {
+            _dbContext.SaveChanges();
+        }
     }
 }

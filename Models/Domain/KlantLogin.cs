@@ -18,7 +18,7 @@ namespace WellStralerWebshop.Models.Domain
 		public string Paswoord { get; set; }
 		public byte Actief { get; set; }
 		public byte Wijzigbaar { get; set; }
-
+		public byte? Taal { get; set; }
 
 	}
 }

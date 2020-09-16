@@ -492,7 +492,7 @@ namespace WellStralerWebshop.Controllers
             Response.Cookies.Append(
                 CookieRequestCultureProvider.DefaultCookieName,
                 CookieRequestCultureProvider.MakeCookieValue(new RequestCulture(culture)),
-                new CookieOptions { Expires = DateTimeOffset.UtcNow.AddDays(30) }
+                new CookieOptions { Expires = DateTimeOffset.UtcNow.AddDays(365) }
                 );
 
             return LocalRedirect(returnUrl);
@@ -524,7 +524,7 @@ namespace WellStralerWebshop.Controllers
             ViewData["Logout"] = _localizer["Logout"];
             ViewData["Invoices"] = _localizer["Invoices"];
             ViewData["Cart"] = _localizer["Cart"];
- 
+            ViewData["Settings"] = _localizer["Settings"];
         }
     }
 }

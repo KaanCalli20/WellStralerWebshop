@@ -4,7 +4,9 @@ using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Localization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Localization;
 using WellStralerWebshop.Filters;
 using WellStralerWebshop.Models.Domain;
 using WellStralerWebshop.Models.ViewModels;
@@ -15,10 +17,13 @@ namespace WellStralerWebshop.Controllers
     {
         private readonly IFactuurLijnRepository _factuurLijnRepository;
         private readonly IFactuurRepository _factuurRepository;
-        public InvoiceController(IFactuurLijnRepository factuurLijnRepo,IFactuurRepository factuurRepository)
+        private readonly IStringLocalizer<InvoiceController> _localizer;
+
+        public InvoiceController(IFactuurLijnRepository factuurLijnRepo,IFactuurRepository factuurRepository, IStringLocalizer<InvoiceController> localizer)
         {
             this._factuurLijnRepository = factuurLijnRepo;
             this._factuurRepository = factuurRepository;
+            this._localizer = localizer;
         }
         [ServiceFilter(typeof(KlantFilter))]
         public IActionResult Index(KlantLogin klantLogin)
@@ -55,6 +60,40 @@ namespace WellStralerWebshop.Controllers
 
             FactuurDetailViewModel vm = new FactuurDetailViewModel(factuur);
             return View(vm);
+        }
+        private void ApplyLanguage()
+        {
+            ViewData["Description"] = _localizer["Description"];
+            ViewData["Id"] = _localizer["Id"];
+            ViewData["Price"] = _localizer["Price"];
+            ViewData["Order"] = _localizer["Order"];
+            ViewData["Amount"] = _localizer["Amount"];
+            ViewData["Delete"] = _localizer["Delete"];
+            ViewData["Total_Amount_Without_Reduction"] = _localizer["Total Amount Without Reduction"];
+            ViewData["Finalize_Order"] = _localizer["Finalize Order"];
+            ViewData["Euro"] = _localizer["Euro"];
+            ViewData["Cart"] = _localizer["Cart"];
+
+            ViewData["MakeOrder"] = _localizer["MakeOrder"];
+            ViewData["Reference"] = _localizer["Reference"];
+            ViewData["Remark"] = _localizer["Remark"];
+            ViewData["Delivery adres"] = _localizer["Delivery adres"];
+            ViewData["Put something"] = _localizer["Put something"];
+            ViewData["DeliveryType"] = _localizer["DeliveryType"];
+            ViewData["Put Order"] = _localizer["Put Order"];
+
+            ViewData["Products"] = _localizer["Products"];
+            ViewData["Orders"] = _localizer["Orders"];
+            ViewData["Login"] = _localizer["Login"];
+            ViewData["Logout"] = _localizer["Logout"];
+            ViewData["Invoices"] = _localizer["Invoices"];
+            ViewData["Cart"] = _localizer["Cart"];
+            ViewData["Settings"] = _localizer["Settings"];
+
+            var request = HttpContext.Features.Get<IRequestCultureFeature>();
+            string taal = request.RequestCulture.Culture.Name;
+
+            ViewData["Taal"] = taal;
         }
     }
 }

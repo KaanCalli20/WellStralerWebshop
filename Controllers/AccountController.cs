@@ -2,10 +2,12 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http.Headers;
+using System.Runtime.InteropServices;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Localization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -40,32 +42,31 @@ namespace WellStralerWebshop.Controllers
             var request = HttpContext.Features.Get<IRequestCultureFeature>();
             string taal = request.RequestCulture.Culture.Name;
             string lg_psw_encrypted = Encryption.Encrypt(wachtwoord, "dst.be rules");
-             KlantLogin kl = _loginRepo.getLoginByGebruikersNaam(gebruikersnaam);
+            KlantLogin kl = _loginRepo.getLoginByGebruikersNaam(gebruikersnaam);
             ApplyLanguage();
-            
+
             if (lg_psw_encrypted.Equals(kl.Paswoord))
-             {
-                 TempData["Message"] = "U bent succesvol ingelogd";
+            {
                 if (taal == "en")
                 {
-                    TempData["Message"] = "U bent succesvol ingelogd";
+                    TempData["Message"] = "You have successfully logged in";
                 }
                 else if (taal == "fr")
                 {
-                    TempData["Message"] = "U bent succesvol ingelogd";
+                    TempData["Message"] = "Vous vous êtes connecté avec succès";
                 }
                 else
                 {
                     TempData["Message"] = "U bent succesvol ingelogd";
                 }
             }
-             else
-             {
+            else
+            {
 
-                 TempData["LoginError"] = "Username and Password do not match";
-                 return View();
-             }
-             
+                TempData["error"] = "Username and Password do not match";
+                return View();
+            }
+
             //Verificatie komt hier
             KlantLogin klant = _loginRepo.getLoginByGebruikersNaam(gebruikersnaam);
 
@@ -81,13 +82,25 @@ namespace WellStralerWebshop.Controllers
             var userPrincipal = new ClaimsPrincipal(new[] { identityy });
 
             await HttpContext.SignInAsync(userPrincipal);
-
             
+            switch (kl.Taal)
+            {
+                case 1:
+                    taal = "nl";
+                    break;
+                case 2:
+                    taal = "en";
+                    break;
+                case 3:
+                    taal = "fr";
+                    break;
+            }
+            veranderTaal(taal);
 
             return RedirectToAction("Index", "Product");
 
 
-            
+
         }
 
         public async Task<IActionResult> LogOut()
@@ -100,9 +113,21 @@ namespace WellStralerWebshop.Controllers
         [ServiceFilter(typeof(KlantFilter))]
         public IActionResult BeheerAccount(KlantLogin klantLogin)
         {
+            string taal="";
             Klant klant = klantLogin.Klant;
-
-            AccountViewModel vm = new AccountViewModel(klant);
+            switch (klantLogin.Taal)
+            {
+                case 1:
+                    taal = "nl";
+                    break;
+                case 2:
+                    taal = "en";
+                    break;
+                case 3:
+                    taal = "fr";
+                    break;
+            }
+            AccountViewModel vm = new AccountViewModel(klant, taal) ;
             List<string> talen = new List<string>();
             talen.Add("nl");
             talen.Add("en");
@@ -114,13 +139,67 @@ namespace WellStralerWebshop.Controllers
         [Authorize]
         [HttpPost]
         [ServiceFilter(typeof(KlantFilter))]
-        public IActionResult BeheerAccount(KlantLogin klantLogin,string taal)
+        public IActionResult BeheerAccount(KlantLogin klantLogin, string taal, string? oudWachtwoord, string? nieuweWachtwoord, string? herhaalWachtwoord)
         {
+
+            if (oudWachtwoord != null)
+            {
+                try
+                {
+                    string nieuweWachtwoordGehashed = "";
+                    string oudWachtwoordGehashed = Encryption.Encrypt(oudWachtwoord, "dst.be rules");
+                    if (!klantLogin.Paswoord.Equals(oudWachtwoordGehashed))
+                    {
+                        throw new ArgumentException("Uw oud wachtwoord komt niet overeen");
+                    }
+                    if (!nieuweWachtwoord.Equals(herhaalWachtwoord))
+                    {
+                        throw new ArgumentException("Uw nieuwe wachtwoord komt niet over met de herhaal wachtwoord");
+                    }
+                    nieuweWachtwoordGehashed = Encryption.Encrypt(oudWachtwoord, "dst.be rules");
+                    klantLogin.Paswoord = nieuweWachtwoord;
+                    _loginRepo.SaveChanges();
+                    TempData["message"] = "Gegevens succesvol gewijzigd";
+
+                }
+                catch (ArgumentException ex)
+                {
+                    TempData["error"] = ex.Message;
+                }
+            }
+            if (taal != null)
+            {
+                byte taalIndex = 0;
+                try
+                {
+                    switch (taal)
+                    {
+                        case "nl":
+                            taalIndex = 1;
+                            break;
+                        case "en":
+                            taalIndex = 2;
+                            break;
+                        case "fr":
+                            taalIndex = 3;
+                            break;
+                    }
+                    klantLogin.Taal = taalIndex;
+                    _loginRepo.SaveChanges();
+                    veranderTaal(taal);
+                    TempData["message"] = "Gegevens succesvol gewijzigd";
+                }
+                catch (ArgumentException ex)
+                {
+                    TempData["error"] = ex.Message;
+                }
+            }
+
             Klant klant = klantLogin.Klant;
 
-            AccountViewModel vm = new AccountViewModel(klant);
+            AccountViewModel vm = new AccountViewModel(klant,taal);
             ApplyLanguage();
-            return View(vm);
+            return RedirectToAction("BeheerAccount");
         }
         private void ApplyLanguage()
         {
@@ -135,7 +214,7 @@ namespace WellStralerWebshop.Controllers
             ViewData["Euro"] = _localizer["Euro"];
             ViewData["Cart"] = _localizer["Cart"];
 
-            
+
 
             ViewData["Products"] = _localizer["Products"];
             ViewData["Orders"] = _localizer["Orders"];
@@ -143,10 +222,21 @@ namespace WellStralerWebshop.Controllers
             ViewData["Logout"] = _localizer["Logout"];
             ViewData["Invoices"] = _localizer["Invoices"];
             ViewData["Cart"] = _localizer["Cart"];
+            ViewData["Settings"] = _localizer["Settings"];
+
             var request = HttpContext.Features.Get<IRequestCultureFeature>();
             string taal = request.RequestCulture.Culture.Name;
 
             ViewData["Taal"] = taal;
+        }
+
+        private void veranderTaal(string culture)
+        {
+            Response.Cookies.Append(
+               CookieRequestCultureProvider.DefaultCookieName,
+               CookieRequestCultureProvider.MakeCookieValue(new RequestCulture(culture)),
+               new CookieOptions { Expires = DateTimeOffset.UtcNow.AddDays(365) }
+               );
         }
     }
 }
