@@ -30,9 +30,9 @@ namespace WellStralerWebshop.Controllers
 
 
         public OrderController(IOnlineBestelLijnRepository onlineBestelLijnRepository
-            , IKlantLoginRepository klantLoginRepo,ITransportRepository transportRepository,
+            , IKlantLoginRepository klantLoginRepo, ITransportRepository transportRepository,
             IKlantRepository klantRepo, IOnlineBestellingRepository onlineBestellingRepository,
-            IBestelLijnRepository bestellijnRepo, IBestellingRepository bestellingRepo,IStringLocalizer<OrderController> localizer)
+            IBestelLijnRepository bestellijnRepo, IBestellingRepository bestellingRepo, IStringLocalizer<OrderController> localizer)
         {
             this._onlineBestelLijnRepository = onlineBestelLijnRepository;
             this._klantLoginRepository = klantLoginRepo;
@@ -44,7 +44,7 @@ namespace WellStralerWebshop.Controllers
 
             this._localizer = localizer;
         }
-       
+
         [ServiceFilter(typeof(KlantFilter))]
         public IActionResult Index(KlantLogin klantLogin)
         {
@@ -67,14 +67,14 @@ namespace WellStralerWebshop.Controllers
                 lijstBestellijnen = _onlineBestelLijnRepository.getOnlineBestelLijnen(klantLogin)
                     .Where(p => p.HoofdProdBestelLijnId == teVerwijderenBestelLijn.Id);
                 _onlineBestelLijnRepository.verwijderOBestelLijn(teVerwijderenBestelLijn);
-                if (lijstBestellijnen.Count() > 0) 
+                if (lijstBestellijnen.Count() > 0)
                 {
                     foreach (OnlineBestelLijn item in lijstBestellijnen)
                     {
                         _onlineBestelLijnRepository.verwijderOBestelLijn(item);
                     }
                 }
-                
+
 
                 _onlineBestelLijnRepository.SaveChanges();
                 TempData["message"] = "Artikels succesvol verwijderd";
@@ -90,20 +90,20 @@ namespace WellStralerWebshop.Controllers
 
         [ServiceFilter(typeof(KlantFilter))]
         [HttpGet]
-        public IActionResult MaakOrder(string id,KlantLogin klantLogin)
+        public IActionResult MaakOrder(string id, KlantLogin klantLogin)
         {
             ApplyLanguage();
             List<Transport> lijstTransportTypes = _transportRepository.getAllTransport();
-            List<Klant> leverKlanten= GetLijstLeverklanten(klantLogin);
+            List<Klant> leverKlanten = GetLijstLeverklanten(klantLogin);
 
-            MaakOrderViewModel vm = new MaakOrderViewModel(leverKlanten, leverKlanten.ElementAt(0),"","",lijstTransportTypes,lijstTransportTypes.ElementAt(0));           
-            
-             return View(vm);
+            MaakOrderViewModel vm = new MaakOrderViewModel(leverKlanten, leverKlanten.ElementAt(0), "", "", lijstTransportTypes, lijstTransportTypes.ElementAt(0));
+
+            return View(vm);
         }
 
         [HttpPost]
         [ServiceFilter(typeof(KlantFilter))]
-        public IActionResult MaakOrder( string referentie, string opmerking, short transportTypeId, long leverKlantId, KlantLogin klantLogin)
+        public IActionResult MaakOrder(string referentie, string opmerking, short transportTypeId, long leverKlantId, KlantLogin klantLogin)
         {
             ApplyLanguage();
             var request = HttpContext.Features.Get<IRequestCultureFeature>();
@@ -142,7 +142,7 @@ namespace WellStralerWebshop.Controllers
                 }
                 Klant leverKlant = this._klantRepository.getKlant(leverKlantId);
                 Transport transport = this._transportRepository.getTransportById(transportTypeId);
-                List<OnlineBestelLijn> lijstBestelLijnen= this._onlineBestelLijnRepository.getOnlineBestelLijnen(klantLogin);
+                List<OnlineBestelLijn> lijstBestelLijnen = this._onlineBestelLijnRepository.getOnlineBestelLijnen(klantLogin);
                 OnlineBestelling bestelling = new OnlineBestelling(klantLogin.Klant, leverKlant, referentie, opmerking, transport, klantLogin, lijstBestelLijnen);
                 this._onlineBestellingRepository.voegOnlineBestellingToe(bestelling);
                 this._onlineBestellingRepository.SaveChanges();
@@ -167,8 +167,8 @@ namespace WellStralerWebshop.Controllers
                 TempData["error"] = ex.Message;
                 List<Transport> lijstTransportTypes = _transportRepository.getAllTransport();
                 List<Klant> leverKlanten = GetLijstLeverklanten(klantLogin);
-                MaakOrderViewModel vm = new MaakOrderViewModel(leverKlanten,leverKlanten.ElementAt(0),referentie,opmerking,lijstTransportTypes,lijstTransportTypes.ElementAt(0));
-                return View("MaakOrder",vm);
+                MaakOrderViewModel vm = new MaakOrderViewModel(leverKlanten, leverKlanten.ElementAt(0), referentie, opmerking, lijstTransportTypes, lijstTransportTypes.ElementAt(0));
+                return View("MaakOrder", vm);
             }
         }
         [ServiceFilter(typeof(KlantFilter))]
@@ -177,31 +177,32 @@ namespace WellStralerWebshop.Controllers
             ApplyLanguage();
             List<Bestelling> bestellingen = _bestellingRepo.getBestellingen(klantLogin);
             IEnumerable<OnlineBestelling> onlinebestellingen = _onlineBestellingRepository.getOnlineBestellingen(klantLogin);
-            BestellingViewModel vm = new BestellingViewModel(null,onlinebestellingen);
+            BestellingViewModel vm = new BestellingViewModel(null, onlinebestellingen);
 
             return View(vm);
         }
 
         [HttpPost]
         [ServiceFilter(typeof(KlantFilter))]
-        public IActionResult GeefOrders(KlantLogin klantLogin, string? productNaam,DateTime? vanDatum,DateTime? totDatum
-            ,string? leverAdres,byte? geleverd)
+        public IActionResult GeefOrders(KlantLogin klantLogin, string? productNaam, DateTime? vanDatum, DateTime? totDatum
+            , string? leverAdres, byte? geleverd)
         {
-            if (productNaam == null && vanDatum == null && totDatum == null  &&
-            leverAdres == null && geleverd == null){
+            if (productNaam == null && vanDatum == null && totDatum == null &&
+            leverAdres == null && geleverd == null)
+            {
                 return RedirectToAction("GeefOrders");
             }
-            List<Bestelling> bestellingen = _bestellingRepo.getBestellingenByFilter(klantLogin,productNaam, vanDatum, totDatum, leverAdres,geleverd) ;
+            List<Bestelling> bestellingen = _bestellingRepo.getBestellingenByFilter(klantLogin, productNaam, vanDatum, totDatum, leverAdres, geleverd);
             IEnumerable<OnlineBestelling> onlinebestellingen = _onlineBestellingRepository.getOnlineBestellingen(klantLogin);
-            BestellingViewModel vm = new BestellingViewModel(bestellingen,onlinebestellingen);
+            BestellingViewModel vm = new BestellingViewModel(bestellingen, onlinebestellingen);
             ApplyLanguage();
             return View(vm);
         }
 
         [ServiceFilter(typeof(KlantFilter))]
-        public IActionResult GeefOnlineOrderDetails(long id,KlantLogin klantLogin)
+        public IActionResult GeefOnlineOrderDetails(long id, KlantLogin klantLogin)
         {
-            OnlineBestelling onlineBestelling= _onlineBestellingRepository.getOnlineBestellingById(id,klantLogin);
+            OnlineBestelling onlineBestelling = _onlineBestellingRepository.getOnlineBestellingById(id, klantLogin);
             ApplyLanguage();
             var request = HttpContext.Features.Get<IRequestCultureFeature>();
             string taal = request.RequestCulture.Culture.Name;
@@ -214,7 +215,7 @@ namespace WellStralerWebshop.Controllers
             ApplyLanguage();
             OnlineBestelLijn teVerwijderenBestelLijn = _onlineBestelLijnRepository.getOnlineBestellijn(id);
             long onlineBestellingId = teVerwijderenBestelLijn.BestellingId;
-            OnlineBestelling onlineBestelling = _onlineBestellingRepository.getOnlineBestellingById(onlineBestellingId,klantLogin);
+            OnlineBestelling onlineBestelling = _onlineBestellingRepository.getOnlineBestellingById(onlineBestellingId, klantLogin);
 
             List<OnlineBestelLijn> lijstBestellijnen;
 
@@ -222,8 +223,8 @@ namespace WellStralerWebshop.Controllers
             string taal = request.RequestCulture.Culture.Name;
             if (teVerwijderenBestelLijn.HoofdProdBestelLijnId == 0)
             {
-                
-                lijstBestellijnen = onlineBestelling.OnlineBesltelLijnen.Where(m=>m.HoofdProdBestelLijnId==teVerwijderenBestelLijn.Id).ToList();
+
+                lijstBestellijnen = onlineBestelling.OnlineBesltelLijnen.Where(m => m.HoofdProdBestelLijnId == teVerwijderenBestelLijn.Id).ToList();
                 _onlineBestelLijnRepository.verwijderOBestelLijn(teVerwijderenBestelLijn);
                 if (lijstBestellijnen.Count() > 0)
                 {
@@ -233,7 +234,7 @@ namespace WellStralerWebshop.Controllers
                     }
                 }
                 _onlineBestelLijnRepository.SaveChanges();
-                if (onlineBestelling.OnlineBesltelLijnen.Count < 1 || onlineBestelling.OnlineBesltelLijnen ==null)
+                if (onlineBestelling.OnlineBesltelLijnen.Count < 1 || onlineBestelling.OnlineBesltelLijnen == null)
                 {
                     _onlineBestellingRepository.verwijderOnlineBestelling(onlineBestelling);
                     TempData["message"] = "";
@@ -252,7 +253,7 @@ namespace WellStralerWebshop.Controllers
                         TempData["message"] = "Bestelling succesvol verwijderd";
                     }
                     return RedirectToAction("GeefOrders");
-                } 
+                }
             }
             else
             {
@@ -271,16 +272,26 @@ namespace WellStralerWebshop.Controllers
             {
                 TempData["message"] = "Bestellings lijn succesvol verwijderdt";
             }
-            return RedirectToAction("GeefOnlineOrderDetails", new { id = onlineBestellingId } );
+            return RedirectToAction("GeefOnlineOrderDetails", new { id = onlineBestellingId });
         }
+        [ServiceFilter(typeof(KlantFilter))]
+
+        public IActionResult GeefBestellingDetail(long id, KlantLogin klantLogin)
+        {
+            ApplyLanguage();
+            Bestelling bestelling = _bestellingRepo.getBestellingById(id, klantLogin);
+            BestellingDetailViewModel vm = new BestellingDetailViewModel(bestelling);
+            return View(vm);
+        }
+
         public void totaalPrijs()
         {
             decimal prijs = 0;
-            foreach (OnlineBestelLijn lijn in winkelMandje) 
+            foreach (OnlineBestelLijn lijn in winkelMandje)
             {
                 prijs = prijs + lijn.Prijs * lijn.Aantal;
             }
-            ViewData["TotaalPrijsZonderKorting"] = prijs ;
+            ViewData["TotaalPrijsZonderKorting"] = prijs;
         }
         public List<Klant> GetLijstLeverklanten(KlantLogin klantLogin)
         {
@@ -329,10 +340,11 @@ namespace WellStralerWebshop.Controllers
             ViewData["Detail"] = _localizer["Detail"];
             ViewData["Orders not yet processed"] = _localizer["Orders not yet processed"];
             ViewData["View Details"] = _localizer["View Details"];
-            ViewData["Product"] =_localizer["Product"];
+            ViewData["Product"] = _localizer["Product"];
             ViewData["Description"] = _localizer["Description"];
             ViewData["Number"] = _localizer["Number"];
             ViewData["Price per"] = _localizer["Price per"];
+            ViewData["To deliver"] = _localizer["To deliver"];
             var request = HttpContext.Features.Get<IRequestCultureFeature>();
             string taal = request.RequestCulture.Culture.Name;
 

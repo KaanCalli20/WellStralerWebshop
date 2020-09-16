@@ -19,9 +19,9 @@ namespace WellStralerWebshop.Data.Repositories
         }
         public List<Bestelling> getBestellingen(KlantLogin klantLogin)
         {
-            return _bestellingen.Include(m=>m.Bestelijnen).Include(m=>m.Klant).Where(m=>m.Klant==klantLogin.Klant).OrderByDescending(m=>m.Datum).ToList();
+            return _bestellingen.Include(m=>m.Bestelijnen).ThenInclude(m=>m.Product).Include(m=>m.Klant).Where(m=>m.Klant==klantLogin.Klant).OrderByDescending(m=>m.Datum).ToList();
         }
-        public Bestelling getBestellingById(int id, KlantLogin klantLogin)
+        public Bestelling getBestellingById(long id, KlantLogin klantLogin)
         {
             return getBestellingen(klantLogin).Where(p=>p.Id==id && p.Klant==klantLogin.Klant).SingleOrDefault();
         }

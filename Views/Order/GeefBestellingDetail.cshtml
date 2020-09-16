@@ -1,0 +1,70 @@
+﻿@model WellStralerWebshop.Models.ViewModels.BestellingDetailViewModel
+@{
+    ViewData["Title"] = "GeefBestellingDetail";
+}
+
+<h1>@ViewData["Detail"]</h1>
+<form asp-controller="Order">
+
+    <p>@ViewData["Date"]: @Model.Bestelling.Datum.ToShortDateString() </p>
+    <p>@ViewData["Delivered To"]: @Model.Bestelling.KlantLeverFirma</p>
+    <p>@ViewData["Total amount"]: @Model.Bestelling.Bestelijnen.Sum(m => m.Prijs * m.Aantal)</p>
+    <table>
+        <thead>
+        <th>
+            @ViewData["Date"]
+        </th>
+        <th>
+            @ViewData["Product"]
+        </th>
+        <th>
+            @ViewData["Description"]
+        </th>
+        <th>
+            @ViewData["Number"]
+        </th>
+        <th>
+            @ViewData["To deliver"]
+        </th>
+        <th>
+            @ViewData["Price per"]:
+        </th>
+        <th>
+            @ViewData["Total amount"]:
+        </th>
+        </thead>
+        <tbody>
+            @foreach (var item in Model.Bestelling.Bestelijnen)
+            {
+            <tr>
+                <td>
+                    @item.DatumInbreng.ToShortDateString()
+                </td>
+                <td>
+                    @item.Product.Afk.ToString()
+                </td>
+                <td>
+                    @item.ProductOmschrijving
+                </td>
+                <td>
+                    @item.Aantal
+                </td>
+                @{
+                    decimal prijs = item.Prijs * item.Aantal;
+                    int teLeveren = item.Aantal - item.AantalGeleverd;
+                }
+                <td>
+                    @teLeveren
+                </td>
+                <td>
+                    @item.Prijs
+                </td>
+
+                <td>
+                    @prijs
+                </td>
+            </tr>
+            }
+        </tbody>
+    </table>
+</form>

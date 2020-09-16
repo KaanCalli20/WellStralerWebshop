@@ -207,6 +207,9 @@
   <data name="Search" xml:space="preserve">
     <value>Chercher</value>
   </data>
+  <data name="To deliver" xml:space="preserve">
+    <value>Livrer</value>
+  </data>
   <data name="Total amount" xml:space="preserve">
     <value>Montant total</value>
   </data>

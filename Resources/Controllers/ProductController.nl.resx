@@ -123,6 +123,9 @@
   <data name="Back" xml:space="preserve">
     <value>terug</value>
   </data>
+  <data name="Cart" xml:space="preserve">
+    <value>Winkelwagen</value>
+  </data>
   <data name="Change" xml:space="preserve">
     <value>Wijzig</value>
   </data>
